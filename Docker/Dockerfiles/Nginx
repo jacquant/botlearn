@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY ./frontend/memoire-app/package.json ./frontend/memoire-app/yarn.lock ./
 
-RUN yarn --pure-lockfile
+RUN yarn
 
 COPY ./frontend/memoire-app/ ./
 
