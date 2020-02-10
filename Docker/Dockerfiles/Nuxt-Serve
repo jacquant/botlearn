@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 RUN apk update && apk upgrade && apk add python make g++
 
-COPY ./frontend/memoire/ ./
+COPY ./frontend/memoire-app/ ./
 
 RUN yarn --pure-lockfile
 

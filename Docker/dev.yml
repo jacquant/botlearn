@@ -81,7 +81,7 @@ services:
       context: ..
       dockerfile: Docker/Dockerfiles/Nuxt-Serve
     volumes:
-      - ../frontend/memoire:/usr/src/app
+      - ../frontend/memoire-app:/usr/src/app
     ports:
       - "3000:3000"
     networks:

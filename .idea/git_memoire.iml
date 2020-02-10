@@ -18,9 +18,11 @@
       <sourceFolder url="file://$MODULE_DIR$/extension" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/frontend" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backend/memoire" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/frontend/memoire-app" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/backend/static" />
       <excludeFolder url="file://$MODULE_DIR$/extension/memoire/.vscode" />
       <excludeFolder url="file://$MODULE_DIR$/extension/memoire/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/memoire-app/.nuxt" />
     </content>
     <orderEntry type="jdk" jdkName="Pipenv (backend)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
