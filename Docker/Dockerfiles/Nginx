@@ -1,0 +1,19 @@
+FROM node:alpine as nuxt-serve
+
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
+
+COPY ./frontend/memoire/package.json ./frontend/memoire/yarn.lock ./
+
+RUN yarn --pure-lockfile
+
+COPY ./frontend/memoire/ ./
+
+RUN yarn generate
+
+FROM nginx:alpine
+
+COPY --from=angular-serve /usr/src/app/dist/ /usr/share/nginx/html
+
+COPY ./Docker/config/nginx.conf /etc/nginx/conf.d/default.conf

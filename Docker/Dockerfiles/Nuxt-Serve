@@ -1,0 +1,15 @@
+FROM node:alpine
+
+# Create app direcotry
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+RUN apk update && apk upgrade && apk add python make g++
+
+COPY ./frontend/memoire/ ./
+
+RUN yarn --pure-lockfile
+
+# start command
+CMD [ "yarn", "run", "dev" ]
+

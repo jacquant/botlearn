@@ -1,0 +1,118 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Nginx
+    container_name: nginx-memoire
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - api:api
+    volumes:
+      - ../backend/static/:/src/static/
+      - ../backend/media/:/src/media/
+      - /etc/ssl/:/certs
+    depends_on:
+      - api
+    networks:
+      memoire-prod:
+        aliases:
+          - nginx
+  cache:
+    image: redis:alpine
+    container_name: redis-memoire
+    expose:
+      - "6379"
+    entrypoint: redis-server
+    networks:
+      memoire-prod:
+        aliases:
+          - redis
+  celery:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Django
+    command: celery -A memoire worker -l info
+    volumes:
+      - ../backend/:/api
+    depends_on:
+      - db
+      - cache
+    links:
+      - db:database
+      - cache:redis
+    env_file:
+      - env/base/api.env
+      - env/base/db.env
+      - env/dev/api.env
+      - env/dev/db.env
+    networks:
+      memoire-prod:
+        aliases:
+          - celery
+  db:
+    image: postgres:alpine
+    container_name: postgres-memoire
+    ports:
+      - "5433:5432"
+    env_file:
+      - env/base/db.env
+      - env/dev/db.env
+    volumes:
+      - postgres-data-memoire-prod:/var/lib/postgresql/data
+    networks:
+      memoire-prod:
+        aliases:
+          - database
+  api:
+    container_name: api-memoire
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Django
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - cache
+    links:
+      - db:database
+      - cache:redis
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             uvicorn --host 0.0.0.0 --port 8080 memoire.asgi:application --reload"
+    volumes:
+      - ../backend/:/api
+    env_file:
+      - env/base/api.env
+      - env/base/db.env
+      - env/dev/api.env
+      - env/dev/db.env
+    networks:
+      memoire-prod:
+        aliases:
+          - api
+  nuxt:
+    container_name: nuxt-memoire-serve
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Nuxt-Serve
+    volumes:
+      - ../frontend/memoire:/usr/src/app
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "yarn dev"
+    networks:
+      memoire-prod:
+        aliases:
+          - nuxt
+volumes:
+  postgres-data-memoire-prod:
+    external: true
+networks:
+  memoire-prod:
+    driver: bridge

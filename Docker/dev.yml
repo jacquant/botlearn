@@ -1,0 +1,96 @@
+version: "3"
+services:
+  cache:
+    image: redis:alpine
+    container_name: redis-memoire
+    expose:
+      - "6379"
+    entrypoint: redis-server
+    networks:
+      memoire-dev:
+        aliases:
+          - redis
+  celery:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Django
+    command: celery -A memoire worker -l info
+    volumes:
+      - ../backend/:/api
+    depends_on:
+      - db
+      - cache
+    links:
+      - db:database
+      - cache:redis
+    env_file:
+      - env/base/api.env
+      - env/base/db.env
+      - env/dev/api.env
+      - env/dev/db.env
+    networks:
+      memoire-dev:
+        aliases:
+          - celery
+  db:
+    image: postgres:alpine
+    container_name: postgres-memoire
+    ports:
+      - "5433:5432"
+    env_file:
+      - env/base/db.env
+      - env/dev/db.env
+    volumes:
+      - postgres-data-memoire-dev:/var/lib/postgresql/data
+    networks:
+      memoire-dev:
+        aliases:
+          - database
+  api:
+    container_name: api-memoire
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Django
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - cache
+    links:
+      - db:database
+      - cache:redis
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             uvicorn --host 0.0.0.0 --port 8080 memoire.asgi:application --reload"
+    volumes:
+      - ../backend/:/api
+    env_file:
+      - env/base/api.env
+      - env/base/db.env
+      - env/dev/api.env
+      - env/dev/db.env
+    networks:
+      memoire-dev:
+        aliases:
+          - api
+  nuxt:
+    container_name: nuxt-memoire-serve
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Nuxt-Serve
+    volumes:
+      - ../frontend/memoire:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      memoire-dev:
+        aliases:
+          - nuxt
+volumes:
+  postgres-data-memoire-dev:
+    external: true
+networks:
+  memoire-dev:
+    driver: bridge
