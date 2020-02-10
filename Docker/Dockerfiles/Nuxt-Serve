@@ -6,9 +6,12 @@ WORKDIR /usr/src/app
 
 RUN apk update && apk upgrade && apk add python make g++
 
-RUN yarn add -D nuxt
+RUN global add nuxt
 
 COPY ./frontend/memoire-app/ ./
+
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
 
 RUN yarn
 
