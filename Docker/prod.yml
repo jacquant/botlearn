@@ -110,9 +110,6 @@ services:
       memoire-prod:
         aliases:
           - nuxt
-volumes:
-  postgres-data-memoire-prod:
-    external: true
 networks:
   memoire-prod:
     driver: bridge
