@@ -132,3 +132,7 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+#Volume postgre SQL
+Docker/postgres-data-memoire-dev
+Docker/postgres-data-memoire-prod
