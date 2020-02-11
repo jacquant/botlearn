@@ -13,8 +13,13 @@ export default {
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
       {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
     ],
+    script:[
+      { src:"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"},
+      { src: "js/chatbot.js"},
+    ],
     link: [
-      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+      {rel: "stylesheet", href: "css/chatbot.css" }
     ]
   },
   /*
@@ -55,7 +60,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,

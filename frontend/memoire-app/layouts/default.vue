@@ -105,7 +105,12 @@
             icon: 'mdi-chart-bubble',
             title: 'Inspire',
             to: '/inspire'
-          }
+          },
+          {
+            icon: 'mdi-forum',
+            title: 'bot',
+            to: '/bot'
+          }  
         ],
         miniVariant: false,
         right: true,
