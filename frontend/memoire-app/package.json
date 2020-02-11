@@ -16,7 +16,8 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/vuetify": "^1.10.3",
     "nuxt": "^2.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuetify": "^2.2.11"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.5.6",
