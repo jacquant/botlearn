@@ -85,7 +85,7 @@ ASGI_APPLICATION = "memoire.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB_NAME = os.environ.get("POSTGRES_DB", "memoire-va-dev")
+DB_NAME = os.environ.get("POSTGRES_DB", "memoire-v1-dev")
 DB_USER = os.environ.get("POSTGRES_USER", "memoire-dev")
 DB_PWD = os.environ.get("POSTGRES_PASSWORD", "memoire!pwd")
 DB_IP = os.environ.get("DB_IP", "127.0.0.1")

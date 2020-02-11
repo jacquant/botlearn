@@ -1,3 +1,4 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "python.pythonPath": "/Users/maximedallavalle/.local/share/virtualenvs/backend-pdiJ9XPR/"
 }
