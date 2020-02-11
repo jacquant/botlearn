@@ -110,7 +110,12 @@
             icon: 'mdi-forum',
             title: 'bot',
             to: '/bot'
-          }  
+          },
+          {
+            icon: 'mdi-login-variant',
+            title: 'login',
+            to: '/login'
+          }
         ],
         miniVariant: false,
         right: true,

@@ -15,9 +15,14 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/vuetify": "^1.10.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "nuxt": "^2.0.0",
     "vue-template-compiler": "^2.6.11",
-    "vuetify": "^2.2.11"
+    "vuelidate": "^0.7.5",
+    "vuetify": "^2.2.11",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.5.6",
