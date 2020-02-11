@@ -16,5 +16,5 @@ ENV NUXT_PORT=3000
 RUN yarn
 
 # start command
-CMD [ "yarn", "run", "dev" ]
+CMD [ "yarn", "dev" ]
 
