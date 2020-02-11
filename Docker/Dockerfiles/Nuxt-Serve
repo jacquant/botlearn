@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 RUN apk update && apk upgrade && apk add python make g++
 
-RUN yarn add -D nuxt
+RUN yarn global add nuxt
 
 COPY ./frontend/memoire-app/ ./
 
