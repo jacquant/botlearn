@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
     # Internal apps
+    "accounts"
 ]
 
 MIDDLEWARE = [
@@ -194,7 +195,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": datetime.timedelta(days=1),
 }
 
-# AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "accounts.User"
 
 # mail
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"

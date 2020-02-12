@@ -13,26 +13,11 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/backend" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/extension" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/frontend" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/backend/memoire" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/frontend/memoire-app" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/backend/static" />
-      <excludeFolder url="file://$MODULE_DIR$/extension/memoire/.vscode" />
-      <excludeFolder url="file://$MODULE_DIR$/extension/memoire/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/frontend/memoire-app/.nuxt" />
-    </content>
+    <content url="file://$MODULE_DIR$/backend" />
     <orderEntry type="jdk" jdkName="Pipenv (backend)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/backend/templates" />
-      </list>
-    </option>
   </component>
 </module>
