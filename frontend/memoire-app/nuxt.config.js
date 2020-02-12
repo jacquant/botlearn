@@ -33,7 +33,9 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [],
+  plugins: [
+    '~/plugins/http',
+  ],
   /*
   ** Nuxt.js dev-modules
   */
@@ -47,12 +49,44 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxt/http'
   ],
+  /*
+  ** Auth module configuration
+  ** See https://auth.nuxtjs.org/
+  ** https://github.com/nuxt-community/auth-module/pull/361
+  */
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'token/login/', method: 'post', propertyName: 'access', refreshToken:'refresh'},
+          refresh: { url: '/tokenrefresh', method: 'post' },
+          logout: false,
+          user: false,
+        },
+        tokenRequired: true,
+        // tokenType: 'bearer'
+      }
+    }
+  },
+
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
+  axios: {
+    baseURL: "http://localhost:8080/api/"
+  },
+  /*
+  ** Http module configuration
+  ** See https://http.nuxtjs.org/api/
+  */
+  http: {
+    baseURL: "http://localhost:8080/api/"
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module

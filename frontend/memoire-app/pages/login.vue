@@ -11,11 +11,20 @@
                         <v-toolbar-title>Connexion</v-toolbar-title>
                         <v-spacer />
                     </v-toolbar>
+                    <v-alert
+                        text
+                        prominent
+                        type="error"
+                        icon="mdi-alert"
+                        v-if="error !=null"
+                        >
+                        {{error}}
+                    </v-alert>
                     <v-card-text>
                         <v-form>
                         <v-text-field
                             v-model="email"
-                            label="email"
+                            label="Email"
                             name="email"
                             prepend-icon="mdi-account"
                             type="text"
@@ -25,6 +34,7 @@
                         />
 
                         <v-text-field
+                            v-model="password"
                             id="password"
                             label="Password"
                             name="password"
@@ -35,7 +45,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer />
-                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.$invalid">Login</v-btn>
+                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.$invalid" >Login</v-btn>
                     </v-card-actions>
                     <v-divider></v-divider>
                     <v-card-actions class="d-flex align-center justify-center">
@@ -70,8 +80,11 @@ export default {
     data: () => ({
 
         email: '',
+        password: '',
 
         forget_pwd: false,
+
+        error: null
     }),
 
     // ================================================================================================== ==
@@ -96,10 +109,34 @@ export default {
     // Methods
     // ================================================================================================== ==
     methods: {
-      submit () {
+      async submit () {
+
         this.$v.$touch()
-        //console.log(this.$v.$touch());
-      }
+
+        let data = {"mail": this.email, "password": this.password}
+
+        try {
+            await this.$auth.loginWith('local',{data: data})
+        } catch (e) {    
+            this.error = "Il semblerait que les identifiants ne soient pas corrects"
+        }
+
+      
+
+        //https://auth.nuxtjs.org/api/storage.html#local-state
+        //Save context
+        /*await this.$axios.$post("token/login/", data)  
+            .then(function(response) {
+                self.$auth.$storage.setLocalStorage("refresh", response.refresh, false);
+                self.$auth.$storage.setLocalStorage("access", response.access, false);
+                //self.$router.push('/')
+            })
+            .catch(error => {
+                    console.log(error)
+                });*/
+        //https://auth.nuxtjs.org/api/auth.html#loggedin
+
+        }
     }
     
 }

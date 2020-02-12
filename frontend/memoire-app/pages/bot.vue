@@ -15,6 +15,12 @@
 
 <script>
 export default {
+  name: 'BotPage',
+  middleware: ['auth'],
+
+  // ================================================================================================== ==
+  // Mounted
+  // ================================================================================================== ==
   mounted () {
     var config = {
     // what inputs should the bot listen to? this selector should point to at least one input field
