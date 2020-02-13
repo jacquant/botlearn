@@ -34,7 +34,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/http',
+    '~/plugins/auth',
+    '~/plugins/axios',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -59,18 +60,39 @@ export default {
   */
 
   auth: {
+    plugins: ['~/plugins/auth.js'],
     strategies: {
       local: {
+        _scheme: 'local',
         endpoints: {
-          login: { url: 'token/login/', method: 'post', propertyName: 'access', refreshToken:'refresh'},
-          refresh: { url: '/tokenrefresh', method: 'post' },
+          login: { url: 'token/login/', method: 'post', propertyName: 'access', refresh_token:'refresh'},
+          refresh: { url: '/token/refresh', method: 'post' },
+          logout: false,
+          user: false,
+        },
+        tokenRequired: true,
+        // tokenType: 'bearer'
+      },
+      unamur: {
+        _scheme: 'local',
+        endpoints: {
+          login: { url: 'token/login_by_unamur/', method: 'post', propertyName: 'access', refresh_token:'refresh'},
           logout: false,
           user: false,
         },
         tokenRequired: true,
         // tokenType: 'bearer'
       }
-    }
+    },
+    watchLoggedIn: true,
+    resetOnError: true,
+    rewriteRedirects: true,
+    cookie: {
+      prefix: 'auth.',
+      options: {
+        path: '/',
+      },
+    },
   },
 
   /*
