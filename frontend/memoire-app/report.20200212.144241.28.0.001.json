@@ -1,0 +1,342 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20200212.144241.28.0.001.json",
+    "dumpEventTime": "2020-02-12T14:42:41Z",
+    "dumpEventTimeStamp": "1581518561302",
+    "processId": 28,
+    "cwd": "/usr/src/app",
+    "commandLine": [
+      "/usr/local/bin/node",
+      "/usr/src/app/node_modules/.bin/nuxt"
+    ],
+    "nodejsVersion": "v13.7.0",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "13.7.0",
+      "v8": "7.9.317.25-node.28",
+      "uv": "1.34.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "79",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.1",
+      "openssl": "1.1.1d",
+      "cldr": "36.0",
+      "icu": "65.1",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://unofficial-builds.nodejs.org/download/release/v13.7.0/node-v13.7.0-headers.tar.gz",
+      "sourceUrl": "https://unofficial-builds.nodejs.org/download/release/v13.7.0/node-v13.7.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "4.9.125-linuxkit",
+    "osVersion": "#1 SMP Fri Sep 7 08:20:28 UTC 2018",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 4288800,
+        "nice": 0,
+        "sys": 9622900,
+        "idle": 644233800,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 9044400,
+        "nice": 0,
+        "sys": 4853300,
+        "idle": 661791100,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 7206100,
+        "nice": 0,
+        "sys": 4485700,
+        "idle": 666075400,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 7504800,
+        "nice": 0,
+        "sys": 4596300,
+        "idle": 665643900,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 8605700,
+        "nice": 0,
+        "sys": 4277000,
+        "idle": 665009000,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+        "speed": 2900,
+        "user": 7231600,
+        "nice": 0,
+        "sys": 4285100,
+        "idle": 666422400,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "eth0",
+        "internal": false,
+        "mac": "02:42:ac:17:00:04",
+        "address": "172.23.0.4",
+        "netmask": "255.255.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "e4e0deb7e238"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+  ],
+  "javascriptHeap": {
+    "totalMemory": 1060917248,
+    "totalCommittedMemory": 1054420416,
+    "usedMemory": 1047905776,
+    "availableMemory": 20705632,
+    "memoryLimit": 1072955392,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 33328,
+        "capacity": 33040,
+        "used": 33040,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 8912896,
+        "committedMemory": 3098768,
+        "capacity": 4451552,
+        "used": 653160,
+        "available": 3798392
+      },
+      "old_space": {
+        "memorySize": 493756416,
+        "committedMemory": 493558080,
+        "capacity": 491768008,
+        "used": 491350464,
+        "available": 417544
+      },
+      "code_space": {
+        "memorySize": 3837952,
+        "committedMemory": 3583104,
+        "capacity": 3131968,
+        "used": 3131968,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 10752000,
+        "committedMemory": 10751296,
+        "capacity": 10005760,
+        "used": 10005760,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 542486528,
+        "committedMemory": 542486528,
+        "capacity": 541915480,
+        "used": 541915480,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 909312,
+        "committedMemory": 909312,
+        "capacity": 815904,
+        "used": 815904,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 4451552,
+        "used": 0,
+        "available": 4451552
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 245.74,
+    "kernelCpuSeconds": 42.7,
+    "cpuConsumptionPercent": 4.8649,
+    "maxRss": 1160949760,
+    "pageFaults": {
+      "IORequired": 63,
+      "IONotRequired": 2501979
+    },
+    "fsActivity": {
+      "reads": 238640,
+      "writes": 0
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 119.84,
+    "kernelCpuSeconds": 24.26,
+    "cpuConsumptionPercent": 2.43043,
+    "fsActivity": {
+      "reads": 142248,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "npm_package_dependencies__nuxtjs_auth": "^4.8.5",
+    "npm_package_devDependencies__nuxt_typescript_build": "^0.5.6",
+    "npm_package_dependencies_vue_template_compiler": "^2.6.11",
+    "npm_package_devDependencies_jest": "^24.1.0",
+    "npm_config_version_commit_hooks": "true",
+    "npm_config_user_agent": "yarn/1.21.1 npm/? node/v13.7.0 linux x64",
+    "NODE_VERSION": "13.7.0",
+    "npm_config_bin_links": "true",
+    "HOSTNAME": "e4e0deb7e238",
+    "YARN_VERSION": "1.21.1",
+    "npm_node_execpath": "/usr/local/bin/node",
+    "npm_package_devDependencies_vue_jest": "^4.0.0-0",
+    "npm_config_init_version": "1.0.0",
+    "SHLVL": "4",
+    "HOME": "/root",
+    "npm_package_dependencies_whatwg_fetch": "^3.0.0",
+    "npm_package_dependencies_vuelidate": "^0.7.5",
+    "NUXT_HOST": "0.0.0.0",
+    "npm_package_devDependencies_eslint_config_prettier": "^6.10.0",
+    "npm_config_init_license": "MIT",
+    "YARN_WRAP_OUTPUT": "false",
+    "npm_config_version_tag_prefix": "v",
+    "npm_package_description": "Website of our memoire project",
+    "npm_package_readmeFilename": "README.md",
+    "npm_package_dependencies_nuxt": "^2.0.0",
+    "NUXT_PORT": "3000",
+    "npm_package_devDependencies_prettier": "^1.19.1",
+    "npm_package_devDependencies_babel_jest": "^24.1.0",
+    "npm_package_scripts_dev": "nuxt",
+    "npm_package_dependencies_express": "^4.17.1",
+    "npm_package_private": "true",
+    "npm_config_registry": "https://registry.yarnpkg.com",
+    "npm_package_dependencies_vuetify": "^2.2.11",
+    "npm_package_scripts_start": "nuxt start",
+    "npm_config_ignore_scripts": "",
+    "npm_config_version": "1.21.1",
+    "PATH": "/tmp/yarn--1581512638063-0.24777133266197993:/usr/src/app/node_modules/.bin:/usr/local/share/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "NODE": "/usr/local/bin/node",
+    "npm_package_dependencies_vuex_persist": "^2.2.0",
+    "npm_package_name": "memoire",
+    "npm_package_devDependencies_eslint": "^6.8.0",
+    "npm_package_devDependencies__vue_test_utils": "^1.0.0-beta.27",
+    "npm_package_devDependencies__nuxtjs_eslint_config": "^2.0.2",
+    "npm_lifecycle_script": "nuxt",
+    "npm_package_dependencies_express_session": "^1.17.0",
+    "npm_package_dependencies_body_parser": "^1.19.0",
+    "npm_package_scripts_test": "jest",
+    "npm_config_version_git_message": "v%s",
+    "npm_lifecycle_event": "dev",
+    "npm_package_dependencies__nuxt_http": "^0.3.9",
+    "npm_package_version": "1.0.0",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"dev\"],\"original\":[\"run\",\"dev\"]}",
+    "npm_package_scripts_build": "nuxt build",
+    "npm_config_version_git_tag": "true",
+    "npm_config_version_git_sign": "",
+    "npm_package_scripts_generate": "nuxt generate",
+    "npm_package_license": "Mit License",
+    "npm_config_strict_ssl": "true",
+    "npm_package_devDependencies_eslint_plugin_prettier": "^3.1.2",
+    "PWD": "/usr/src/app",
+    "npm_execpath": "/opt/yarn-v1.21.1/bin/yarn.js",
+    "npm_package_dependencies__nuxtjs_vuetify": "^1.10.3",
+    "npm_package_author_name": "Maxime Dalla Valle, Antoine Jacques",
+    "npm_config_save_prefix": "^",
+    "npm_config_ignore_optional": "",
+    "npm_package_devDependencies_babel_eslint": "^10.0.3",
+    "npm_package_dependencies__nuxtjs_axios": "^5.9.5",
+    "INIT_CWD": "/usr/src/app",
+    "NODE_ENV": "development",
+    "_AXIOS_BASE_URL_": "http://localhost:8080/tzt",
+    "_HTTP_BASE_URL_": "http://localhost:8080/api/",
+    "VUE_ENV": "server"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 83968000,
+      "hard": 83968000
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 1048576,
+      "hard": 1048576
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/usr/local/bin/node",
+    "/usr/lib/libstdc++.so.6",
+    "/usr/lib/libgcc_s.so.1",
+    "/lib/ld-musl-x86_64.so.1"
+  ]
+}

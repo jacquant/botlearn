@@ -33,7 +33,10 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [],
+  plugins: [
+    '~/plugins/auth',
+    '~/plugins/axios',
+  ],
   /*
   ** Nuxt.js dev-modules
   */
@@ -47,12 +50,65 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxt/http'
   ],
+  /*
+  ** Auth module configuration
+  ** See https://auth.nuxtjs.org/
+  ** https://github.com/nuxt-community/auth-module/pull/361
+  */
+
+  auth: {
+    plugins: ['~/plugins/auth.js'],
+    strategies: {
+      local: {
+        _scheme: 'local',
+        endpoints: {
+          login: { url: 'token/login/', method: 'post', propertyName: 'access', refresh_token:'refresh'},
+          refresh: { url: '/token/refresh', method: 'post' },
+          logout: false,
+          user: false,
+        },
+        tokenRequired: true,
+        // tokenType: 'bearer'
+      },
+      unamur: {
+        _scheme: 'local',
+        endpoints: {
+          login: { url: 'token/login_by_unamur/', method: 'post', propertyName: 'access', refresh_token:'refresh'},
+          logout: false,
+          user: false,
+        },
+        tokenRequired: true,
+        // tokenType: 'bearer'
+      }
+    },
+    watchLoggedIn: true,
+    resetOnError: true,
+    rewriteRedirects: true,
+    cookie: {
+      prefix: 'auth.',
+      options: {
+        path: '/',
+      },
+    },
+  },
+
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
+  axios: {
+    baseURL: "http://localhost:8080/api/"
+  },
+  /*
+  ** Http module configuration
+  ** See https://http.nuxtjs.org/api/
+  */
+  http: {
+    baseURL: "http://localhost:8080/api/"
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module

@@ -24,8 +24,8 @@ from rest_framework import permissions, routers
 
 from .settings import BACK_URL
 
-admin.site.site_header = "Admin - Site pour le mémoire"
-admin.site.site_title = "Site mémoire"
+#admin.site.site_header = "Admin - Site pour le mémoire"
+#admin.site.site_title = "Site mémoire"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(

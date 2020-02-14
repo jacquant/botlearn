@@ -8,20 +8,25 @@
       app
     >
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
+        <div 
+          v-for="(item, i) in items"         
           :key="i"
-          :to="item.to"
           router
           exact
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"/>
-          </v-list-item-content>
+        <v-list-item 
+          v-if="(loggedIn && item.title !='login') || (!loggedIn && item.title !='logout')"
+          :to="item.to"
+          @click="item.title =='logout' ? logout() : false"
+        >
+            <v-list-item-action>
+              <v-icon >{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"/>
+            </v-list-item-content>
         </v-list-item>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -89,6 +94,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
   export default {
     data() {
       return {
@@ -110,12 +116,31 @@
             icon: 'mdi-forum',
             title: 'bot',
             to: '/bot'
-          }  
+          },
+          {
+            icon: 'mdi-login-variant',
+            title: 'login',
+            to: '/login'
+          },
+          {
+            icon: 'mdi-logout-variant',
+            title: 'logout',
+            to: null,
+          }
         ],
         miniVariant: false,
         right: true,
         rightDrawer: false,
         title: 'Vuetify.js'
+      }
+    },
+    computed: {
+    ...mapState('auth', ['loggedIn', 'user'])
+    },
+     methods: {
+      async logout() {
+        await this.$auth.logout()
+        this.$router.push('/login')
       }
     }
   }

@@ -4,6 +4,7 @@
     justify-center
     align-center
   >
+
     <v-flex
       xs12
       sm8
@@ -89,6 +90,13 @@
     components: {
       Logo,
       VuetifyLogo
+    },
+     methods: {
+       //Test logout => delete after
+      async logout() {
+        await this.$auth.logout()
+        this.$router.push('/login')
+      }
     }
   }
 </script>
