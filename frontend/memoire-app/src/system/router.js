@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import Bot from '../views/Bot.vue'
 import Login from '../views/Login.vue'
+import Reset from '../views/Reset.vue'
 import store from '../store/store'
 
 Vue.use(Router)
@@ -40,12 +41,19 @@ let router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      beforeEnter: ifAuthenticated
     },
     {
       path: '/login',
       name: 'login',
       component: Login,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: Reset,
       beforeEnter: ifNotAuthenticated
     },
     {
