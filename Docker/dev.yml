@@ -75,11 +75,11 @@ services:
       memoire-dev:
         aliases:
           - api
-  nuxt:
-    container_name: nuxt-memoire-serve
+  vue:
+    container_name: vue-memoire-serve
     build:
       context: ..
-      dockerfile: Docker/Dockerfiles/Nuxt-Serve
+      dockerfile: Docker/Dockerfiles/Vue-Serve
     volumes:
       - ../frontend/memoire-app:/usr/src/app
     ports:
@@ -87,7 +87,7 @@ services:
     networks:
       memoire-dev:
         aliases:
-          - nuxt
+          - vue
 networks:
   memoire-dev:
     driver: bridge
