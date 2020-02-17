@@ -107,7 +107,7 @@ export default {
      */
     post (route, data, config = {}) {
         //Login Requests
-        if(route.includes("token")){
+        if(route.includes("token") && !route.includes("validate")){
             publicInstance.post(baseUrl+route, data, config)
                 .then(function(response){
                     Store.commit("login",response.data)
@@ -121,14 +121,26 @@ export default {
                     //if (Axios.isCancel(error)) return;
                     Store.commit("internalError", true)
                 });
+
         }else if(route.includes("password_reset") && route.includes("confirm")){
             publicInstance.post(baseUrl+route, data, config)
-            .then(response => {Store.commit("internalSucceed", true)})
+            .then(function(response){
+                Store.commit("internalSucceed", true)
+                router.push("/login");
+            })
             .catch(error => {
                 Store.commit("internalError", true)
             });
+
         }else if(route.includes("password_reset") && route.includes("validate_token")){
-            console.log("other requests")
+            publicInstance.post(baseUrl+route, data, config)
+            .then(function(response){
+                Store.commit("internalSucceed", true)
+            })
+            .catch(error => {
+                router.push("/login");
+            });
+
         }else if(route.includes("password_reset")){
             publicInstance.post(baseUrl+route, data, config)
             .then(response => {Store.commit("internalSucceed", true)})

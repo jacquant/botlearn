@@ -19,7 +19,7 @@ def password_reset_token_created(
     context = {
         "last_name": reset_password_token.user.last_name,
         "first_name": reset_password_token.user.first_name,
-        "reset_password_url": "{}reset_password?token={}".format(
+        "reset_password_url": "{}reset?token={}".format(
             settings.FRONT_URL, reset_password_token.key
         ),
     }

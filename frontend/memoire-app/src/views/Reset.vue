@@ -150,14 +150,27 @@ export default {
             }else{
                 this.error = false;
                 this.succeed = true;
-                
-                let data = {"password":this.password, "token": store.state.accessToken};
-                console.log(data);
+                let data = {"password":this.password, "token": this.$route.query.token};
                 await http.post('password_reset/confirm/', data);           
             }
 
         },
     },
-    
+
+    // ================================================================================================== ==
+    // Mounted
+    // ================================================================================================== ==
+    async mounted(){
+        //Verify the token
+
+        if(this.$route.query.token === undefined) {
+            this.$router.push("/login");
+        }else{
+            let data = {"token": this.$route.query.token};
+            console.log(data);
+            await http.post('password_reset/validate_token/', data);
+        }
+
+    }
 }
 </script>
