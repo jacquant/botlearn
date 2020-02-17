@@ -24,8 +24,8 @@ from rest_framework import permissions, routers
 
 from .settings import BACK_URL
 
-#admin.site.site_header = "Admin - Site pour le mémoire"
-#admin.site.site_title = "Site mémoire"
+admin.site.site_header = "Admin - Site pour le mémoire"
+admin.site.site_title = "Site mémoire"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(
@@ -40,7 +40,7 @@ if settings.DEBUG:
     # Configuration du Swagger=documentation de l'API
     schema_view = get_schema_view(
         openapi.Info(
-            title="AGE API",
+            title="MEMOIRE API",
             default_version="v0.0.1",
             description="Api de développement pour le memoire",
             terms_of_service="",

@@ -20,6 +20,7 @@ django-redis = "*"
 drf-orjson-renderer = "*"
 argon2-cffi = "*"
 django-celery-email = "*"
+dialogflow = "*"
 
 [requires]
 python_version = "3.8"
