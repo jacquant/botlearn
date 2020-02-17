@@ -13,6 +13,7 @@ Vue.use(Vuex);
 
 const KEY_ACCESS_TOKEN = "accessToken";
 const KEY_REFRESH_TOKEN = "refreshToken";
+const KEY_USER_INFORMATION = "infoUser";
 
 // ================================================================================================================== ==
 // Méthodes privées
@@ -76,6 +77,14 @@ export default new Vuex.Store({
          * @member {string|null} Store#refreshToken
          */
         refreshToken: loadToken(KEY_REFRESH_TOKEN),
+
+        /**
+         * Contains the user's information.
+         * It's primarily saved in the JavaScript local store to avoid losing it when reloading the page.
+         * @readonly
+         * @member {UserInfo|null} Store#userInformation
+         */
+        userInformation: JSON.parse(localStorage.getItem(KEY_USER_INFORMATION) || "{}"),
 
 
     },
@@ -143,7 +152,6 @@ export default new Vuex.Store({
             state.accessToken = payload.access;
             state.refreshToken = payload.refresh;
 
-            router.push("/");
 
         },
 
@@ -155,13 +163,30 @@ export default new Vuex.Store({
             // Update the local storage to preserve in case of reloading page
             localStorage.removeItem(KEY_ACCESS_TOKEN);
             localStorage.removeItem(KEY_REFRESH_TOKEN);
+            localStorage.removeItem(KEY_USER_INFORMATION);
 
             // Update the store to actualise the information
             state.accessToken = null;
             state.refreshToken = null;
+            state.userInformation = null;
 
-            router.push("/");
+            router.push("/login");
         },
+
+
+        /**
+         * [MUTATION] Updates the user's information.
+         * @function Store#userInformation
+         * @param {UserInfo} payload - The new user's information.
+         */
+        userInformation (state, payload) {
+
+            // Update the local storage to preserve in case of reloading page
+            localStorage.setItem(KEY_USER_INFORMATION, JSON.stringify(payload));
+
+            // Update the store to actualise the information
+            state.userInformation = payload;
+        }
 
     },
 

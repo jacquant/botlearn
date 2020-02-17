@@ -28,9 +28,9 @@
                   exact
                   >
                   <v-list-item 
-                  v-if="(loggedIn && item.title !='login') || (!loggedIn && item.title !='logout')"
+                  v-if="(loggedIn && item.title !='Se connecter') || (!loggedIn && item.title !='Se déconnecter')"
                   :to="item.to"
-                  @click="item.title =='logout' ? logout() : false"
+                  @click="item.title =='Se déconnecter' ? logout() : false"
                   >
                       <v-list-item-action>
                       <v-icon >{{ item.icon }}</v-icon>
@@ -71,13 +71,13 @@ export default {
         items: [
             {
                 icon: 'mdi-apps',
-                title: 'Welcome',
+                title: 'Acceuil',
                 to: '/'
             },
             {
                 icon: 'mdi-chart-bubble',
                 title: 'Inspire',
-                to: '/inspire'
+                to: '/reset'
             },
             {
                 icon: 'mdi-forum',
@@ -86,12 +86,12 @@ export default {
             },
             {
                 icon: 'mdi-login-variant',
-                title: 'login',
+                title: 'Se connecter',
                 to: '/login'
             },
             {
                 icon: 'mdi-logout-variant',
-                title: 'logout',
+                title: 'Se déconnecter',
                 to: null,
             }
             ]
