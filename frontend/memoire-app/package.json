@@ -1,43 +1,52 @@
 {
-  "name": "memoire",
-  "version": "1.0.0",
-  "description": "Website of our memoire project",
-  "author": "Maxime Dalla Valle, Antoine Jacques",
-  "license": "Mit License",
+  "name": "frontend",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "test": "jest"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@nuxt/http": "^0.3.9",
-    "@nuxtjs/auth": "^4.8.5",
-    "@nuxtjs/axios": "^5.9.5",
-    "@nuxtjs/vuetify": "^1.10.3",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "nuxt": "^2.0.0",
-    "vue-template-compiler": "^2.6.11",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "jquery": "^3.4.1",
+    "jwt-decode": "^2.2.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.5",
     "vuelidate": "^0.7.5",
     "vuetify": "^2.2.11",
-    "vuex-persist": "^2.2.0",
-    "whatwg-fetch": "^3.0.0"
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^0.5.6",
-    "@nuxtjs/eslint-config": "^2.0.2",
-    "@vue/test-utils": "^1.0.0-beta.27",
+    "@vue/cli-plugin-babel": "^4.2.0",
+    "@vue/cli-plugin-eslint": "^4.2.0",
+    "@vue/cli-service": "^4.2.0",
     "babel-eslint": "^10.0.3",
-    "babel-jest": "^24.1.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.1.0",
-    "prettier": "^1.19.1",
-    "vue-jest": "^4.0.0-0"
-  }
+    "eslint-plugin-vue": "^6.1.2",
+    "sass": "^1.19.0",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-vuetify": "^2.0.5",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.3.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }
