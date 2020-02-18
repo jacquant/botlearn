@@ -11,64 +11,58 @@
       md6
     >
       <div class="text-center">
-        <logo/>
-        <vuetify-logo/>
+        <img src="../assets/bot_image.png" height="250px" class="center">
       </div>
-      <v-card>
+      <v-card v-if="userInformation !== null">
         <v-card-title class="headline">
-          Welcome to the Vuetify + Vue.js template
+          Salut {{userInformation.first_name}} !
         </v-card-title>
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower
-            developers to create amazing applications.</p>
           <p>
-            For more information on Vuetify, check out the <a
-            href="https://vuetifyjs.com"
-            target="_blank"
-          >
-            documentation
-          </a>.
+            Bienvenue sur le site du bot de bac 1. Sur ce site tu retrouveras pas mal d'informations  😉.
           </p>
-          <p>
-            If you have questions, please join the official <a
-            href="https://chat.vuetifyjs.com/"
-            target="_blank"
-            title="chat"
-          >
-            discord
-          </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-            href="https://github.com/vuetifyjs/vuetify/issues"
-            target="_blank"
-            title="contribute"
-          >
-            issue board
-          </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the
-            future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
+          
+          <v-card raised>
+            <v-app-bar
+              dark
+              flat
+              color="green"
+            >
+              <v-toolbar-title
+                color="green"
+                dark
+                flat
+              >
+                Tes informations:
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-icon size="40">mdi-account-card-details</v-icon> 
+            </v-app-bar>
+            <v-card-text>
+              <v-list-item
+              v-for="(info, n) in userInformation"
+              :key="n"
+              >
+              <v-icon size ="15">mdi-checkbox-blank-circle</v-icon>
+              <div v-if="n=='mail'">
+                Email : {{info}}
+              </div>
+              <div v-else-if="n =='first_name'">
+                Prénom : {{info}}
+              </div>
+              <div v-else-if="n =='last_name'">
+                Nom: {{info}}
+              </div>
+              <div v-else>
+                Eid: {{info}}
+              </div>
+              </v-list-item>
+              <hr>
+            </v-card-text>
+          </v-card>
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn
-            color="primary"
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -76,20 +70,27 @@
 </template>
 
 <script>
-  import Logo from '../components/Logo.vue'
-  import VuetifyLogo from '../components/VuetifyLogo.vue'
+  import store from '../store/store'
 
   export default {
-    components: {
-      Logo,
-      VuetifyLogo
-    },
-     methods: {
-       //Test logout => delete after
-      async logout() {
-        //await this.$auth.logout()
-        this.$router.push('/login')
-      }
+
+    // ================================================================================================== ==
+    // Data
+    // ================================================================================================== ==
+    data: () => ({
+      userInformation: null
+    }),
+
+    // ================================================================================================== ==
+    // Mounted
+    // ================================================================================================== ==
+    mounted(){
+      
+      //Get User informations
+      this.userInformation = store.state.userInformation;
+      delete this.userInformation.is_staff;
+      delete this.userInformation.student_card;
+      delete this.userInformation.student;
     }
   }
 </script>

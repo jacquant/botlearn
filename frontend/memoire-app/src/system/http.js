@@ -2,6 +2,7 @@ import Axios from "axios";
 import Router from "./router";
 import Store from "../store/store";
 import JwtDecode from "jwt-decode";
+import router from "./router"
 
 /**
  * Base url of the server.
@@ -85,13 +86,14 @@ export default {
      * @param {object} [config] - Additional configuration for the request.
      * @returns {Promise<void>}
      */
-    get (route, manager, config = {}) {
-        publicInstance.get(baseUrl+route, config)
-            .then(response => manager.execute(response.status, response.data))
-            .catch(error => {
-                if (Axios.isCancel(error)) return;
-                manager.execute(error.response.status, error.response.data)
-            });
+    get (route, config = {}) {
+        if(route.includes("user")){
+            publicInstance.get(baseUrl+route, config)
+                .then(response => Store.commit.userInformation(response.data))
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        }
     },
 
     /**
@@ -105,17 +107,40 @@ export default {
      */
     post (route, data, config = {}) {
         //Login Requests
-        if(route.includes("token")){
+        if(route.includes("token") && !route.includes("validate")){
             publicInstance.post(baseUrl+route, data, config)
-                .then(response => Store.commit("login",response.data))
+                .then(function(response){
+                    Store.commit("login",response.data)
+                    publicInstance.get(baseUrl + "user/get/", {headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})
+                    .then(function(responseUser){
+                        Store.commit("userInformation", responseUser.data);
+                        router.push("/");
+                    })
+                })
                 .catch(error => {
                     //if (Axios.isCancel(error)) return;
                     Store.commit("internalError", true)
                 });
+
         }else if(route.includes("password_reset") && route.includes("confirm")){
-            console.log("other requests")
+            publicInstance.post(baseUrl+route, data, config)
+            .then(function(response){
+                Store.commit("internalSucceed", true)
+                router.push("/login");
+            })
+            .catch(error => {
+                Store.commit("internalError", true)
+            });
+
         }else if(route.includes("password_reset") && route.includes("validate_token")){
-            console.log("other requests")
+            publicInstance.post(baseUrl+route, data, config)
+            .then(function(response){
+                Store.commit("internalSucceed", true)
+            })
+            .catch(error => {
+                router.push("/login");
+            });
+
         }else if(route.includes("password_reset")){
             publicInstance.post(baseUrl+route, data, config)
             .then(response => {Store.commit("internalSucceed", true)})
