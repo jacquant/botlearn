@@ -118,7 +118,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 CODE_JAIL = {
     "user": "sandbox",
-    "python_bin": "/",
+    "python_bin": "/sandbox-virtualenv/bin/python",
     "limits": {
         # CPU seconds, defaulting to 1.
         "CPU": 1,
