@@ -115,3 +115,24 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+CODE_JAIL = {
+    "user": "sandbox",
+    "python_bin": "/",
+    "limits": {
+        # CPU seconds, defaulting to 1.
+        "CPU": 1,
+        # Real time, defaulting to 1 second.
+        "REALTIME": 1,
+        # Total process virutal memory, in bytes, defaulting to unlimited.
+        "VMEM": 0,
+        # Size of files creatable, in bytes, defaulting to nothing can be written.
+        "FSIZE": 0,
+        # The number of processes and threads to allow.
+        "NPROC": 15,
+        # Whether to use a proxy process or not.  None means use an environment
+        # variable to decide. NOTE: using a proxy process is NOT THREAD-SAFE, only
+        # one thread can use CodeJail at a time if you are using a proxy process.
+        "PROXY": None,
+    },
+}
