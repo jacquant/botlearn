@@ -69,7 +69,7 @@ let router = new Router({
       path: '/bot',
       name: 'bot',
       component: Bot,
-      //beforeEnter: ifAuthenticated
+      beforeEnter: ifAuthenticated
     },
     { path: "*", 
       redirect: "/" 

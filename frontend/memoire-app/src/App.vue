@@ -90,7 +90,7 @@ export default {
                 to: '/login'
             },
             {
-                icon: 'mdi-login-variant',
+                icon: 'mdi-account-edit',
                 title: 'S\'inscrire',
                 to: '/register'
             },

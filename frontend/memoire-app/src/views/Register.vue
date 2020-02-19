@@ -17,11 +17,33 @@
                             v-model="email"
                             label="Email"
                             name="email"
-                            prepend-icon="mdi-account"
+                            prepend-icon="mdi-email"
                             type="text"
                             :error-messages="emailErrors"
                             @input="$v.email.$touch()"
                             @blur="$v.email.$touch()"
+                        />
+
+                        <v-text-field
+                            v-model="firstname"
+                            label="Prénom"
+                            name="prenom"
+                            prepend-icon="mdi-account"
+                            type="text"
+                            :error-messages="firstNameErrors"
+                            @input="$v.firstname.$touch()"
+                            @blur="$v.firstname.$touch()"
+                        />
+
+                        <v-text-field
+                            v-model="lastname"
+                            label="Nom de famille"
+                            name="nom de famille"
+                            prepend-icon="mdi-account"
+                            type="text"
+                            :error-messages="lastNameErrors"
+                            @input="$v.lastname.$touch()"
+                            @blur="$v.lastname.$touch()"
                         />
 
                         <v-text-field
@@ -70,7 +92,12 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid || $v.eid.$invalid || $v.email.$invalid " >Se connecter</v-btn>
+                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid || 
+                                                                                            $v.eid.$invalid || $v.email.$invalid  || 
+                                                                                            $v.firstname.$invalid || $v.lastname.$invalid ||
+                                                                                            (password != password_conf)" >
+                            Se connecter  
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-col>
@@ -80,7 +107,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, email, minLength, maxLength, requiredIf} from 'vuelidate/lib/validators'
 import http from '../system/http'
 import store from '../store/store'
 
@@ -95,9 +122,11 @@ export default {
     validations: {
 
         email: { required, email },
-        password: { required, minLength: minLength(8)},
-        password_conf: { required, minLength: minLength(8)},
-        eid : {required, maxLength: maxLength(10)}
+        firstname : { required },
+        lastname : { required },
+        password: { required, minLength: minLength(8) },
+        password_conf: { required, minLength: minLength(8) },
+        eid : {required, maxLength: maxLength(10) },
 
     },
 
@@ -108,6 +137,8 @@ export default {
 
         //User's data
         email:'',
+        firstname: '',
+        lastname: '',
         password: '',
         password_conf: '',
         eid:'',
@@ -136,6 +167,31 @@ export default {
             !this.$v.email.required && errors.push('Une adresse email doit être indiquée')
             return errors
       },
+
+       /**
+         * Indicates if there is a first name.
+         * @private
+         * @returns {errors: tab}
+        */
+        firstNameErrors () {
+            const errors = []
+            if (!this.$v.firstname.$dirty) return errors
+            !this.$v.firstname.required && errors.push('Un prénom doit être indiqué')
+            return errors
+      },
+
+      /**
+         * Indicates if there is a last name.
+         * @private
+         * @returns {errors: tab}
+        */
+        lastNameErrors () {
+            const errors = []
+            if (!this.$v.lastname.$dirty) return errors
+            !this.$v.lastname.required && errors.push('Un nom de famille doit être indiqué')
+            return errors
+      },
+
        /**
          * Indicates if there is a password written.
          * @private
@@ -159,6 +215,7 @@ export default {
             if (!this.$v.password_conf.$dirty) return errors
             !this.$v.password_conf.minLength && errors.push("Le mot de passe doit faire minimum 8 caractères")
             !this.$v.password_conf.required && errors.push("un mot de passe est requis")
+            //!this.$v.password_conf.samePassword && errors.push("Le mot de passe ne correspond pas")
             if(this.password != this.password_conf){
                 errors.push("Le mot de passe ne correspond pas")
             }
