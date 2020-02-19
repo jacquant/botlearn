@@ -1,37 +1,29 @@
 <template>
-    <v-container fluid class="fill-height">
-        <v-row align="center">
-            <v-col offset="1" offset-sm="3" cols="10" sm="6">
-                <!-- Classic Login -->
-                <v-card class="elevation-12">
-                    <v-toolbar
-                        color="green"
-                        dark
-                        flat
-                    >
-                        <v-toolbar-title>Réinitialiser son mot de passe</v-toolbar-title>
-                        <v-spacer />
-                    </v-toolbar>
-                    <v-alert
-                        text
-                        prominent
-                        type="error"
-                        icon="mdi-alert"
-                        v-if="error"
-                        >
-                        Les mots de passe ne correspondent pas.
-                    </v-alert>
-                    <v-alert
-                        text
-                        prominent
-                        type="success"
-                        icon="mdi-checkbox-marked-circle"
-                        v-if="succeed"
-                        >
-                        Le mot de passe a été changé (<a href="/login">Se connecter</a>).
-                    </v-alert>
-                    <v-card-text>
-                        <v-form>
+  <v-layout>
+    <v-flex class="text-center">
+        <v-col offset="1" offset-sm="3" cols="8" sm="6">
+            <v-card class="elevation-12">
+                <v-toolbar
+                color="green"
+                dark
+                flat
+                >
+                    <v-toolbar-title>S'inscrire</v-toolbar-title>
+                    <v-spacer />
+                </v-toolbar>
+                <v-card-text>
+                    <v-form>
+                        <v-text-field
+                            v-model="email"
+                            label="Email"
+                            name="email"
+                            prepend-icon="mdi-account"
+                            type="text"
+                            :error-messages="emailErrors"
+                            @input="$v.email.$touch()"
+                            @blur="$v.email.$touch()"
+                        />
+
                         <v-text-field
                             v-model="password"
                             id="password"
@@ -46,6 +38,7 @@
 
                         <v-text-field
                             v-model="password_conf"
+                            id="conf_password"
                             label="Confirmation du mot de passe"
                             name="conf_password"
                             prepend-icon="mdi-lock"
@@ -54,20 +47,40 @@
                             @input="$v.password_conf.$touch()"
                             @blur="$v.password_conf.$touch()"
                         />
-                        </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid" >Se connecter</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+
+                        <v-text-field
+                            v-model="eid"
+                            label="Ton Eid"
+                            name="eid"
+                            prepend-icon="mdi-account-search"
+                            type="text"
+                            :error-messages="eidErrors"
+                            @input="$v.eid.$touch()"
+                            @blur="$v.eid.$touch()"
+                        >
+                            <v-tooltip bottom slot="append">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on" color="green" dark>
+                                        mdi-information-outline
+                                    </v-icon>
+                                </template>
+                                <span>En indiquant ton eid tu pourras te connecter avec tes identifiants UNamur.</span>
+                            </v-tooltip>
+                        </v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid || $v.eid.$invalid || $v.email.$invalid " >Se connecter</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-col>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, email, minLength, maxLength } from 'vuelidate/lib/validators'
 import http from '../system/http'
 import store from '../store/store'
 
@@ -81,8 +94,10 @@ export default {
     // ================================================================================================== ==
     validations: {
 
+        email: { required, email },
         password: { required, minLength: minLength(8)},
         password_conf: { required, minLength: minLength(8)},
+        eid : {required, maxLength: maxLength(10)}
 
     },
 
@@ -92,8 +107,10 @@ export default {
     data: () => ({
 
         //User's data
+        email:'',
         password: '',
         password_conf: '',
+        eid:'',
 
         //If emails are not the same
         error: false,
@@ -106,6 +123,19 @@ export default {
     // Computed
     // ================================================================================================== ==
     computed:{
+
+        /**
+         * Indicates if the identifiers are not correct.
+         * @private
+         * @returns {errors: tab}
+        */
+        emailErrors () {
+            const errors = []
+            if (!this.$v.email.$dirty) return errors
+            !this.$v.email.email && errors.push('Une adresse email valide est requise !')
+            !this.$v.email.required && errors.push('Une adresse email doit être indiquée')
+            return errors
+      },
        /**
          * Indicates if there is a password written.
          * @private
@@ -129,6 +159,22 @@ export default {
             if (!this.$v.password_conf.$dirty) return errors
             !this.$v.password_conf.minLength && errors.push("Le mot de passe doit faire minimum 8 caractères")
             !this.$v.password_conf.required && errors.push("un mot de passe est requis")
+            if(this.password != this.password_conf){
+                errors.push("Le mot de passe ne correspond pas")
+            }
+            return errors
+        },
+
+         /**
+         * Indicates if the eid is not correct.
+         * @private
+         * @returns {errors: tab}
+        */
+        eidErrors () {
+            const errors = []
+            if (!this.$v.eid.$dirty) return errors
+            !this.$v.eid.maxLength && errors.push("L'eid fait maximum 10 caractères")
+            !this.$v.eid.required && errors.push('Un eid est requis')
             return errors
         },
           
@@ -143,34 +189,10 @@ export default {
             //Checking if user filled correctly the form
             this.$v.$touch();
 
-            //Axios request to check if data is correct
-            if(this.password != this.password_conf){
-                this.error = true;
-                this.succeed = false;
-            }else{
-                this.error = false;
-                this.succeed = true;
-                let data = {"password":this.password, "token": this.$route.query.token};
-                await http.post('password_reset/confirm/', data);           
-            }
+            //toDo Axios
+            
 
         },
-    },
-
-    // ================================================================================================== ==
-    // Mounted
-    // ================================================================================================== ==
-    async mounted(){
-        //Verify the token
-
-        if(this.$route.query.token === undefined) {
-            this.$router.push("/login");
-        }else{
-            let data = {"token": this.$route.query.token};
-            console.log(data);
-            await http.post('password_reset/validate_token/', data);
-        }
-
     }
 }
 </script>

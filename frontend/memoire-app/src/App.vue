@@ -90,6 +90,11 @@ export default {
                 to: '/login'
             },
             {
+                icon: 'mdi-login-variant',
+                title: 'S\'inscrire',
+                to: '/register'
+            },
+            {
                 icon: 'mdi-logout-variant',
                 title: 'Se déconnecter',
                 to: null,
