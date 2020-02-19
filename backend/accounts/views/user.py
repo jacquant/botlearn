@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
+from django.conf import settings
 from accounts.models.user import User
 from accounts.serializers.user import UserSerializer
 
