@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CodeSerializer
 
-from ..codejail.safe_exec import safe_exec
+from codejail.safe_exec import safe_exec
 
 
 class CodeView(APIView):

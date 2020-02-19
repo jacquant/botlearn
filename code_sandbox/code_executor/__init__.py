@@ -1,3 +1,3 @@
-from ..codejail.django_integration import ConfigureCodeJailMiddleware
+from codejail.django_integration import ConfigureCodeJailMiddleware
 
 ConfigureCodeJailMiddleware()
