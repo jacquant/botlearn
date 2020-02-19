@@ -33,3 +33,5 @@ COPY ./code_sandbox/Pipfile* /api/
 
 RUN pipenv install --system --deploy --ignore-pipfile
 COPY ./code_sandbox/ /api/
+
+RUN whoami
