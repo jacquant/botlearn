@@ -85,11 +85,10 @@ services:
     ports:
     - "8081:8081"
     command: >
-     sh -c "whoami &&
-            python manage.py makemigrations &&
+     sh -c "python manage.py makemigrations &&
             python manage.py migrate &&
             python manage.py collectstatic --noinput &&
-            uvicorn --host 0.0.0.0 --port 8080 code_sandbox.asgi:application --reload"
+            gunicorn --bind 0.0.0.0:8081 code_sandbox.wsgi:application --worker-tmp-dir /dev/shm --workers=4 --thread=8 --worker-class=gthread  --reload"
     volumes:
       - ../code_sandbox/:/api
     env_file:

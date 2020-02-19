@@ -9,7 +9,7 @@ verify_ssl = true
 django = "*"
 markdown = "*"
 djangorestframework = "*"
-uvicorn = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"

@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Install dependencies
 RUN pip install pipenv
-RUN pip install uvicorn
+RUN pip install gunicorn
 
 RUN virtualenv /sandbox-virtualenv
 
@@ -33,5 +33,3 @@ COPY ./code_sandbox/Pipfile* /api/
 
 RUN pipenv install --system --deploy --ignore-pipfile
 COPY ./code_sandbox/ /api/
-
-RUN whoami
