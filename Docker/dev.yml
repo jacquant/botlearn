@@ -87,7 +87,8 @@ services:
     security_opt:
       - apparmor:/sandbox-virtualenv/bin/python
     command: >
-     sh -c "python manage.py makemigrations &&
+     sh -c "pipenv shell &&
+            python manage.py makemigrations &&
             python manage.py migrate &&
             python manage.py collectstatic --noinput &&
             uvicorn --host 0.0.0.0 --port 8080 code_sandbox.asgi:application --reload"
