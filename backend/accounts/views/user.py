@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
