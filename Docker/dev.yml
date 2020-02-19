@@ -84,8 +84,6 @@ services:
       dockerfile: Docker/Dockerfiles/Sandbox
     ports:
     - "8081:8081"
-    security_opt:
-      - apparmor:
     command: >
      sh -c "python manage.py makemigrations &&
             python manage.py migrate &&

@@ -3,7 +3,11 @@
         <v-row align="center">
             <v-col offset="1" offset-sm="3" cols="10" sm="6">
                 <!-- Classic Login -->
-                <v-card class="elevation-12">
+            <transition name="fade"  mode="out-in">
+                <v-card class="elevation-12"
+                        v-if="!unamur"
+                        key="classique"
+                >
                     <v-toolbar
                         color="green"
                         dark
@@ -37,7 +41,7 @@
                         <v-text-field
                             v-model="password"
                             id="password"
-                            label="Password"
+                            label="Mot de passe"
                             name="password"
                             prepend-icon="mdi-lock"
                             type="password"
@@ -55,68 +59,75 @@
                     <v-divider></v-divider>
                     <v-card-actions class="d-flex align-center justify-center">
                         <p class="ma-0"> 
-                            <a @click="unamur=true">Se connecter avec ses identifiants UNamur</a>
+                            <a @click="unamur= !unamur">Se connecter avec ses identifiants UNamur</a>
                         </p>
                     </v-card-actions>
                 </v-card>
 
-                <!--Unamur Login-->
-                <v-dialog
-                    v-model="unamur"
-                    width="500"
-                    class="elevation-12">
-                    <v-card class="elevation-12">
-                        <v-toolbar
-                        color="green"
-                        dark
-                        flat
+                <!--Unamur Login>-->
+                
+                <v-card class="elevation-12"
+                        v-if="unamur"
+                        key="unamur"
+                        
+                >
+                    <v-toolbar
+                    color="green"
+                    dark
+                    flat
+                >
+                    <v-toolbar-title>Connexion UNamur</v-toolbar-title>
+                    <v-spacer />
+                </v-toolbar>
+                
+                <v-alert
+                    text
+                    prominent
+                    type="error"
+                    icon="mdi-alert"
+                    v-if="error"
                     >
-                        <v-toolbar-title>Connexion UNamur</v-toolbar-title>
-                        <v-spacer />
-                    </v-toolbar>
-                    
-                    <v-alert
-                        text
-                        prominent
-                        type="error"
-                        icon="mdi-alert"
-                        v-if="error"
-                        >
-                        Il semblerait que les identifiants ne soient pas bons.
-                    </v-alert>
-                    <v-card-text>
-                        <v-form>
-                        <v-text-field
-                            v-model="eid_unamur"
-                            label="Eid"
-                            name="eid"
-                            prepend-icon="mdi-account"
-                            type="text"
-                            :error-messages="eidErrors"
-                            @input="$v.eid_unamur.$touch()"
-                            @blur="$v.eid_unamur.$touch()"
-                        />
+                    Il semblerait que les identifiants ne soient pas bons.
+                </v-alert>
+                <v-card-text>
+                    <v-form>
+                    <v-text-field
+                        v-model="eid_unamur"
+                        label="Eid"
+                        name="eid"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        :error-messages="eidErrors"
+                        @input="$v.eid_unamur.$touch()"
+                        @blur="$v.eid_unamur.$touch()"
+                    />
 
-                        <v-text-field
-                            v-model="password_unamur"
-                            id="password"
-                            label="Password"
-                            name="password"
-                            prepend-icon="mdi-lock"
-                            type="password"
-                            :error-messages="passwordUnamurErrors"
-                            @input="$v.password_unamur.$touch()"
-                            @blur="$v.password_unamur.$touch()"
-                            
-                        />
-                        </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer />
-                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.eid_unamur.$invalid || $v.password_unamur.$invalid">Se connecter</v-btn>
-                    </v-card-actions>
+                    <v-text-field
+                        v-model="password_unamur"
+                        id="password"
+                        label="Mot de passe"
+                        name="password"
+                        prepend-icon="mdi-lock"
+                        type="password"
+                        :error-messages="passwordUnamurErrors"
+                        @input="$v.password_unamur.$touch()"
+                        @blur="$v.password_unamur.$touch()"
+                        
+                    />
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.eid_unamur.$invalid || $v.password_unamur.$invalid">Se connecter</v-btn>
+                </v-card-actions>
+                    <v-divider></v-divider>
+                <v-card-actions class="d-flex align-center justify-center">
+                    <p class="ma-0"> 
+                        <a @click="unamur= !unamur">Se connecter avec son propre compte.</a>
+                    </p>
+                </v-card-actions>
                 </v-card>
-            </v-dialog>
+             </transition>
 
             <!--Reset password-->
             <v-dialog
@@ -309,6 +320,14 @@ export default {
             //console.log(store.state.typeError);
         }
     },
-    
 }
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.4s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
