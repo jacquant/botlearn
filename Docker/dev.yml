@@ -84,9 +84,6 @@ services:
       dockerfile: Docker/Dockerfiles/Sandbox
     ports:
     - "8081:8081"
-    user: root
-    security_opt:
-      - apparmor:/sandbox-virtualenv/bin/python
     command: >
      sh -c "whoami &&
             python manage.py makemigrations &&
