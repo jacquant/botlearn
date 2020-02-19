@@ -1,6 +1,10 @@
 # Pull base image
 FROM python:alpine
 
+# Install apparmor
+RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk update && apk add apparmor@edge
+
 # Install build tools
 RUN apk add build-base
 
@@ -24,7 +28,9 @@ RUN addgroup sandbox
 RUN adduser -D sandbox -G sandbox
 
 # Setup Sandbox and apparmor
-COPY ./Docker/config/sandbox_sudo /etc/nginx/conf.d/default.conf
+COPY ./Docker/config/sandbox_sudo /etc/sudoers.d/01-sandbox
+COPY ./Docker/config/AppArmor_profile /etc/apparmor.d/sandbox-virtualenv.bin.python
+RUN apparmor_parser /etc/apparmor.d/sandbox-virtualenv.bin.python
 
 RUN mkdir /api
 WORKDIR /api
