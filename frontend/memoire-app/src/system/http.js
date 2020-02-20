@@ -114,7 +114,8 @@ export default {
                     publicInstance.get(baseUrl + "user/get/", {headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})
                     .then(function(responseUser){
                         Store.commit("userInformation", responseUser.data);
-                        router.push("/");
+                        //router.push("/");
+                        router.back();
                     })
                 })
                 .catch(error => {

@@ -422,7 +422,7 @@ export var ChatBot = function () {
             }
         },
         init: function (options) {
-            console.log(options);
+            //console.log(options);
             var settings = jQuery.extend({
                 // these are the defaults.
                 botName: 'Bot',
