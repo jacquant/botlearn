@@ -8,7 +8,7 @@ import os.path
 import subprocess
 import sys
 import time
-import six
+import codejail.mysix as six
 
 from .subproc import run_subprocess
 from six.moves import range

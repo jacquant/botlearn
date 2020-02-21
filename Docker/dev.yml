@@ -83,12 +83,12 @@ services:
       context: ..
       dockerfile: Docker/Dockerfiles/Sandbox
     ports:
-    - "8081:8081"
+    - "8082:8082"
     command: >
      sh -c "python manage.py makemigrations &&
             python manage.py migrate &&
             python manage.py collectstatic --noinput &&
-            gunicorn --bind 0.0.0.0:8081 code_sandbox.wsgi:application --worker-tmp-dir /dev/shm --workers=4 --thread=8 --worker-class=gthread  --reload"
+            uvicorn --host 0.0.0.0 --port 8082 code_sandbox.asgi:application --reload"
     volumes:
       - ../code_sandbox/:/api
     env_file:

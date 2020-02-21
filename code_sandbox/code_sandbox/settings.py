@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -31,8 +30,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
+    'django.contrib.admin',
+    'django.contrib.auth',
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -130,7 +129,7 @@ CODE_JAIL = {
         # Size of files creatable, in bytes, defaulting to nothing can be written.
         "FSIZE": 0,
         # The number of processes and threads to allow.
-        "NPROC": 15,
+        "NPROC": 30,
         # Whether to use a proxy process or not.  None means use an environment
         # variable to decide. NOTE: using a proxy process is NOT THREAD-SAFE, only
         # one thread can use CodeJail at a time if you are using a proxy process.

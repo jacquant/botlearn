@@ -1,3 +1,0 @@
-<SANDBOX_CALLER> ALL=(sandbox) SETENV:NOPASSWD:<SANDENV>/bin/python
-<SANDBOX_CALLER> ALL=(sandbox) SETENV:NOPASSWD:/usr/bin/find
-<SANDBOX_CALLER> ALL=(ALL) NOPASSWD:/usr/bin/pkill

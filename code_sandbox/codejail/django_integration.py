@@ -11,7 +11,7 @@ from django.conf import settings
 from codejail import jail_code
 
 
-class ConfigureCodeJailMiddleware(object):
+class ConfigureCodeJailMiddleware:
     """
     Middleware to configure codejail on startup.
 
@@ -20,7 +20,8 @@ class ConfigureCodeJailMiddleware(object):
     raise `MiddlewareNotUsed` to disable the middleware.
 
     """
-    def __init__(self):
+    def __init__(self, get_response):
+        self.get_response = get_response
         python_bin = settings.CODE_JAIL.get('python_bin')
         if python_bin:
             user = settings.CODE_JAIL['user']

@@ -1,13 +1,13 @@
 """Safe execution of untrusted Python code."""
 
 from __future__ import absolute_import
+
+import inspect
 import logging
 import os.path
 import shutil
 import sys
 import textwrap
-import six
-import inspect
 
 try:
     import simplejson as json
@@ -36,11 +36,13 @@ class SafeExecException(Exception):
     contain the original exception message.
 
     """
+
     pass
 
 
-def safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
-              extra_files=None):
+def safe_exec(
+    code, globals_dict, files=None, python_path=None, slug=None, extra_files=None
+):
     """
     Execute code as "exec" does, but safely.
 
@@ -80,21 +82,22 @@ def safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
 
     extra_names = set(name for name, contents in extra_files)
 
-    the_code.append(textwrap.dedent(
-        """
+    the_code.append(
+        textwrap.dedent(
+            """
         import sys
-        import six
+        # import six
         try:
             import simplejson as json
         except ImportError:
             import json
         """
-        # We need to prevent the sandboxed code from printing to stdout,
-        # or it will pollute the json we print there.  This isn't a
-        # security concern (they can put any values in the json output
-        # anyway, either by writing to sys.__stdout__, or just by defining
-        # global values), but keeps accidents from happening.
-        """
+            # We need to prevent the sandboxed code from printing to stdout,
+            # or it will pollute the json we print there.  This isn't a
+            # security concern (they can put any values in the json output
+            # anyway, either by writing to sys.__stdout__, or just by defining
+            # global values), but keeps accidents from happening.
+            """
         class DevNull(object):
             def write(self, *args, **kwargs):
                 pass
@@ -103,10 +106,12 @@ def safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
                 pass
         sys.stdout = DevNull()
         """
-        # Read the code and the globals from the stdin.
-        """
+            # Read the code and the globals from the stdin.
+            """
         code, g_dict = json.load(sys.stdin)
-        """))
+        """
+        )
+    )
 
     for pydir in python_path:
         pybase = os.path.basename(pydir)
@@ -114,48 +119,59 @@ def safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
         if pybase not in extra_names:
             files.append(pydir)
 
-    the_code.append(textwrap.dedent(
-        # Execute the sandboxed code.
-        """
+    the_code.append(
+        textwrap.dedent(
+            # Execute the sandboxed code.
+            """
         exec(code, g_dict)
-        """))
+        """
+        )
+    )
 
     the_code.append(inspect.getsource(json_safe))
 
-    the_code.append(textwrap.dedent(
-        """
+    the_code.append(
+        textwrap.dedent(
+            """
         g_dict = json_safe(g_dict)
         """
-        # Write the globals back to the calling process.
-        """
+            # Write the globals back to the calling process.
+            """
         json.dump(g_dict, sys.__stdout__)
-        """))
+        """
+        )
+    )
 
     stdin = json.dumps([code, json_safe(globals_dict)])
     jailed_code = "".join(the_code)
 
     # Turn this on to see what's being executed.
-    if LOG_ALL_CODE:        # pragma: no cover
+    if LOG_ALL_CODE:  # pragma: no cover
         log.debug("Jailed code: %s", jailed_code)
         log.debug("Exec: %s", code)
         log.debug("Stdin: %s", stdin)
 
     res = jail_code.jail_code(
-        "python", code=jailed_code, stdin=stdin, files=files, slug=slug,
+        "python",
+        code=jailed_code,
+        stdin=stdin,
+        files=files,
+        slug=slug,
         extra_files=extra_files,
     )
-
     if LOG_ALL_CODE:
         log.debug("Status: %s", res.status)
         log.debug("Stdout: %s", res.stdout)
         log.debug("Stderr: %s", res.stderr)
 
     if res.status != 0:
-        raise SafeExecException((
-            "Couldn't execute jailed code: stdout: {res.stdout!r}, "
-            "stderr: {res.stderr!r} with status code: {res.status}"
-        ).format(res=res))
-    globals_dict.update(json.loads(res.stdout.decode('utf-8')))
+        raise SafeExecException(
+            (
+                "Couldn't execute jailed code: stdout: {res.stdout!r}, "
+                "stderr: {res.stderr!r} with status code: {res.status}"
+            ).format(res=res)
+        )
+    globals_dict.update(json.loads(res.stdout.decode("utf-8")))
 
 
 def json_safe(d):
@@ -166,10 +182,10 @@ def json_safe(d):
 
     """
 
-    # six.binary_type is here because bytes are sometimes ok if they represent valid utf8 
+    # six.binary_type is here because bytes are sometimes ok if they represent valid utf8
     # so we consider them valid for now and try to decode them with decode_object.  If that
     # doesn't work they'll get dropped later in the process.
-    ok_types = (type(None), int, float, six.binary_type, six.text_type, list, tuple, dict)
+    ok_types = (type(None), int, float, bytes, str, list, tuple, dict)
 
     def decode_object(obj):
         """
@@ -184,8 +200,8 @@ def json_safe(d):
         raises: Exception
         """
         if isinstance(obj, bytes):
-            return obj.decode('utf-8')
-        elif isinstance(obj, (list,tuple)):
+            return obj.decode("utf-8")
+        elif isinstance(obj, (list, tuple)):
             new_list = []
             for i in obj:
                 new_obj = decode_object(i)
@@ -193,9 +209,9 @@ def json_safe(d):
             return new_list
         elif isinstance(obj, dict):
             new_dict = {}
-            for k,v in six.iteritems(obj):
-                new_key = decode_object(k)
-                new_value = decode_object(v)
+            for key, value in obj.items():
+                new_key = decode_object(key)
+                new_value = decode_object(value)
                 new_dict[new_key] = new_value
             return new_dict
         else:
@@ -203,10 +219,10 @@ def json_safe(d):
 
     bad_keys = ("__builtins__",)
     jd = {}
-    for k, v in six.iteritems(d):
-        if not isinstance(v, ok_types):
+    for key, value in d.items():
+        if not isinstance(value, ok_types):
             continue
-        if k in bad_keys:
+        if key in bad_keys:
             continue
         try:
             # Python's JSON encoder will produce output that
@@ -214,19 +230,20 @@ def json_safe(d):
             # contains unicode "unpaired surrogates" (only on Linux)
             # To test for this, we try decoding the output and check
             # for a ValueError
-            v = json.loads(json.dumps(decode_object(v)))
+            value = json.loads(json.dumps(decode_object(value)))
 
             # Also ensure that the keys encode/decode correctly
-            k = json.loads(json.dumps(decode_object(k)))
+            key = json.loads(json.dumps(decode_object(key)))
         except Exception:
             continue
         else:
-            jd[k] = v
+            jd[key] = value
     return json.loads(json.dumps(jd))
 
 
-def not_safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
-                  extra_files=None):
+def not_safe_exec(
+    code, globals_dict, files=None, python_path=None, slug=None, extra_files=None
+):
     """
     Another implementation of `safe_exec`, but not safe.
 
@@ -264,22 +281,23 @@ def not_safe_exec(code, globals_dict, files=None, python_path=None, slug=None,
                 sys.path = original_path
 
     globals_dict.update(json_safe(g_dict))
+    return globals_dict
 
 
 # If the developer wants us to be unsafe (ALWAYS_BE_UNSAFE), or if there isn't
 # a configured jail for Python, then we'll be UNSAFE.
 UNSAFE = ALWAYS_BE_UNSAFE or not jail_code.is_configured("python")
 
-if UNSAFE:   # pragma: no cover
+if UNSAFE:  # pragma: no cover
     # Make safe_exec actually call not_safe_exec, but log that we're doing so.
 
-    def safe_exec(*args, **kwargs):                 # pylint: disable=E0102
+    def safe_exec(*args, **kwargs):  # pylint: disable=E0102
         """An actually-unsafe safe_exec, that warns it's being used."""
 
         # Because it would be bad if this function were used in production,
         # let's log a warning when it is used.  Developers can live with
         # one more log line.
-        slug = kwargs.get('slug', None)
+        slug = kwargs.get("slug", None)
         log.warning("Using codejail/safe_exec.py:not_safe_exec for %s", slug)
 
         return not_safe_exec(*args, **kwargs)
