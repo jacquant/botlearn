@@ -1,0 +1,13 @@
+#include <tunables/global>
+
+/sandbox-virtualenv/bin/python {
+    #include <abstractions/base>
+    #include <abstractions/python>
+
+    /sandbox-virtualenv/** mr,
+    # If you have code that the sandbox must be able to access, add lines
+    # pointing to those directories:
+
+    /tmp/codejail-*/ rix,
+    /tmp/codejail-*/** wrix,
+}

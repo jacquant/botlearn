@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store/store'
+
 import Home from '../views/Home.vue'
 import Bot from '../views/Bot.vue'
 import Login from '../views/Login.vue'
 import Reset from '../views/Reset.vue'
-import store from '../store/store'
+import Register from '../views/Register.vue'
+
 
 Vue.use(Router)
 
@@ -43,6 +46,12 @@ let router = new Router({
       name: 'home',
       component: Home,
       beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/login',

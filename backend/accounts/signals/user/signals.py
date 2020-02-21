@@ -1,10 +1,13 @@
 from django.conf import settings
+from django.core.cache import cache
 from django.core.mail import send_mail
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django_rest_passwordreset.signals import reset_password_token_created
 
+from accounts.models.user import User
 from memoire.settings import DEFAULT_FROM_EMAIL
 
 
@@ -36,3 +39,11 @@ def password_reset_token_created(
         recipient_list=[reset_password_token.user.mail],
         html_message=html_message,
     )
+
+
+@receiver(post_save, sender=User)
+def user_update(sender, instance, created, *args, **kwargs):
+    """
+    Handles the save of a user
+    """
+    cache.delete("users_all")

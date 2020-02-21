@@ -88,6 +88,19 @@ services:
       memoire-dev:
         aliases:
           - vue
+  vue-bot:
+    container_name: vue-bot-memoire-serve
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Vue-Serve-bot
+    volumes:
+      - ../frontend_bot/:/usr/src/app
+    ports:
+      - "3001:3001"
+    networks:
+      memoire-dev:
+        aliases:
+          - vue-bot
 networks:
   memoire-dev:
     driver: bridge

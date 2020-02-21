@@ -1,8 +1,12 @@
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
+from django.conf import settings
 from accounts.models.user import User
 from accounts.serializers.user import UserSerializer
+
+CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 class CreateUser(CreateAPIView):
@@ -38,7 +42,10 @@ class CreateUser(CreateAPIView):
        - No caching
         """
 
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (
+        IsAuthenticated,
+        IsAdminUser,
+    )
     model = User
     serializer_class = UserSerializer
 
@@ -70,7 +77,15 @@ class GetUserInfo(RetrieveAPIView):
 
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+
+    def get_queryset(self):
+        key = "users_all"
+        if key in cache:
+            return cache.get(key)
+        else:
+            users = User.objects.all()
+            cache.set(key, users, timeout=CACHE_TTL)
+            return users
 
     def get_object(self):
         return self.request.user

@@ -1,0 +1,20 @@
+FROM node:alpine
+
+# Create app direcotry
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+RUN apk update && apk upgrade && apk add python make g++
+
+RUN yarn global add @vue/cli
+
+COPY ./frontend_bot/ ./
+
+ENV HOST=0.0.0.0
+ENV PORT=3001
+
+RUN yarn
+
+# start command
+CMD [ "yarn", "serve" , "--silent"]
+
