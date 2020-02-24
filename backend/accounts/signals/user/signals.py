@@ -46,4 +46,5 @@ def user_update(sender, instance, created, *args, **kwargs):
     """
     Handles the save of a user
     """
+    cache.delete("users_id_{mail}".format(mail=instance.mail))
     cache.delete("users_all")

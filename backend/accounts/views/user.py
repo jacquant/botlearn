@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from accounts.models.user import User
@@ -73,20 +73,37 @@ class GetUserInfo(RetrieveAPIView):
 
         ## Cache:
 
-       - No caching
+        - The list of users is saved if not existing
+        - The requested user is saved
+
         """
 
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        key = "users_all"
+        key = "users_id_{id}".format(id=self.request.user.mail)
+        key_all = "users_all"
         if key in cache:
             return cache.get(key)
+        elif key_all in cache:
+            users = cache.get(key_all)
+            user = users.filter(mail=self.request.user.mail)
+            cache.set(key, user, timeout=CACHE_TTL)
+            return user
         else:
             users = User.objects.all()
-            cache.set(key, users, timeout=CACHE_TTL)
-            return users
+            cache.set(key_all, users, timeout=CACHE_TTL)
+            user = users.filter(mail=self.request.user.mail)
+            cache.set(key, user, timeout=CACHE_TTL)
+            return user
 
     def get_object(self):
-        return self.request.user
+        queryset = self.filter_queryset(self.get_queryset())
+        filter_kwargs = {"mail": self.request.user.mail}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
