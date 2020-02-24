@@ -136,3 +136,5 @@ fabric.properties
 #Volume postgre SQL
 Docker/postgres-data-memoire-dev
 Docker/postgres-data-memoire-prod
+code_sandbox/static
+code_sandbox/db.sqlite3
