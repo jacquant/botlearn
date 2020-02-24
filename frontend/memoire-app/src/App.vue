@@ -27,18 +27,18 @@
                   router
                   exact
                   >
-                  <v-list-item 
-                  v-if="(loggedIn && item.title !='Se connecter') || (!loggedIn && item.title !='Se déconnecter')"
-                  :to="item.to"
-                  @click="item.title =='Se déconnecter' ? logout() : false"
-                  >
-                      <v-list-item-action>
-                      <v-icon >{{ item.icon }}</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content>
-                      <v-list-item-title v-text="item.title"/>
-                      </v-list-item-content>
-                  </v-list-item>
+                    <v-list-item 
+                    v-if="(loggedIn && item.title !='Se connecter' && item.title !='S\'inscrire') || (!loggedIn && item.title !='Se déconnecter')"
+                    :to="item.to"
+                    @click="item.title =='Se déconnecter' ? logout() : false"
+                    >
+                        <v-list-item-action>
+                        <v-icon >{{ item.icon }}</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                        <v-list-item-title v-text="item.title"/>
+                        </v-list-item-content>
+                    </v-list-item>
                   </div>
               </v-list>
           </v-navigation-drawer>
@@ -88,6 +88,11 @@ export default {
                 icon: 'mdi-login-variant',
                 title: 'Se connecter',
                 to: '/login'
+            },
+            {
+                icon: 'mdi-account-edit',
+                title: 'S\'inscrire',
+                to: '/register'
             },
             {
                 icon: 'mdi-logout-variant',

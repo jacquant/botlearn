@@ -19,7 +19,7 @@
                         icon="mdi-alert"
                         v-if="error"
                         >
-                        Les adresses emails ne correspondent pas.
+                        Les mots de passe ne correspondent pas.
                     </v-alert>
                     <v-alert
                         text
@@ -47,7 +47,7 @@
                         <v-text-field
                             v-model="password_conf"
                             label="Confirmation du mot de passe"
-                            name="conf_email"
+                            name="conf_password"
                             prepend-icon="mdi-lock"
                             type="password"
                             :error-messages="passwordConfErrors"
@@ -57,7 +57,7 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid " >Se connecter</v-btn>
+                        <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.password.$invalid || $v.password_conf.$invalid" >Se connecter</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
