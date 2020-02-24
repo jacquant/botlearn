@@ -1,7 +1,7 @@
 <template>
     <v-layout>
         <v-flex>
-            <v-row no-gutters class="mb-6">
+            <v-row>
                 <v-col offset="1" mb="6" lg="6" xl="6">
                         <h1>Liste des exercices</h1>
                         <v-card
@@ -55,8 +55,53 @@
                             <v-spacer />
                         </v-toolbar>
                         <v-card-text>
-                            Some information
+                            <v-list>
+                                <v-list-item >
+                                    <div style="font-weight:bold">Nombre de soumissions: </div> 120
+                                </v-list-item>
+                                <v-list-item>
+                                    Nombre de soumissions distinctes: 71
+                                </v-list-item>
+                            </v-list>
                         </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-divider></v-divider>
+                    <v-card
+                    class="mx-auto text-center mt-10"
+                    color="green"
+                    max-width="800px"
+                    dark
+                    >
+                        <v-card-text>
+                        <v-sheet color="rgba(0, 0, 0, .12)">
+                            <v-sparkline
+                            :value="value"
+                            color="rgba(255, 255, 255, .7)"
+                            height="100"
+                            padding="24"
+                            stroke-linecap="round"
+                            smooth
+                            >
+                            <template v-slot:label="item">
+                                {{ item.value }}
+                            </template>
+                            </v-sparkline>
+                        </v-sheet>
+                        </v-card-text>
+
+                        <v-card-text>
+                        <div class="display-1 font-weight-thin">Nombre de soumissions des exercices</div>
+                        </v-card-text>
+
+                        <v-divider></v-divider>
+
+                        <v-card-actions class="justify-center">
+                        <v-btn block text>Go to Report</v-btn>
+                        </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
@@ -82,6 +127,16 @@ export default {
       ]},
 
       current_data:null,
+
+       value: [
+        423,
+        446,
+        675,
+        510,
+        590,
+        610,
+        760,
+      ],
     }),
 
     // ================================================================================================== ==
