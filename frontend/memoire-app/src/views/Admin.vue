@@ -72,12 +72,43 @@
                     <v-divider></v-divider>
                     <v-card
                     class="mx-auto text-center mt-10"
-                    color="green"
+                    color="white"
                     max-width="800px"
-                    dark
                     >
+                    <v-tabs
+                        v-model="tab"
+                        background-color="green"
+                        dark
+                        class="mb-5"
+                        show-arrows
+                        >
+                        <v-tab
+                            v-for="item in items"
+                            :key="item.tab"
+                            @click="changeData()"
+                        >
+                            {{ item.tab }}
+                        </v-tab>
+                    </v-tabs>
+                    <v-tabs-items v-model="tab">
+                        <v-tab-item
+                            v-for="item in items"
+                            :key="item.tab"
+                        >
+                            <v-card flat> 
+                                <v-card-text>
+   
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                    </v-tabs-items>
                         <v-card-text>
-                        <v-sheet color="rgba(0, 0, 0, .12)">
+                            <GChart
+                                type="ColumnChart"
+                                :data="chartData"
+                                :options="chartOptions"
+                            />
+                        <!--<v-sheet color="rgba(0, 0, 0, .12)">
                             <v-sparkline
                             :value="value"
                             color="rgba(255, 255, 255, .7)"
@@ -90,17 +121,17 @@
                                 {{ item.value }}
                             </template>
                             </v-sparkline>
-                        </v-sheet>
+                        </v-sheet> -->
                         </v-card-text>
 
                         <v-card-text>
-                        <div class="display-1 font-weight-thin">Nombre de soumissions des exercices</div>
+                        <div class="display-1">Nombre de soumissions des exercices</div>
                         </v-card-text>
 
                         <v-divider></v-divider>
 
                         <v-card-actions class="justify-center">
-                        <v-btn block text>Go to Report</v-btn>
+                        <v-btn block text @click="print()">Imprimer graphe</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -112,12 +143,14 @@
 <script>
 import store from "../store/store"
 import router from "../system/router"
+import { GChart } from 'vue-google-charts'
 
 export default {
     // ================================================================================================== ==
     // Data
     // ================================================================================================== ==
    data: () => ({
+       //List exercices
       sections: {data: [{number:"Section 1", title:"Les variables"},
                         {number:"Section 2", title:"Les conditions"}
       
@@ -128,16 +161,37 @@ export default {
 
       current_data:null,
 
-       value: [
-        423,
-        446,
-        675,
-        510,
-        590,
-        610,
-        760,
+        // Data for Tabs
+      items: [
+          { tab: 'One', content: 'Tab 1 Content' },
+          { tab: 'Two', content: 'Tab 2 Content' },
+          { tab: 'Three', content: 'Tab 3 Content' },
+          { tab: 'Four', content: 'Tab 4 Content' },
+          { tab: 'Five', content: 'Tab 5 Content' },
+          { tab: 'Six', content: 'Tab 6 Content' },
+        ],
+        tab:null,
+
+        //Data For Graph
+        chartData: [
+        ['Year', 'Soumissions'],
+        ['2014', 1000],
+        ['2015', 1678],
+        ['2016', 660],
+        ['2017', 1030]
       ],
+      chartOptions: {
+        colors: ['green'],
+        legend:  { position: "none" }
+      }
     }),
+
+    // ================================================================================================== ==
+    // Components
+    // ================================================================================================== ==
+    components: {
+        GChart,
+    },
 
     // ================================================================================================== ==
     // Created
@@ -152,9 +206,24 @@ export default {
     // Methods
     // ================================================================================================== ==
     methods:{
+        //Get details from an exercice
         getInfo(data){
-            console.log(data)
             this.current_data = data;
+        },
+        //Get the data compared to the tab selectionned
+        changeData(){
+            this.chartData =[ 
+                ['Type', 'Erreurs'],
+                ['Boucle', 834],
+                ['Condition', 435],
+                ['Fonction', 501],
+                ['Structure de données', 1030]
+            ]
+        },
+        
+        //Print the Graph
+        print(){
+            window.print();
         }
     }
     
