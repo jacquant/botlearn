@@ -36,6 +36,7 @@
                             :error-messages="emailErrors"
                             @input="$v.email.$touch()"
                             @blur="$v.email.$touch()"
+                            @keyup.enter="submit()" 
                         />
 
                         <v-text-field
@@ -48,6 +49,7 @@
                             :error-messages="passwordErrors"
                             @input="$v.password.$touch()"
                             @blur="$v.password.$touch()"
+                            @keyup.enter="submit()" 
                         />
                         </v-form>
                     </v-card-text>
@@ -100,6 +102,7 @@
                         :error-messages="eidErrors"
                         @input="$v.eid_unamur.$touch()"
                         @blur="$v.eid_unamur.$touch()"
+                        @keyup.enter="submit()"
                     />
 
                     <v-text-field
@@ -111,8 +114,8 @@
                         type="password"
                         :error-messages="passwordUnamurErrors"
                         @input="$v.password_unamur.$touch()"
-                        @blur="$v.password_unamur.$touch()"
-                        
+                        @blur="$v.password_unamur.$touch()" 
+                        @keyup.enter="submit()"                   
                     />
                     </v-form>
                 </v-card-text>
@@ -305,11 +308,17 @@ export default {
 
             //Axios request to check if data is correct
             if(!this.unamur){
-                let data = {"mail": this.email, "password": this.password}
-                await http.post("token/login/", data);
+                //This condition is here to prevent from enter key pressed without filling the form
+                if (!this.$v.email.$invalid && !this.$v.password.$invalid){
+                    let data = {"mail": this.email, "password": this.password}
+                    await http.post("token/login/", data);
+                }
             }else{
-                let data = {"eid": this.eid_unamur, "password": this.password_unamur}
-                await http.post('token/login_by_unamur/', data)           
+                //This condition is here to prevent from enter key pressed without filling the form
+                if(!this.$v.eid_unamur.$invalid && !this.$v.password_unamur.$invalid){
+                    let data = {"eid": this.eid_unamur, "password": this.password_unamur}
+                    await http.post('token/login_by_unamur/', data)  
+                }         
             }
 
         },
