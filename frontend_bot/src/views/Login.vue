@@ -52,7 +52,12 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <a @click="forget_pwd=true">Mot de passe oublié ?</a>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-icon color="green" dark v-on="on">mdi-information-outline</v-icon>
+                            </template>
+                            <span>Si tu as oublié ton mot de passe, tu prux aller le modifier sur le <b>site</b>.</span>
+                        </v-tooltip>
                         <v-spacer />
                         <v-btn color="green" class="white--text"  @click="submit" :disabled="$v.email.$invalid || $v.password.$invalid" >Se connecter</v-btn>
                     </v-card-actions>
@@ -129,69 +134,19 @@
                 </v-card>
              </transition>
 
-            <!--Reset password-->
-            <v-dialog
-                v-model="forget_pwd"
-                width="500"
-                class="elevation-12">
-                <v-card class="elevation-12">
-                    <v-toolbar
-                    color="green"
-                    dark
-                    flat
-                >
-                    <v-toolbar-title>Réinitialiser son mot de passe</v-toolbar-title>
-                    <v-spacer />
-                </v-toolbar>
-                 <v-alert
-                    text
-                    prominent
-                    type="error"
-                    icon="mdi-alert"
-                    v-if="error"
-                    >
-                    L'adresse email n'existe pas.
-                </v-alert>
-                <v-alert
-                    text
-                    prominent
-                    type="success"
-                    icon="mdi-email"
-                    v-if="succeed"
-                    >
-                    Un email a été envoyé !
-                </v-alert>
-                
-                <v-card-text>
-                    <v-form>
-                    <v-text-field
-                        v-model="email"
-                        label="Email"
-                        name="email"
-                        prepend-icon="mdi-account"
-                        type="text"
-                        :error-messages="emailErrors"
-                        @input="$v.email.$touch()"
-                        @blur="$v.email.$touch()"
-                    />
-                    </v-form>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="green" class="white--text"  @click="reset" :disabled="$v.email.$invalid">Réinitialiser</v-btn>
-                </v-card-actions>
-                </v-card>
-            </v-dialog>
+                <v-overlay :value="overlay">
+                    <v-progress-circular indeterminate size="64"></v-progress-circular>
+                </v-overlay>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
+
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
-import http from '../system/http'
-import store from '../store/store'
+import axios from "axios"
 
 export default {
 
@@ -215,6 +170,9 @@ export default {
     // ================================================================================================== ==
     data: () => ({
 
+        //url
+        url: "http://localhost:8080/api/",
+
         //User's data
         email: '',
         password: '',
@@ -225,6 +183,10 @@ export default {
         //Boolean
         forget_pwd: false,
         unamur: false,
+
+        error: false,
+
+        overlay:false,
 
     }),
 
@@ -280,17 +242,6 @@ export default {
             !this.$v.password_unamur.required && errors.push("un mot de passe est requis")
             return errors
         },
-
-        //Error message if user didn't enter good information
-         error(){
-            return store.state.internalError;
-        },
-
-         //Error message if user didn't register yet
-         succeed(){
-            return store.state.internalSucceed;
-        },
-
            
     },
 
@@ -299,26 +250,37 @@ export default {
     // ================================================================================================== ==
     methods: {
         async submit () {
-
-            //Checking if user filled correctly the form
-            this.$v.$touch();
-
-            //Axios request to check if data is correct
-            if(!this.unamur){
-                let data = {"mail": this.email, "password": this.password}
-                await http.post("token/login/", data);
+            this.overlay = !this.overlay;
+            let self = this;
+            if (!this.unamur){
+                await axios.post(this.url + 'token/login/', {
+                    "mail": this.email,
+                    "password": this.password
+                })
+                .then(function (response) {
+                    self.error = false;
+                    self.$router.push("/bot?token="+response.data.access);
+                })
+                .catch(function (error) {
+                    self.error = true;
+                    console.log(error);
+                });
             }else{
-                let data = {"eid": this.eid_unamur, "password": this.password_unamur}
-                await http.post('token/login_by_unamur/', data)           
+                await axios.post(this.url + 'token/login_by_unamur/', {
+                    "eid": this.eid_unamur,
+                    "password": this.password_unamur
+                })
+                .then(function (response) {
+                    self.error = false,
+                    self.$router.push("/bot?token="+response.data.access);
+                })
+                .catch(function (error) {
+                    self.error = true;
+                    console.log(error);
+                });
             }
 
         },
-
-        async reset (){
-            let data = {"email": this.email};
-            await http.post("password_reset/", data);
-            //console.log(store.state.typeError);
-        }
     },
 }
 </script>
