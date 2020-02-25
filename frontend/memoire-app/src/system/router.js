@@ -7,6 +7,7 @@ import Bot from '../views/Bot.vue'
 import Login from '../views/Login.vue'
 import Reset from '../views/Reset.vue'
 import Register from '../views/Register.vue'
+import Admin from '../views/Admin.vue'
 
 
 Vue.use(Router)
@@ -69,6 +70,12 @@ let router = new Router({
       path: '/bot',
       name: 'bot',
       component: Bot,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
       beforeEnter: ifAuthenticated
     },
     { path: "*", 

@@ -138,3 +138,4 @@ Docker/postgres-data-memoire-dev
 Docker/postgres-data-memoire-prod
 !/code_sandbox/db.sqlite3
 !/code_sandbox/static/
+
