@@ -7,28 +7,29 @@
                         <v-card
                             class="mx-auto mr-xs-10"
                             max-width="100%"
-                        >
-                            <v-list>
+                        >                            
+                            <v-text-field color="success" loading disabled v-if="loading"></v-text-field>
+                            <v-list v-else>
                             <!--Loop for the sections-->
                                 <v-list-group
                                     prepend-icon=""
                                     value="true"
-                                    v-for="info in sections.data"
-                                    :key="info.number"
+                                    v-for="info in tps"
+                                    :key="info.id"
                                     sub-group
                                 >
                                     <template v-slot:activator>
                                         <v-list-item-title>
-                                            <b>{{info.number}}: {{info.title}}</b>
+                                            <b>{{info.name}}</b>
                                         </v-list-item-title>
                                     </template>
                                     <v-list-item
-                                        v-for=" exe in exercices.data"
-                                        :key="exe.number"
+                                        v-for=" exe in info.exercices"
+                                        :key="exe.id"
                                         link
-                                        @click="getInfo(exe.number)"
+                                        @click="getInfo(exe.id)"
                                     >
-                                        <v-list-item-title> {{exe.number}} - {{exe.title}}</v-list-item-title>
+                                        <v-list-item-title> {{exe.name}}</v-list-item-title>
                                         <v-list-item-icon>
                                         <v-icon></v-icon>
                                         </v-list-item-icon>
@@ -64,11 +65,17 @@
                                 </v-list-item>
                             </v-list>
                         </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-actions class="d-flex align-center justify-center">
+                            <p class="ma-0"> 
+                                <v-btn color="green" class="white--text">Afficher l'exercice en détails</v-btn>
+                            </p>
+                        </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
+                <v-col >
                     <v-divider></v-divider>
                     <v-card
                     class="mx-auto text-center mt-10"
@@ -103,11 +110,13 @@
                         </v-tab-item>
                     </v-tabs-items>
                         <v-card-text>
-                            <GChart
-                                type="ColumnChart"
-                                :data="chartData"
-                                :options="chartOptions"
-                            />
+                            <div id="printMe">
+                                <GChart
+                                    type="ColumnChart"
+                                    :data="chartData"
+                                    :options="chartOptions"
+                                />
+                            </div>
                         <!--<v-sheet color="rgba(0, 0, 0, .12)">
                             <v-sparkline
                             :value="value"
@@ -125,7 +134,7 @@
                         </v-card-text>
 
                         <v-card-text>
-                        <div class="display-1">Nombre de soumissions des exercices</div>
+                        <div class="display-1">{{title}}</div>
                         </v-card-text>
 
                         <v-divider></v-divider>
@@ -144,20 +153,16 @@
 import store from "../store/store"
 import router from "../system/router"
 import { GChart } from 'vue-google-charts'
+import http from '../system/http'
+import Store from '../store/store'
 
 export default {
     // ================================================================================================== ==
     // Data
     // ================================================================================================== ==
    data: () => ({
-       //List exercices
-      sections: {data: [{number:"Section 1", title:"Les variables"},
-                        {number:"Section 2", title:"Les conditions"}
-      
-      ]},
-      exercices: {data:[{number:"Exercice 1.1",title:"Donne-moi une valeur", consigne: "Tu dois faire ça"},
-                        {number:"Exercice 1.2",title:"Additione-nous !", consigne: "Tu dois faire comme ceci"}
-      ]},
+       //List exercices et tps
+      tps:[],
 
       current_data:null,
 
@@ -174,16 +179,21 @@ export default {
 
         //Data For Graph
         chartData: [
-        ['Year', 'Soumissions'],
-        ['2014', 1000],
-        ['2015', 1678],
-        ['2016', 660],
-        ['2017', 1030]
-      ],
-      chartOptions: {
-        colors: ['green'],
-        legend:  { position: "none" }
-      }
+            ['Year', 'Soumissions'],
+            ['2014', 1000],
+            ['2015', 1678],
+            ['2016', 660],
+            ['2017', 1030]
+        ],
+        chartOptions: {
+            colors: ['green'],
+            legend:  { position: "none" }
+        },
+        title:'Nombre de soumissions des exercices',
+
+        //loading
+
+        loading: true
     }),
 
     // ================================================================================================== ==
@@ -196,10 +206,24 @@ export default {
     // ================================================================================================== ==
     // Created
     // ================================================================================================== ==
-    created(){
+    async created(){
+        //Redirect if user is not staff
         if(!store.state.userInformation.is_staff){
             router.push("/");
         }
+
+        //Get All Tps
+        this.tps = (await http.get("sessions/all/",{headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})).data;
+        //console.log(this.tps);
+
+        var exercices = [];
+        for (const key in this.tps) {
+            exercices = (await (http.get("exercises/by_session/"+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}}))).data;
+            this.tps[key]["exercices"] = exercices
+        }
+
+        this.loading = false;
+        
     },
 
     // ================================================================================================== ==
@@ -219,11 +243,13 @@ export default {
                 ['Fonction', 501],
                 ['Structure de données', 1030]
             ]
+            this.title = "Nombre d'erreurs par type"
         },
         
         //Print the Graph
         print(){
-            window.print();
+            //window.print();
+            this.$htmlToPaper('printMe');
         }
     }
     

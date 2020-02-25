@@ -87,13 +87,29 @@ export default {
      * @returns {Promise<void>}
      */
     get (route, config = {}) {
+        let data=null
+        //Get info User
         if(route.includes("user")){
             publicInstance.get(baseUrl+route, config)
                 .then(response => Store.commit.userInformation(response.data))
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
+        //Get All Tps        
+        }else if(route.includes("sessions/all/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        }else if(route.includes("exercises/by_session/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
         }
+        return data;
     },
 
     /**

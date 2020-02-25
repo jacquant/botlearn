@@ -16,7 +16,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn v-if="admin" color="red" href="/admin" class="d-none d-sm-flex">
+            <v-btn v-if="admin" color="red" href="/administration" class="d-none d-sm-flex">
                 Administrer
                 <!--<v-icon>mdi-border-color</v-icon>-->
             </v-btn>

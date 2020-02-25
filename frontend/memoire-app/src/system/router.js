@@ -73,7 +73,7 @@ let router = new Router({
       beforeEnter: ifAuthenticated
     },
     {
-      path: '/admin',
+      path: '/administration',
       name: 'admin',
       component: Admin,
       beforeEnter: ifAuthenticated

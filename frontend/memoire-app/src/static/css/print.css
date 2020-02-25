@@ -1,0 +1,9 @@
+@media print {
+    @page {
+      size: landscape
+    } 
+    #printMe{
+        height: 800px;
+    }
+  
+  }

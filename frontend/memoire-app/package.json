@@ -15,6 +15,7 @@
     "pure-vue-chart": "^0.3.4",
     "vue": "^2.6.11",
     "vue-google-charts": "^0.3.2",
+    "vue-html-to-paper": "^1.3.0",
     "vue-router": "^3.1.5",
     "vuelidate": "^0.7.5",
     "vuetify": "^2.2.11",
