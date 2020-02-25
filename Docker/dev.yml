@@ -41,7 +41,7 @@ services:
       - env/base/db.env
       - env/dev/db.env
     volumes:
-      - ./postgres-data-memoire-dev:/var/lib/postgresql/data
+      - postgres-data-memoire-dev:/var/lib/postgresql/data
     networks:
       memoire-dev:
         aliases:
@@ -124,6 +124,10 @@ services:
       memoire-dev:
         aliases:
           - vue-bot
+volumes:
+  postgres-data-memoire-dev:
+    external:
+      true
 networks:
   memoire-dev:
     driver: bridge

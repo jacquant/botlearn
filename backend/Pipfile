@@ -21,6 +21,7 @@ drf-orjson-renderer = "*"
 argon2-cffi = "*"
 django-celery-email = "*"
 dialogflow = "*"
+django-seed = "*"
 
 [requires]
 python_version = "3.8"
