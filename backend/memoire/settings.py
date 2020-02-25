@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
     "djcelery_email",  # Queue Email Sending
+    "django_seed",
     # Internal apps
-    "accounts"
+    "accounts",
+    "exercises"
 ]
 
 MIDDLEWARE = [
@@ -119,10 +121,10 @@ CACHE_TTL = 15 * 60  # 15 minutes of cache
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -173,7 +175,9 @@ if DEBUG:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 else:
-    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ("drf_orjson_renderer.renderers.ORJSONRenderer",)
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
+        "drf_orjson_renderer.renderers.ORJSONRenderer",
+    )
 
 DJANGO_REST_LOOKUP_FIELD = "mail"
 # Configuration du token jwt
@@ -230,5 +234,7 @@ CELERY_RESULT_SERIALIZER = "json"
 
 # Dialogflow settings
 DIALOGFLOW = {
-    'client_access_token': os.environ.get("DIALOGFLOW_TOKEN", 'e5dc21cab6df451c866bf5efacb40178'),
+    "client_access_token": os.environ.get(
+        "DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"
+    ),
 }

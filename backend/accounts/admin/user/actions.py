@@ -17,7 +17,7 @@ from django_rest_passwordreset.views import (
 from rest_framework import exceptions
 
 from accounts.models.user import User
-from accounts.signals.user.signals import password_reset_token_created
+from accounts.signals.user import password_reset_token_created
 
 
 def send_reset_password(modeladmin, request, queryset):
