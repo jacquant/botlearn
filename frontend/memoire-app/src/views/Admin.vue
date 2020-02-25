@@ -2,6 +2,7 @@
     <v-layout>
         <v-flex>
             <v-row>
+                <!--List of exercices by TP-->
                 <v-col offset="1" mb="6" lg="6" xl="6">
                         <h1>Liste des exercices</h1>
                         <v-card
@@ -29,15 +30,27 @@
                                         link
                                         @click="getInfo(exe.id)"
                                     >
-                                        <v-list-item-title> {{exe.name}}</v-list-item-title>
                                         <v-list-item-icon>
-                                        <v-icon></v-icon>
+                                            <v-icon>mdi-book</v-icon>
                                         </v-list-item-icon>
+                                        <v-list-item-title> {{exe.name}}</v-list-item-title>
+                                        <v-btn :href="'http://localhost:8080/admin/exercises/exercise/'+exe.id+'/change/'" target="_blank">
+                                            <v-icon>mdi-lead-pencil</v-icon>
+                                        </v-btn>
                                     </v-list-item>
+                                    <v-list-item :href="'http://localhost:8080/admin/exercises/exercise/add?id='+info.id" target="_blank">
+                                        <v-list-item-icon>
+                                            <v-icon>mdi-book-plus</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-title style="color:red">Ajouter un exercice</v-list-item-title>
+                                    </v-list-item>
+                                    <v-divider></v-divider>
                                 </v-list-group>
                             </v-list>
                         </v-card>
                 </v-col>
+
+                <!--Details for one exercice choosen-->
                 <v-col offset="1">
                     <h1>Informations</h1>
                         <v-alert type="info" class="mx-auto mr-10" v-if="current_data == null">
@@ -68,12 +81,14 @@
                         <v-divider></v-divider>
                         <v-card-actions class="d-flex align-center justify-center">
                             <p class="ma-0"> 
-                                <v-btn color="green" class="white--text">Afficher l'exercice en détails</v-btn>
+                                <v-btn color="green" class="white--text" :href="'http://localhost:8080/admin/exercises/exercise/'+current_data+'/change/'" target="_blank">Afficher l'exercice en détails</v-btn>
                             </p>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
+
+            <!--Graph Part - Global view-->
             <v-row>
                 <v-col >
                     <v-divider></v-divider>
@@ -102,35 +117,16 @@
                             v-for="item in items"
                             :key="item.tab"
                         >
-                            <v-card flat> 
-                                <v-card-text>
-   
-                                </v-card-text>
-                            </v-card>
                         </v-tab-item>
                     </v-tabs-items>
                         <v-card-text>
-                            <div id="printMe">
-                                <GChart
-                                    type="ColumnChart"
-                                    :data="chartData"
-                                    :options="chartOptions"
-                                />
-                            </div>
-                        <!--<v-sheet color="rgba(0, 0, 0, .12)">
-                            <v-sparkline
-                            :value="value"
-                            color="rgba(255, 255, 255, .7)"
-                            height="100"
-                            padding="24"
-                            stroke-linecap="round"
-                            smooth
-                            >
-                            <template v-slot:label="item">
-                                {{ item.value }}
-                            </template>
-                            </v-sparkline>
-                        </v-sheet> -->
+                            <GChart
+                                id="Chart"
+                                type="ColumnChart"
+                                :data="chartData"
+                                :options="chartOptions"
+                                @ready="onChartReady"
+                            />
                         </v-card-text>
 
                         <v-card-text>
@@ -155,6 +151,7 @@ import router from "../system/router"
 import { GChart } from 'vue-google-charts'
 import http from '../system/http'
 import Store from '../store/store'
+
 
 export default {
     // ================================================================================================== ==
@@ -192,8 +189,10 @@ export default {
         title:'Nombre de soumissions des exercices',
 
         //loading
+        loading: true,
 
-        loading: true
+        //chart in PNG
+        png:'',
     }),
 
     // ================================================================================================== ==
@@ -245,11 +244,27 @@ export default {
             ]
             this.title = "Nombre d'erreurs par type"
         },
+
+        //Transform Chart to PNG
+        onChartReady (chart, google) {
+            var self =this;
+             google.visualization.events.addListener(chart, 'ready', function () {
+                self.png= chart.getImageURI();
+            });
+            
+        },
         
         //Print the Graph
         print(){
-            //window.print();
-            this.$htmlToPaper('printMe');
+            var WinPrint = window.open('', '', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
+            WinPrint.document.write('<html><head>');
+            WinPrint.document.write('<link rel= "stylesheet", href= "css/print.css">');
+            WinPrint.document.write('</head><body>');
+            WinPrint.document.write('<img src="'+this.png+ '">');
+            WinPrint.document.write('</body></html>');
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
         }
     }
     

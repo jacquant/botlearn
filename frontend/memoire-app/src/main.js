@@ -13,13 +13,10 @@ const options = {
     'fullscreen=yes',
     'titlebar=yes',
     'scrollbars=yes'
-  ],
-  styles: [
-    './static/css/print.css' // <- inject here
   ]
 }
  
-Vue.use(VueHtmlToPaper, options);
+Vue.use(VueHtmlToPaper);
  
 
 new Vue({
