@@ -28,7 +28,13 @@ class Exercise(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Section de l'exercice",
     )
-    tags = models.ManyToManyField(
-        to="exercises.Tag", verbose_name="Tags associés"
-    )
+    tags = models.ManyToManyField(to="exercises.Tag", verbose_name="Tags associés")
     project_files = models.FileField(blank=False, null=True, upload_to=path_and_rename)
+
+    def __str__(self):
+        return "Exercice n°{id} - {name} - pour le {due_date}".format(
+            id=self.id, name=self.name, due_date=self.due_date
+        )
+
+    class Meta:
+        verbose_name = "exercice"

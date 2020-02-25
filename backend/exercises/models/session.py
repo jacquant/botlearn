@@ -14,5 +14,14 @@ class Session(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Séance à destination de ce type d'étudiants",
     )
-    in_charge_persons = models.ManyToManyField(to="accounts.User", verbose_name="Les personnes responsables")
+    in_charge_persons = models.ManyToManyField(
+        to="accounts.User", verbose_name="Les personnes responsables"
+    )
 
+    def __str__(self):
+        return "TP n°{id} - {name} - du {date}".format(
+            id=self.id, name=self.name, date=self.date
+        )
+
+    class Meta:
+        verbose_name = "TP"
