@@ -20,7 +20,7 @@
                 Administrer
                 <!--<v-icon>mdi-border-color</v-icon>-->
             </v-btn>
-            <v-btn icon href="/admin" class="d-flex d-sm-none">
+            <v-btn icon href="/administration" class="d-flex d-sm-none">
                 <v-icon color="red">mdi-border-color</v-icon>
             </v-btn>
           </v-app-bar>

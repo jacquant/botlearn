@@ -81,7 +81,7 @@
                         <v-divider></v-divider>
                         <v-card-actions class="d-flex align-center justify-center">
                             <p class="ma-0"> 
-                                <v-btn color="green" class="white--text" :href="'http://localhost:8080/admin/exercises/exercise/'+current_data+'/change/'" target="_blank">Afficher l'exercice en détails</v-btn>
+                                <v-btn color="green" class="white--text" :href="'/administration/exercice?id='+current_data" target="_blank">Afficher l'exercice en détails</v-btn>
                             </p>
                         </v-card-actions>
                     </v-card>
@@ -150,7 +150,6 @@ import store from "../store/store"
 import router from "../system/router"
 import { GChart } from 'vue-google-charts'
 import http from '../system/http'
-import Store from '../store/store'
 
 
 export default {
@@ -208,7 +207,7 @@ export default {
     async created(){
 
         //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
-        var is_staff = await http.get("user/get/", {headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})
+        var is_staff = await http.get("user/get/", {headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})
 
         if(!is_staff){
             var new_json = store.state.userInformation;
@@ -218,12 +217,12 @@ export default {
         }
 
         //Get All Tps
-        this.tps = (await http.get("sessions/all/",{headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})).data;
+        this.tps = (await http.get("sessions/all/",{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
         //console.log(this.tps);
 
         var exercices = [];
         for (const key in this.tps) {
-            exercices = (await (http.get("exercises/by_session/"+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}}))).data;
+            exercices = (await (http.get("exercises/by_session/"+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}}))).data;
             this.tps[key]["exercices"] = exercices
         }
 
@@ -267,6 +266,7 @@ export default {
             WinPrint.document.write('<link rel= "stylesheet", href= "css/print.css">');
             WinPrint.document.write('</head><body>');
             WinPrint.document.write('<img src="'+this.png+ '">');
+            WinPrint.document.write('<h1>'+this.title+'</h1>')
             WinPrint.document.write('</body></html>');
             WinPrint.document.close();
             WinPrint.focus();

@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import Reset from '../views/Reset.vue'
 import Register from '../views/Register.vue'
 import Admin from '../views/Admin.vue'
+import Exercice from '../views/Exercice.vue'
 
 
 Vue.use(Router)
@@ -76,6 +77,12 @@ let router = new Router({
       path: '/administration',
       name: 'admin',
       component: Admin,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/administration/exercice',
+      name: 'exercice',
+      component: Exercice,
       beforeEnter: ifAuthenticated
     },
     { path: "*", 
