@@ -206,8 +206,14 @@ export default {
     // Created
     // ================================================================================================== ==
     async created(){
-        //Redirect if user is not staff
-        if(!store.state.userInformation.is_staff){
+
+        //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
+        var is_staff = await http.get("user/get/", {headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})
+
+        if(!is_staff){
+            var new_json = store.state.userInformation;
+            new_json["is_staff"]=false;
+            localStorage.setItem('infoUser', JSON.stringify(new_json));
             router.push("/");
         }
 

@@ -88,10 +88,10 @@ export default {
      */
     get (route, config = {}) {
         let data=null
-        //Get info User
-        if(route.includes("user")){
-            publicInstance.get(baseUrl+route, config)
-                .then(response => Store.commit.userInformation(response.data))
+        //Get info User - Using to check permission
+        if(route.includes("user/get/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response =>{return response.data.is_staff})
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
