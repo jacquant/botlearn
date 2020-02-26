@@ -80,8 +80,7 @@
                             <v-select
                                 v-model="sortBy"
                                 @change="filtering()"
-                                flat
-                                
+                                flat 
                                 hide-details
                                 :items="keys"
                                 prepend-inner-icon="mdi-magnify"
@@ -89,7 +88,10 @@
                             ></v-select>
                         </template>
                         <v-spacer></v-spacer>
-                        <v-btn color="#9c6013" depressed medium @click="search='';sortBy='Le plus récent'; filtering()">Réinitialiser les filtres</v-btn>
+                        <v-btn class="d-none d-sm-flex" color="#9c6013" depressed medium @click="search='';sortBy='Le plus récent'; filtering()">Réinitialiser les filtres</v-btn>
+                        <v-btn icon @click="search='';sortBy='Le plus récent'; filtering()" class="d-flex d-sm-none">
+                            <v-icon color="#9c6013">mdi-eraser</v-icon>
+                        </v-btn>
                         </v-toolbar>
                     </template>
                     <!--Partie Affichage des solutions-->
@@ -126,7 +128,7 @@
                             <v-divider></v-divider>
                             <v-card-actions class="d-flex align-center justify-center">
                                 <p class="ma-0"> 
-                                    <v-btn color="green" class="white--text" href="#" target="_blank">Afficher</v-btn>
+                                    <v-btn color="green" class="white--text">Afficher</v-btn>
                                 </p>
                             </v-card-actions>
                             </v-card>
