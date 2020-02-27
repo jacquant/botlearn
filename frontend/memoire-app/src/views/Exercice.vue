@@ -47,6 +47,28 @@
                     </v-card>
                 </v-col>
             </v-row>
+
+            <v-divider></v-divider>
+            <!--Partie statistique des solutions des étudiants-->            
+            <v-row class="mr-10 ml-10">
+                <v-container fluid>
+                    <h1>Statistique de l'exercice</h1>
+                    <v-card>
+                    <GChart
+                            id="Chart"
+                            type="ColumnChart"
+                            :data="chartData"
+                            :options="chartOptions"
+                            @ready="onChartReady"
+                        />
+                        <v-card-actions class="justify-center">
+                            <v-btn block text @click="print()">Imprimer graphe</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-container>
+            </v-row>
+
+            <v-divider></v-divider>
             <!--Réponse des étudiants-->
             <h1 class="mr-10 ml-10">Solutions des étudiants</h1>
             <v-row class="mr-10 ml-10">
@@ -201,6 +223,7 @@
 <script>
 import http from '../system/http'
 import store from "../store/store"
+import { GChart } from 'vue-google-charts'
 
 export default {
     // ================================================================================================== ==
@@ -210,8 +233,23 @@ export default {
        //Detail exercice
        exercice:{},
 
+        //Stats de l'exercice
+        chartData: [
+            ['Year', 'Soumissions'],
+            ['2014', 1000],
+            ['2015', 1678],
+            ['2016', 660],
+            ['2017', 1030]
+        ],
+        chartOptions: {
+            colors: ['green'],
+            legend:  { position: "none" }
+        },
 
-       //Solutions Data
+        //chart in PNG
+        png:'',
+
+       //Solutions des étudiants _ Data
         itemsPerPageArray: [4, 12, 24],
         search: '',
         filter: {},
@@ -264,6 +302,13 @@ export default {
           },
         ],
    }),
+
+    // ================================================================================================== ==
+    // Components
+    // ================================================================================================== ==
+   components:{
+       GChart
+   },
 
     // ================================================================================================== ==
     // Created
@@ -357,6 +402,29 @@ export default {
             var year = date.getFullYear();
 
             return day + ' ' + monthNames[monthIndex] + ' ' + year;
+        },
+
+        //Transform Chart to PNG
+        onChartReady (chart, google) {
+            var self =this;
+             google.visualization.events.addListener(chart, 'ready', function () {
+                self.png= chart.getImageURI();
+            });
+            
+        },
+        
+        //Print the Graph
+        print(){
+            var WinPrint = window.open('', '', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
+            WinPrint.document.write('<html><head>');
+            WinPrint.document.write('<link rel= "stylesheet", href= "../css/print.css">');
+            WinPrint.document.write('</head><body>');
+            WinPrint.document.write('<img src="'+this.png+ '">');
+            //WinPrint.document.write('<h1>'+this.title+'</h1>')
+            WinPrint.document.write('</body></html>');
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
         }
 
     },

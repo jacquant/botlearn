@@ -14,6 +14,7 @@
     "jwt-decode": "^2.2.0",
     "pure-vue-chart": "^0.3.4",
     "vue": "^2.6.11",
+    "vue-code-highlight": "^0.7.4",
     "vue-google-charts": "^0.3.2",
     "vue-html-to-paper": "^1.3.0",
     "vue-router": "^3.1.5",
