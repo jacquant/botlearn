@@ -3,7 +3,7 @@
         <v-flex>
             <v-row>
             <!--Détails des exerices-->
-                <v-col class="ml-10 mr-10">
+                <v-col offset="1" offset-sm="3" cols="10" sm="6">
                     <v-card
                         class="mx-auto"
                     >
@@ -15,29 +15,19 @@
                             <v-toolbar-title>Ma solution</v-toolbar-title>
                             <v-spacer />
                         </v-toolbar>
-                        <v-card-text>
-                            
-                        <pre class="language-py">
-                            <code class="language-py"> 
-                            my_var = 8
-
-                            if(my_var == 10):
-                                print("Hello World")
-                            else:
-                                print("It\'s not working ! ")
-
-
-                            my_tab = [1,2,4,8,16,32,64]
-
-                            for i in my_tab:
-                                print(i)
-                            </code>
-                        </pre>
+                        <v-card-text>  
+                            <v-flex>                                            
+<pre style="text-align:center">
+<code class="language-python"> 
+{{sourcecode}}
+</code>
+</pre>
+                            </v-flex>
                        </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions class="d-flex align-center justify-center">
                             <p class="ma-0"> 
-                                <v-btn color="green" class="white--text" >Modifier</v-btn>
+                                <v-btn color="green" class="white--text">Modifier</v-btn>
                             </p>
                         </v-card-actions>
                     </v-card>
@@ -60,20 +50,14 @@
                                 size="42"
                                 class="mr-4"
                             >
-                                mdi-magnify
+                                mdi-information-outline
                             </v-icon>
                             <h2 class="display-1 white--text font-weight-light">FeedBack du Bot</h2>
                             </v-card-title>
                             <v-container>
                             <v-row>
-                                <v-col cols="12" md="10">
+                                <v-col>
                                 Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit.
-                                </v-col>
-                                <v-col
-                                class="hidden-sm-and-down text-right"
-                                md="2"
-                                >
-                                <v-icon size="64">mdi-calendar-text</v-icon>
                                 </v-col>
                             </v-row>
                             </v-container>
@@ -92,7 +76,7 @@
                                 dark
                                 size="42"
                             >
-                                mdi-phone-in-talk
+                                mdi-information-outline
                             </v-icon>
                             <h2 class="display-1 white--text font-weight-light">FeedBack Assistant</h2>
                             </v-card-title>
@@ -118,20 +102,14 @@
                                 size="42"
                                 class="mr-4"
                             >
-                                mdi-magnify
+                                mdi-information-outline
                             </v-icon>
                             <h2 class="display-1 white--text font-weight-light">FeedBack du Bot</h2>
                             </v-card-title>
                             <v-container>
                             <v-row>
-                                <v-col cols="12" md="10">
+                                <v-col>
                                 Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit.
-                                </v-col>
-                                <v-col
-                                class="hidden-sm-and-down text-right"
-                                md="2"
-                                >
-                                <v-icon size="64">mdi-calendar-text</v-icon>
                                 </v-col>
                             </v-row>
                             </v-container>
@@ -146,20 +124,42 @@
 
 <script>
 //import python_code from "../static/python/exe.py"
-import { component as VueCodeHighlight } from 'vue-code-highlight';
 
 export default {
     // ================================================================================================== ==
     // Data
     // ================================================================================================== ==
     data: () => ({
-       sourcecode:"for i in test:"
+       sourcecode:`my_var = 8
+
+if(my_var < 10):
+    print("Hello World")
+else:
+    print("It\'s not working ! ")
+
+
+my_tab = [1,2,4,8,16,32,64]
+
+for i in my_tab:
+    print(i)`
 
     }),
+
     // ================================================================================================== ==
     // Compents
     // ================================================================================================== ==
     components:{
+    },
+
+    // ================================================================================================== ==
+    // Mounted
+    // ================================================================================================== ==
+    mounted(){   
+        //Render the HighLight for the code
+        Prism.highlightAll()
+    },
+
+    methods:{
     }
 }
 </script>

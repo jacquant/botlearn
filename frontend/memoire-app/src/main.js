@@ -5,7 +5,7 @@ import App from './App.vue'
 //Plugins
 import vuetify from './plugins/vuetify';
 import VueHtmlToPaper from 'vue-html-to-paper';
-import Prism from 'prismjs';
+//import Prism from 'prismjs';
 
 Vue.config.productionTip = false
 
