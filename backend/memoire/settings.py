@@ -32,6 +32,9 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Custom admin panel
+    # "jet.dashboard",
+    "jet",
     # Base django app
     "django.contrib.admin",
     "django.contrib.auth",
@@ -114,7 +117,7 @@ CACHES = {
         "KEY_PREFIX": "MEMOIRE",
     },
 }
-CACHE_TTL = 15 * 60  # 15 minutes of cache
+CACHE_TTL = 60 * 60  # 15 minutes of cache
 
 
 # Password validation
