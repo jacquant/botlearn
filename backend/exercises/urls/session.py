@@ -15,13 +15,13 @@ urlpatterns = [
     path("all_future/", SessionAllFutureDate.as_view(), name="sessions_all_future"),
     # /api/sessions/by_target/{target_id}
     path(
-        "by_target/<int:target_id_id>",
+        "by_target/<int:target_id>",
         SessionAllByTarget.as_view(),
         name="sessions_by_session",
     ),
     # /api/sessions/by_target_future/{target_id}
     path(
-        "by_target_future/<int:session_id>",
+        "by_target_future/<int:target_students_id>",
         SessionAllByTargetFutureDate.as_view(),
         name="sessions_by_target_future",
     ),

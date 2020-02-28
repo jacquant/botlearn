@@ -12,6 +12,35 @@ CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 class ExerciseGetById(generics.RetrieveAPIView):
+    """
+      An Api View which provides a method to request a specific Exercise object
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - exercise_id: the id of the exercise
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested exercise object is not saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     serializer_class = ExerciseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "id"
@@ -28,6 +57,31 @@ class ExerciseGetById(generics.RetrieveAPIView):
 
 
 class ExercisesAll(generics.ListAPIView):
+    """
+       An Api View which provides a method to request a list of Exercise objects
+
+       # Request: GET
+
+       ## Parameters
+
+       None
+
+       ## Permissions
+
+       ### Token: Bearer
+
+       - The user must be **authenticated**, so the given token must be valid
+
+       ## Return
+
+       - The return is a **List** of ExerciseSerializer objects
+
+       ## Cache:
+
+       - The list is saved in the redis cache if the key do not exist
+       - Else return the list already saved in the cache
+       - The cache is delete when a exercise object is saved
+    """
     serializer_class = ExerciseSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -42,6 +96,31 @@ class ExercisesAll(generics.ListAPIView):
 
 
 class ExercisesAllFutureDueDate(ExercisesAll):
+    """
+       An Api View which provides a method to request a list of Exercise objects
+
+       # Request: GET
+
+       ## Parameters
+
+       None
+
+       ## Permissions
+
+       ### Token: Bearer
+
+       - The user must be **authenticated**, so the given token must be valid
+
+       ## Return
+
+       - The return is a **List** of ExerciseSerializer objects
+
+       ## Cache:
+
+       - The list is saved in the redis cache if the key do not exist
+       - Else return the list already saved in the cache
+       - The cache is delete when a exercise object is saved
+    """
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         filter_kwargs = {"due_date__date__lte": timezone.now()}
@@ -53,6 +132,35 @@ class ExercisesAllFutureDueDate(ExercisesAll):
 
 
 class ExercisesAllBySession(generics.ListAPIView):
+    """
+      An Api View which provides a method to request a list of Exercise objects related by a session
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - session_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     serializer_class = ExerciseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_url_kwarg = "session_id"
@@ -81,6 +189,35 @@ class ExercisesAllBySession(generics.ListAPIView):
 
 
 class ExercisesAllBySessionFutureDueDate(ExercisesAllBySession):
+    """
+      An Api View which provides a method to request a list of future Exercise objects related by a session
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - session_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         filter_kwargs = {"due_date__date__lte": timezone.now()}
@@ -92,6 +229,35 @@ class ExercisesAllBySessionFutureDueDate(ExercisesAllBySession):
 
 
 class ExercisesAllBySection(generics.ListAPIView):
+    """
+      An Api View which provides a method to request a list of Exercise objects related by a section
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - section_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     serializer_class = ExerciseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_url_kwarg = "section_id"
@@ -120,6 +286,35 @@ class ExercisesAllBySection(generics.ListAPIView):
 
 
 class ExercisesAllBySectionFutureDueDate(ExercisesAllBySection):
+    """
+      An Api View which provides a method to request a list of future Exercise objects related by a section
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - section_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         filter_kwargs = {"due_date__date__lte": timezone.now()}
@@ -131,6 +326,35 @@ class ExercisesAllBySectionFutureDueDate(ExercisesAllBySection):
 
 
 class ExercisesAllByCategory(generics.ListAPIView):
+    """
+      An Api View which provides a method to request a list of Exercise objects related by a category
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - category_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     serializer_class = ExerciseSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_url_kwarg = "category_id"
@@ -159,6 +383,35 @@ class ExercisesAllByCategory(generics.ListAPIView):
 
 
 class ExercisesAllByCategoryFutureDueDate(ExercisesAllByCategory):
+    """
+      An Api View which provides a method to request a list of future Exercise objects related by a category
+
+      # Request: GET
+
+      ## Parameters
+
+      ### Query parameters
+
+      - category_id: the id of the session
+
+      ## Permissions
+
+      ### Token: Bearer
+
+      - The user must be **authenticated**, so the given token must be valid
+
+      ## Return
+
+      - The return is a ExerciseSerializer object
+
+      ## Cache:
+
+      - The requested list of exercise objects is saved in the redis cache
+      - The list, used for the lookup, is saved in the redis cache if the key do not exist
+      - Else return the object from the list already saved in the cache
+      - The cache is delete when a exercise object is saved
+    """
+
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         filter_kwargs = {"due_date__date__lte": timezone.now()}

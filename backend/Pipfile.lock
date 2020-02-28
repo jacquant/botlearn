@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "aa926ee1c2ba4a40574c0e2a2361677e4a2fd4ce90fc4958b218235e91a5e618"
+            "sha256": "827703aee2f78391ee6a30a2c14fe2a768b73dadbb21c27c7a046e2f08826776"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -56,10 +56,10 @@
         },
         "billiard": {
             "hashes": [
-                "sha256:26fd494dc3251f8ce1f5559744f18aeed427fdaf29a75d7baae26752a5d3816f",
-                "sha256:f4e09366653aa3cb3ae8ed16423f9ba1665ff426f087bcdbbed86bf3664fe02c"
+                "sha256:bff575450859a6e0fbc2f9877d9b715b0bbc07c3565bb7ed2280526a0cdf5ede",
+                "sha256:d91725ce6425f33a97dfa72fb6bfef0e47d4652acd98a032bd1a7fbf06d5fa6a"
             ],
-            "version": "==3.6.2.0"
+            "version": "==3.6.3.0"
         },
         "cachetools": {
             "hashes": [
@@ -158,6 +158,13 @@
             ],
             "index": "pypi",
             "version": "==3.0.3"
+        },
+        "django-3-jet": {
+            "hashes": [
+                "sha256:195d5ffa122119d8c3d5d639c297ba965c4741f2ff5787c5648696b9853475f2"
+            ],
+            "index": "pypi",
+            "version": "==1.0.8"
         },
         "django-appconf": {
             "hashes": [
@@ -421,6 +428,8 @@
         },
         "orjson": {
             "hashes": [
+
+                "sha256:01d6e8a5bdd5cd75e8e241ec837073236b557e9f3e8d35ddb4bccb418c61721e",
                 "sha256:1b4ce958d6e356f2c8eee65e1201d9c04b50a44d398e0febb744c6a7afa05223",
                 "sha256:45e87784efe07b465a60673bacc91407b09f984a420479fe5f6b0fb143f985b2",
                 "sha256:5a19c8f0023c5d04211261915b1116de4de0318e414f8e60819943e6f94d5690",

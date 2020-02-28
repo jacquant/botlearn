@@ -27,6 +27,7 @@ from .settings import BACK_URL
 admin.site.site_header = "Admin - Site pour le mémoire"
 admin.site.site_title = "Site mémoire"
 urlpatterns = [
+    path("jet", include("jet.urls", "jet")),
     path('admin/', admin.site.urls),
     path(
              "api/password_reset/",
