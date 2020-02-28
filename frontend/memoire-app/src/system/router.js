@@ -2,11 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/store'
 
-import Home from '../views/Home.vue'
-import Bot from '../views/Bot.vue'
+//Login Parts
 import Login from '../views/Login.vue'
 import Reset from '../views/Reset.vue'
 import Register from '../views/Register.vue'
+
+//General Parts
+import Home from '../views/Home.vue'
+import Bot from '../views/Bot.vue'
+
+//Students parts
+import Solution from '../views/Solution.vue'
+//Admin Parts
+import Admin from '../views/Admin.vue'
+import Exercice from '../views/Exercice.vue'
+
 
 
 Vue.use(Router)
@@ -41,12 +51,7 @@ let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-      beforeEnter: ifAuthenticated
-    },
+    //Login Parts
     {
       path: '/register',
       name: 'register',
@@ -65,10 +70,43 @@ let router = new Router({
       component: Reset,
       beforeEnter: ifNotAuthenticated
     },
+
+
+    //General Parts
+    {
+      path: '/',
+      name: 'home',
+      component: Home,
+      beforeEnter: ifAuthenticated
+    },
     {
       path: '/bot',
       name: 'bot',
       component: Bot,
+      beforeEnter: ifAuthenticated
+    },
+
+
+    //Students Parts
+    {
+      path: '/solution',
+      name: 'solution',
+      component: Solution,
+      beforeEnter: ifAuthenticated
+    },
+
+
+    //Admin Parts
+    {
+      path: '/administration',
+      name: 'admin',
+      component: Admin,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/administration/exercice',
+      name: 'exercice',
+      component: Exercice,
       beforeEnter: ifAuthenticated
     },
     { path: "*", 

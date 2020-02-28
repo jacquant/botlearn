@@ -16,7 +16,9 @@ class Session(models.Model):
         verbose_name="Séance à destination de ce type d'étudiants",
     )
     in_charge_persons = models.ManyToManyField(
+
         to="accounts.User", verbose_name="Les personnes responsables", blank=True, null=True
+
     )
 
     def __str__(self):

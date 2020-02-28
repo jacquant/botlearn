@@ -84,7 +84,7 @@ export default new Vuex.Store({
          * @readonly
          * @member {UserInfo|null} Store#userInformation
          */
-        userInformation: JSON.parse(localStorage.getItem(KEY_USER_INFORMATION) || "{}"),
+        userInformation: JSON.parse(localStorage.getItem("infoUser") || "{}"),
 
 
     },
@@ -180,7 +180,6 @@ export default new Vuex.Store({
          * @param {UserInfo} payload - The new user's information.
          */
         userInformation (state, payload) {
-
             // Update the local storage to preserve in case of reloading page
             localStorage.setItem(KEY_USER_INFORMATION, JSON.stringify(payload));
 
@@ -201,6 +200,13 @@ export default new Vuex.Store({
          * @returns {boolean}
          */
         isConnected: state => state.accessToken !== null,
+
+        /**
+         * [GETTER] Indicates if the user is in the satff.
+         * @function Store#isStaff
+         * @returns {boolean}
+         */
+        isStaff: state => state.userInformation !== null && state.userInformation.is_staff ? true : false,
     },
 
 

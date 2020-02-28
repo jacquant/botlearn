@@ -13,6 +13,16 @@
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title>My learning</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-btn v-if="admin" color="red" href="/administration" class="d-none d-sm-flex">
+                Administrer
+                <!--<v-icon>mdi-border-color</v-icon>-->
+            </v-btn>
+            <v-btn icon href="/administration" class="d-flex d-sm-none">
+                <v-icon color="red">mdi-border-color</v-icon>
+            </v-btn>
           </v-app-bar>
           <v-navigation-drawer
               v-model="drawer"
@@ -77,7 +87,7 @@ export default {
             {
                 icon: 'mdi-chart-bubble',
                 title: 'Inspire',
-                to: '/reset'
+                to: '/solution'
             },
             {
                 icon: 'mdi-forum',
@@ -98,8 +108,8 @@ export default {
                 icon: 'mdi-logout-variant',
                 title: 'Se déconnecter',
                 to: null,
-            }
-            ]
+            },
+        ]
     }),
 
     // ================================================================================================== ==
@@ -110,7 +120,12 @@ export default {
         //Check if user is logged to display information differently
         loggedIn(){
             return store.getters.isConnected;
+        },
+        //Check if a user is in the staff
+        admin(){
+            return store.getters.isStaff;
         }
+
     },
 
     // ================================================================================================== ==

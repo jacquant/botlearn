@@ -5,6 +5,7 @@ class ExercisesConfig(AppConfig):
     name = 'exercises'
 
     def ready(self):
+
         # Import signals post_save
         from .signals.category import category_saved
         from .signals.difficulty import difficulty_saved
@@ -22,3 +23,4 @@ class ExercisesConfig(AppConfig):
         from .signals.session import session_deleted
         from .signals.tag import tag_deleted
         from .signals.target_students import target_students_deleted
+

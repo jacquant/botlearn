@@ -428,6 +428,7 @@
         },
         "orjson": {
             "hashes": [
+
                 "sha256:01d6e8a5bdd5cd75e8e241ec837073236b557e9f3e8d35ddb4bccb418c61721e",
                 "sha256:1b4ce958d6e356f2c8eee65e1201d9c04b50a44d398e0febb744c6a7afa05223",
                 "sha256:45e87784efe07b465a60673bacc91407b09f984a420479fe5f6b0fb143f985b2",
