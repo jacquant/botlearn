@@ -14,5 +14,7 @@ urlpatterns = [
     # /api/difficulties/*
     path("difficulties/", include("exercises.urls.difficulty")),
     # /api/sections/*
-    path("sections/", include("exercises.urls.section"))
+    path("sections/", include("exercises.urls.section")),
+    # /api/submissions/*
+    path("submissions/", include("exercises.urls.submission")),
 ]

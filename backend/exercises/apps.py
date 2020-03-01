@@ -12,6 +12,7 @@ class ExercisesConfig(AppConfig):
         from .signals.exercise import exercise_saved
         from .signals.section import section_saved
         from .signals.session import session_saved
+        from .signals.submission import submission_saved
         from .signals.tag import tag_saved
         from .signals.target_students import target_students_saved
 
@@ -21,6 +22,7 @@ class ExercisesConfig(AppConfig):
         from .signals.exercise import exercise_deleted
         from .signals.section import section_deleted
         from .signals.session import session_deleted
+        from .signals.submission import submission_deleted
         from .signals.tag import tag_deleted
         from .signals.target_students import target_students_deleted
 

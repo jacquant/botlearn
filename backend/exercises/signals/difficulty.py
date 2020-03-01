@@ -17,7 +17,7 @@ def difficulty_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Difficulty)
-def difficulty_deleted(sender, instance, created, *args, **kwargs):
+def difficulty_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a difficulty
     """

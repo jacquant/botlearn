@@ -17,7 +17,7 @@ def target_students_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=TargetStudents)
-def target_students_deleted(sender, instance, created, *args, **kwargs):
+def target_students_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a target students
     """

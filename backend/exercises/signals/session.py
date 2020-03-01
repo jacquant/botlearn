@@ -5,7 +5,7 @@ from exercises.models.session import Session
 
 
 def empty_cache():
-    cache.delete_pattern("sessions_*")
+    cache.delete("sessions")
 
 
 @receiver(post_save, sender=Session)
@@ -17,7 +17,7 @@ def session_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Session)
-def session_deleted(sender, instance, created, *args, **kwargs):
+def session_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a session
     """

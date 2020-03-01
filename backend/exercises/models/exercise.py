@@ -29,10 +29,14 @@ class Exercise(models.Model):
         verbose_name="Section de l'exercice",
     )
 
-    tags = models.ManyToManyField(to="exercises.Tag", verbose_name="Tags associés", blank=True, null=True)
+    tags = models.ManyToManyField(
+        to="exercises.Tag",
+        related_name="exercises",
+        verbose_name="Tags associés",
+        blank=True,
+    )
 
-
-    project_files = models.FileField(blank=False, null=True, upload_to=path_and_rename)
+    project_files = models.FileField(blank=True, null=True, upload_to=path_and_rename)
 
     def __str__(self):
         return "Exercice n°{id} - {name} - pour le {due_date}".format(

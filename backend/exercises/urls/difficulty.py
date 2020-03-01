@@ -1,11 +1,10 @@
-from django.urls import path
+from rest_framework import routers
 
-from exercises.views.difficulty import DifficultyAll, DifficultyGetById
+from exercises.views.difficulty import (
+    DifficultyViewSet,
+)
 
+router = routers.DefaultRouter()
+router.register("", DifficultyViewSet, basename="difficulty")
+urlpatterns = router.urls
 
-urlpatterns = [
-    # /api/difficulties/all/
-    path("all/", DifficultyAll.as_view(), name="difficulties_all"),
-    # /api/difficulties/get/{difficulty_id}
-    path("get/<int:difficulty_id>", DifficultyGetById.as_view(), name="difficulty_get"),
-]
