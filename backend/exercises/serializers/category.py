@@ -7,3 +7,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+
+
+class CategoryCUDSerializer(CategorySerializer):
+    class Meta(CategorySerializer.Meta):
+        fields = ("name",)

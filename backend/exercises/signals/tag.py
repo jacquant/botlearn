@@ -17,7 +17,7 @@ def tag_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Tag)
-def tag_deleted(sender, instance, created, *args, **kwargs):
+def tag_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a tag
     """

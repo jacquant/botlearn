@@ -23,6 +23,7 @@ django-celery-email = "*"
 dialogflow = "*"
 django-seed = "*"
 django-3-jet = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"

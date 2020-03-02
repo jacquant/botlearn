@@ -17,7 +17,7 @@ def category_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Category)
-def category_deleted(sender, instance, created, *args, **kwargs):
+def category_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a category
     """

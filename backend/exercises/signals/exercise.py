@@ -5,7 +5,7 @@ from exercises.models.exercise import Exercise
 
 
 def empty_cache():
-    cache.delete_pattern("exercises_*")
+    cache.delete("exercises_all")
 
 
 @receiver(post_save, sender=Exercise)
@@ -17,7 +17,7 @@ def exercise_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Exercise)
-def exercise_deleted(sender, instance, created, *args, **kwargs):
+def exercise_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a exercise
     """

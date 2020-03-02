@@ -17,7 +17,7 @@ def section_saved(sender, instance, created, *args, **kwargs):
 
 
 @receiver(post_delete, sender=Section)
-def section_deleted(sender, instance, created, *args, **kwargs):
+def section_deleted(sender, instance, *args, **kwargs):
     """
     Handles the remove of a section
     """

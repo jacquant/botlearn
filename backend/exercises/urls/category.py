@@ -1,11 +1,9 @@
-from django.urls import path
+from rest_framework import routers
 
-from exercises.views.category import CategoryAll, CategoryGetById
+from exercises.views.category import (
+    CategoryViewSet,
+)
 
-
-urlpatterns = [
-    # /api/categories/all/
-    path("all/", CategoryAll.as_view(), name="categories_all"),
-    # /api/categories/get/{category_id}
-    path("get/<int:category_id>", CategoryGetById.as_view(), name="category_get"),
-]
+router = routers.DefaultRouter()
+router.register("", CategoryViewSet, basename="category")
+urlpatterns = router.urls

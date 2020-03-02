@@ -35,3 +35,9 @@ class UserSerializer(serializers.ModelSerializer):
                 setattr(instance, attr, value)
         instance.save()
         return instance
+
+
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= User
+        fields = ("mail", "last_name", "first_name",)
