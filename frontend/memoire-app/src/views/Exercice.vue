@@ -334,7 +334,7 @@ export default {
         }
 
         //Get Details exercice
-        this.exercice = (await http.get("exercises/get/"+id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
+        this.exercice = (await http.get("exercises/"+id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
         
         //Get Solutions
         //Waiting API

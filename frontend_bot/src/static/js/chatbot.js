@@ -365,7 +365,7 @@ export var ChatBot = function () {
                             url: 'https://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
                             dataType: 'jsonp'
                         }).done(function (data) {
-
+                            console.log(data);
                             var content = data.AbstractText;
 
                             // no direct answer? tell about related topics then

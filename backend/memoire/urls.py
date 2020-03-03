@@ -35,6 +35,7 @@ urlpatterns = [
     ),
     path("api/", include("accounts.urls")),
     path("api/", include("exercises.urls")),
+    path("api/", include("bot.urls")),
 ]
 
 if settings.DEBUG:

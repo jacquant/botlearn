@@ -95,27 +95,14 @@ export default {
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get All Tps        
-        }else if(route.includes("sessions/all/")){
+        //Get All data        
+        }else if(route.includes("/")){
             data = publicInstance.get(baseUrl+route, config)
                 .then(response => {return response})
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
         //Get Exercices by TP 
-        }else if(route.includes("exercises/by_session/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
-                .catch(error => {
-                    Store.commit("internalError", true)
-                });
-        //Get details for an exercice
-        }else if(route.includes("exercises/get/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
-                .catch(error => {
-                    Store.commit("internalError", true)
-                });
         }
         return data;
     },

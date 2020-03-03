@@ -54,7 +54,7 @@ export default {
         // if you want to show the capabilities of the bot under the search input
         inputCapabilityListing: true,
         // optionally, you can specify which conversation engines the bot should use, e.g. webknox, spoonacular, or duckduckgo
-        engines: [ChatBot.Engines.duckduckgo()],
+        engines: [ChatBot.Engines.backendinfo()],
         // you can specify what should happen to newly added messages
         addChatEntryCallback: function(entryDiv, text, origin) { //eslint-disable-line
             entryDiv.slideDown(); 

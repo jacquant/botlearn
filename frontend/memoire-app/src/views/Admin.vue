@@ -217,12 +217,11 @@ export default {
         }
 
         //Get All Tps
-        this.tps = (await http.get("sessions/all/",{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
-        //console.log(this.tps);
+        this.tps = (await http.get("sessions/",{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
 
         var exercices = [];
         for (const key in this.tps) {
-            exercices = (await (http.get("exercises/by_session/"+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}}))).data;
+            exercices = (await (http.get("exercises/?session="+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}}))).data;
             this.tps[key]["exercices"] = exercices
         }
 

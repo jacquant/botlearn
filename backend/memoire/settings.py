@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # Internal apps
     "accounts",
     "exercises",
+    #'chatterbot.ext.django_chatterbot',
 ]
 
 MIDDLEWARE = [
