@@ -7,6 +7,6 @@ else:
 
 
 my_tab = [1,2,4,8,16,32,64]
-break
+
 for i in my_tab:
     print(i)

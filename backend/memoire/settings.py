@@ -50,10 +50,11 @@ INSTALLED_APPS = [
     "djcelery_email",  # Queue Email Sending
     # "django_seed",
     "django_filters",
-    # Internal apps
+    # Internal apps,
+    "chatterbot.ext.django_chatterbot",
     "accounts",
     "exercises",
-    #'chatterbot.ext.django_chatterbot',
+    "bot"
 ]
 
 MIDDLEWARE = [
