@@ -1,0 +1,22 @@
+categories:
+- programmation
+conversations:
+- - J'ai un problème avec ma boucle.
+  - Tu utilises une boucle "for" ou une boucle "while" ?
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Etrange, détails-moi un peu le problème.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle ne fonctionne pas.
+  - Tu utilises une boucle "for" ou une boucle "while" ?
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ?
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle for ne fonctionne pas.
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle while ne fonctionne pas.
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+  

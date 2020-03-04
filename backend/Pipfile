@@ -24,6 +24,8 @@ dialogflow = "*"
 django-seed = "*"
 django-3-jet = "*"
 django-filter = "*"
+chatterbot = "==1.0.4"
+
 
 [requires]
 python_version = "3.8"
