@@ -66,6 +66,7 @@ services:
              uvicorn --host 0.0.0.0 --port 8080 memoire.asgi:application --reload"
     volumes:
       - ../backend/:/api
+      - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/
     env_file:
       - env/base/api.env
       - env/base/db.env

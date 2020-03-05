@@ -2,6 +2,8 @@
 
 export var ChatBot = function () {
 
+    let params = new URLSearchParams(location.search);
+
     //// common vars
     // custom patterns and rewrites
     var patterns;
@@ -355,18 +357,25 @@ export var ChatBot = function () {
                     "Bonjour et bienvenue sur l'assistant virtuel du cours [INFOB131] Introduction à la programmation.",
                     "Pour commencer à m'utiliser, réalise un devoir.",
                     "Pour récupérer la liste des devoirs, tape cette commande:",
-                    "'Donne moi la liste des devoirs ?'",
+                    "'Je peux avoir la liste des exercice'",
                 ];
 
                 return {
                     react: function (query) {
+
+                        let data_request = '{"text":"'+ String(query) + '"}'
+
                         $.ajax({
-                            type: 'GET',
-                            url: 'https://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
-                            dataType: 'jsonp'
+                            type: 'POST',
+                            url: 'http://localhost:8080/api/bot/test/',
+                            dataType:'json',
+                            data: data_request,
+                            headers: { 'Authorization': 'Bearer '+ params.get('token')},
+                            contentType: "application/json; charset=utf-8",
                         }).done(function (data) {
-                            console.log(data);
-                            var content = data.AbstractText;
+                            console.log(data)
+                            var content = data.text;
+                            console.log(content)
 
                             // no direct answer? tell about related topics then
                             if (content == '' && data.RelatedTopics.length > 0) {

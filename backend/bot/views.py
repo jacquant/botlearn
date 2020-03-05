@@ -15,6 +15,8 @@ from chatterbot.ext.django_chatterbot import settings
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.ext.django_chatterbot import settings
 
+from datetime import datetime, time
+
 
 class AnswerViewSet(APIView):
 
@@ -22,7 +24,9 @@ class AnswerViewSet(APIView):
     #Defined and train the bot
     chatterbot = ChatBot(**settings.CHATTERBOT,
                         read_only=True,
+                        
                         logic_adapters=[{
+                            'maximum_similarity_threshold': 0.85,
                             'import_path': "chatterbot.logic.BestMatch",
                             'default_response': "Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.",
                         }])
@@ -58,7 +62,7 @@ class AnswerViewSet(APIView):
         self.trainMyBot(self.chatterbot)
 
         input_data = json.loads(request.body.decode('utf-8'))
-
+        
         if 'text' not in input_data:
             return JsonResponse({
                 'text': [
@@ -67,6 +71,8 @@ class AnswerViewSet(APIView):
             }, status=400)
 
         response = self.chatterbot.get_response(input_data)
+        print(type(response))
+        #response += self.getExercice()
 
         response_data = response.serialize()
 
@@ -81,60 +87,65 @@ class AnswerViewSet(APIView):
             'name': self.chatterbot.name
         })
 
-    """test post fait maison
-    print("##########################################")
-    #serializer_class = ProductSerializer
-
-    def post(self, request):
-        content = {"message": "Je n'ai pas compris ton message :( Pourrais-tu reformuler différement s'il te plait ?"}
-
-        data = request.data["message"]
-        array_data = data.split("%")
-
-        #Understand what the user is saying
-        response = None
-        specific_data = None
-
-        response = self.needHelp(array_data)
-
-        #specific_data = self.getExercice(data).data
-
-        if (response != None):
-            content["message"] = response
-        content["data"] = specific_data
-
-        return Response(content)"""
-
     def needHelp(self, data):
         a_set = set(["aide","aider","besoin d'aide","help"]) 
         b_set = set(data) 
         if (a_set & b_set): 
             return "Je vais t'aider avec plaisir ! Quel est ton problème ?" 
 
-    def getExercice(self, data):
+    def getExercice(self, data=None):
         exercices = Exercise.objects.all()
         serializer = ExerciseSerializer(exercices, many=True)
-        return serializer
+
+        #Get Current Time
+        now = datetime.now()
+
+        exercices_string = ""
+        #print(serializer.data)
+
+        for exercice in serializer.data:
+            for info in exercice.items():
+                if(info[0] ==  "name"):
+                    name = info[1]
+                if(info[0] ==  "due_date"):
+                    time = datetime.strptime(info[1],'%Y-%m-%dT%H:%M:%S%fZ')
+                if (info[0] == "project_files"):
+                    path = info[1]
+                    if (now < time):
+                        exercices_string +='- <a href="http://localhost:8080' + str(path) +'">' + name + " (à rendre pour le "+ str(time) + ")</a>" + "<br>"
+
+        #print(exercices_string)
+        return exercices_string
 
     def trainMyBot(self, chatterbot):
-        trainerOwn = ListTrainer(chatterbot)
+        #chatterbot.storage.drop()
+
+        #Corpus Part
+        trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
+
+        trainerCoprus.train('chatterbot.corpus.french')
+        
+
 
         #trainerOwn.train("./files/")
-        #chatterbot.storage.drop()
+
+
+        #Own training
+        trainerOwn = ListTrainer(chatterbot)
 
         #Getting Help
         trainerOwn.train([
-            "J'ai besoin d'aide s'il te plait !",
+            "j'ai besoin d'aide s'il te plait !",
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
 
         trainerOwn.train([
-            "Aide-moi stp !",
+            "aide moi",
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
 
         trainerOwn.train([
-            "Je peux avoir de l'aide ?",
+            "je peux avoir de l'aide ?",
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
 
@@ -143,7 +154,7 @@ class AnswerViewSet(APIView):
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
 
-         #Getting Help
+        """#Problem With loop
         trainerOwn.train([
             "J'ai un problème avec ma boucle.",
             "Tu utilises une boucle 'for' ou une boucle 'while' ?",
@@ -171,4 +182,25 @@ class AnswerViewSet(APIView):
         trainerOwn.train([
             "Ma boucle while ne fonctionne pas.",
             "On va regarder ça ensemble, explique moi en détails ce qu'il se passe.",
+        ])"""
+
+        #Getting Exercices
+        trainerOwn.train([
+            "Je peux avoir la liste des exercice",
+            "Oui ! La voici: <br>",
+        ])
+
+        trainerOwn.train([
+            "Quels sont les exercices à faire ?",
+            "Voici les exercices à faire:" + self.getExercice(),
+        ])
+
+        trainerOwn.train([
+            "On doit faire quoi comme devoir ?",
+            "Voici les exercices à faire:" + self.getExercice(),
+        ])
+
+        trainerOwn.train([
+            "Donne moi la liste des devoirs ?",
+            "Voici les exercices à faire:" + self.getExercice(),
         ])
