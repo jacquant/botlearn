@@ -71,10 +71,11 @@ class AnswerViewSet(APIView):
             }, status=400)
 
         response = self.chatterbot.get_response(input_data)
-        print(type(response))
-        #response += self.getExercice()
 
         response_data = response.serialize()
+        #Modify data to add exercices if it's requested
+        if("liste des exercices" in input_data["text"]):
+            response_data["text"] += self.getExercice()
 
         print("################################################################################")
         return JsonResponse(response_data, status=200)
@@ -186,21 +187,7 @@ class AnswerViewSet(APIView):
 
         #Getting Exercices
         trainerOwn.train([
-            "Je peux avoir la liste des exercice",
+            "Je peux avoir la liste des exercices",
             "Oui ! La voici: <br>",
         ])
 
-        trainerOwn.train([
-            "Quels sont les exercices à faire ?",
-            "Voici les exercices à faire:" + self.getExercice(),
-        ])
-
-        trainerOwn.train([
-            "On doit faire quoi comme devoir ?",
-            "Voici les exercices à faire:" + self.getExercice(),
-        ])
-
-        trainerOwn.train([
-            "Donne moi la liste des devoirs ?",
-            "Voici les exercices à faire:" + self.getExercice(),
-        ])

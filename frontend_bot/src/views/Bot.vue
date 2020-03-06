@@ -3,7 +3,7 @@
     <v-flex class="text-center">
       <div id="bot">
         <div id="chatBotCommandDescription"></div>
-          <input id="humanInput" type="text" />
+          <input id="humanInput" type="text" class="mt-5"/>
           <div id="chatBot">
               <div id="chatBotThinkingIndicator"></div>
               <div id="chatBotHistory"></div>
@@ -28,7 +28,10 @@ export default {
 
         url: "http://localhost:8080/api/",
 
-        token: null
+        token: null,
+
+        //Code Iframe
+        data_from_iframe: "a"
     }),
 
     // ================================================================================================== ==
@@ -39,22 +42,21 @@ export default {
         //Partie token
 
         if(this.$route.query.token === undefined) {
-            this.$router.push("/login");
+            //this.$router.push("/login");
         }else{
-            this.token = this.$route.query.token;
+            //this.token = this.$route.query.token;
         }
 
         ///////////////////////////////////////////////////////////////////////////
 
         //Partie Bot
-
         var config = {
         // what inputs should the bot listen to? this selector should point to at least one input field
         inputs: '#humanInput',
         // if you want to show the capabilities of the bot under the search input
         inputCapabilityListing: true,
         // optionally, you can specify which conversation engines the bot should use, e.g. webknox, spoonacular, or duckduckgo
-        engines: [ChatBot.Engines.backendinfo()],
+        engines: [ChatBot.Engines.backendinfo(this.token)],
         // you can specify what should happen to newly added messages
         addChatEntryCallback: function(entryDiv, text, origin) { //eslint-disable-line
             entryDiv.slideDown(); 
@@ -62,13 +64,14 @@ export default {
         };
         ChatBot.init(config);
 
+
     },
 
     // ================================================================================================== ==
     // Methods
     // ================================================================================================== ==
     methods:{
-        //Check token's validity every 20 minutes
+        //Check token's validity every 20 minutes (1200000)
         startInterval() {
             let self = this;
             let timer = setInterval(() => {
@@ -76,12 +79,17 @@ export default {
                     "token": this.token,
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    //console.log(error);
                     clearInterval(timer);
                     self.$router.push("/login");
                 });
 
             }, 1200000)
+        },
+
+        test(){
+            console.log(window)
+            console.log(window.parent);
         }
     },
 
@@ -89,9 +97,11 @@ export default {
     // Created
     // ================================================================================================== ==
     created(){
+
         //Call function to check token's validity
         this.startInterval();
-    },
+
+    }
     
 }
 </script>

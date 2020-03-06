@@ -1,8 +1,5 @@
 
-
 export var ChatBot = function () {
-
-    let params = new URLSearchParams(location.search);
 
     //// common vars
     // custom patterns and rewrites
@@ -350,19 +347,18 @@ export var ChatBot = function () {
 
             //Own Serveur to answer questions
 
-            backendinfo: function () {
+            backendinfo: function (token) {
 
                 // patterns that the engine can resolve
                 var capabilities = [
                     "Bonjour et bienvenue sur l'assistant virtuel du cours [INFOB131] Introduction à la programmation.",
                     "Pour commencer à m'utiliser, réalise un devoir.",
                     "Pour récupérer la liste des devoirs, tape cette commande:",
-                    "'Je peux avoir la liste des exercice'",
+                    "'Je peux avoir la liste des exercices'",
                 ];
 
                 return {
                     react: function (query) {
-
                         let data_request = '{"text":"'+ String(query) + '"}'
 
                         $.ajax({
@@ -370,10 +366,10 @@ export var ChatBot = function () {
                             url: 'http://localhost:8080/api/bot/test/',
                             dataType:'json',
                             data: data_request,
-                            headers: { 'Authorization': 'Bearer '+ params.get('token')},
+                            headers: { 'Authorization': 'Bearer '+ token},
                             contentType: "application/json; charset=utf-8",
                         }).done(function (data) {
-                            console.log(data)
+                            //console.log(data)
                             var content = data.text;
                             console.log(content)
 
@@ -419,6 +415,13 @@ export var ChatBot = function () {
 
                             ChatBot.addChatEntry(content, "bot");
                             ChatBot.thinking(false);
+                        }).fail(function () {
+                            //error login
+                            /*$(document).ready( function() {
+                                let url = "/login";
+                                $(location).attr("href", url);
+                             });*/
+
                         });
                     },
                     getCapabilities: function () {
