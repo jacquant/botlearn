@@ -48,11 +48,12 @@ INSTALLED_APPS = [
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
     "djcelery_email",  # Queue Email Sending
-    # "django_seed",
-    "django_filters",
+    # "django_seed", # to fill the db
+    "django_filters",  # Filter in the rest api
     # Internal apps
     "accounts",
     "exercises",
+    "sandbox",
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
@@ -173,7 +174,6 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_PARSER_CLASSES": ("drf_orjson_renderer.parsers.ORJSONParser",),
-    
 }
 if DEBUG:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (

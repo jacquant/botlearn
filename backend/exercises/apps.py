@@ -6,6 +6,8 @@ class ExercisesConfig(AppConfig):
 
     def ready(self):
 
+        # Import signals pre_save
+
         # Import signals post_save
         from .signals.category import category_saved
         from .signals.difficulty import difficulty_saved
@@ -19,7 +21,7 @@ class ExercisesConfig(AppConfig):
         # Import signals post_delete
         from .signals.category import category_deleted
         from .signals.difficulty import difficulty_deleted
-        from .signals.exercise import exercise_deleted
+        from .signals.exercise import exercise_deleted_post
         from .signals.section import section_deleted
         from .signals.session import session_deleted
         from .signals.submission import submission_deleted
