@@ -21,19 +21,21 @@ from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
-
+from exercises.views.difficulty import DifficultyViewSet
 from .settings import BACK_URL
 
 admin.site.site_header = "Admin - Site pour le mémoire"
 admin.site.site_title = "Site mémoire"
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("jet", include("jet.urls", "jet")),
+    path("admin/", admin.site.urls),
     path(
-             "api/password_reset/",
-             include("django_rest_passwordreset.urls", namespace="password_reset"),
-         ),
+        "api/password_reset/",
+        include("django_rest_passwordreset.urls", namespace="password_reset"),
+    ),
     path("api/", include("accounts.urls")),
-    path("api/", include("exercises.urls"))
+    path("api/", include("exercises.urls")),
+    path("api/code/", include("sandbox.urls"))
 ]
 
 if settings.DEBUG:

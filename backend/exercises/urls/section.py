@@ -1,11 +1,7 @@
-from django.urls import path
+from rest_framework import routers
 
-from exercises.views.section import SectionAll, SectionGetById
+from exercises.views.section import SectionViewSet
 
-
-urlpatterns = [
-    # /api/sections/all/
-    path("all/", SectionAll.as_view(), name="sections_all"),
-    # /api/sections/get/{section_id}
-    path("get/<int:section_id>", SectionGetById.as_view(), name="section_get"),
-]
+router = routers.DefaultRouter()
+router.register("", SectionViewSet, basename="section")
+urlpatterns = router.urls

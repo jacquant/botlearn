@@ -1,15 +1,7 @@
-from django.urls import path
+from rest_framework import routers
 
-from exercises.views.target_students import TargetStudentsAll, TargetStudentsGetById
+from exercises.views.target_students import TargetStudentsViewSet
 
-
-urlpatterns = [
-    # /api/target_students/all/
-    path("all/", TargetStudentsAll.as_view(), name="target_students_all"),
-    # /api/target_students/get/{target_students_id}
-    path(
-        "get/<int:target_students_id>",
-        TargetStudentsGetById.as_view(),
-        name="target_students_get",
-    ),
-]
+router = routers.DefaultRouter()
+router.register("", TargetStudentsViewSet, basename="target_students")
+urlpatterns = router.urls

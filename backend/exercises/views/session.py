@@ -1,91 +1,238 @@
 from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from rest_framework import permissions, generics
+from django.db.models import Prefetch
+from django_filters import rest_framework as filters
+from rest_framework import permissions, viewsets
 
+from accounts.models.user import User
+from exercises.filters.session import SessionFilter
 from exercises.models.session import Session
-from exercises.serializers.session import SessionSerializer
+from exercises.serializers.session import SessionSerializer, SessionCUDSerializer
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
-class SessionGetById(generics.RetrieveAPIView):
-    serializer_class = SessionSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    lookup_field = "id"
+class SessionViewSet(viewsets.ModelViewSet):
     lookup_url_kwarg = "session_id"
+    lookup_field = "id"
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = SessionFilter
 
     def get_queryset(self):
         key = "sessions_all"
         if key in cache:
             return cache.get(key)
         else:
-            sessions = Session.objects.all()
+            sessions = Session.objects.prefetch_related(
+                "target",
+                Prefetch(
+                    "in_charge_persons",
+                    queryset=User.objects.only("mail", "first_name", "last_name"),
+                ),
+            ).all()
             cache.set(key, sessions, timeout=CACHE_TTL)
             return sessions
 
-
-class SessionAll(generics.ListAPIView):
-    serializer_class = SessionSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        key = "sessions_all"
-        if key in cache:
-            return cache.get(key)
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in [
+            "list",
+            "retrieve",
+        ]:
+            permission_classes = [permissions.IsAuthenticated]
         else:
-            sessions = Session.objects.all()
-            cache.set(key, sessions, timeout=CACHE_TTL)
-            return sessions
+            permission_classes = [permissions.IsAdminUser]
+        return [permission() for permission in permission_classes]
 
-
-class SessionAllFutureDate(SessionAll):
-    def get_object(self):
-        queryset = self.filter_queryset(self.get_queryset())
-        filter_kwargs = {"due_date__date__lte": timezone.now()}
-        obj = get_object_or_404(queryset, **filter_kwargs)
-
-        # May raise a permission denied
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-
-class SessionAllByTarget(generics.ListAPIView):
-    serializer_class = SessionSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    lookup_url_kwarg = "target_id"
-
-    def get_queryset(self):
-        key = "sessions_target_id_{id}".format(id=self.kwargs["target_id"])
-        key_all = "sessions_all"
-        if key in cache:
-            return cache.get(key)
-        elif key_all in cache:
-            sessions_all = cache.get(key_all)
-            sessions = sessions_all.filter(target__id=self.kwargs["target_id"])
-            cache.set(key, sessions, timeout=CACHE_TTL)
-            return sessions
+    def get_serializer_class(self):
+        if self.action in [
+            "list",
+            "retrieve",
+        ]:
+            return SessionSerializer
         else:
-            sessions_all = Session.objects.all()
-            cache.set(key_all, sessions_all, timeout=CACHE_TTL)
-            sessions = sessions_all.filter(target__id=self.kwargs["target_id"])
-            cache.set(key, sessions, timeout=CACHE_TTL)
-            return sessions
+            return SessionCUDSerializer
 
-    def get_object(self):
-        obj = self.filter_queryset(self.get_queryset())
-        self.check_object_permissions(self.request, obj)
-        return obj
+    def list(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to request a list of Session objects
 
+        # Request: GET
 
-class SessionAllByTargetFutureDate(SessionAllByTarget):
-    def get_object(self):
-        queryset = self.filter_queryset(self.get_queryset())
-        filter_kwargs = {"due_date__date__lte": timezone.now()}
-        obj = get_object_or_404(queryset, **filter_kwargs)
+        ## Parameters
 
-        # May raise a permission denied
-        self.check_object_permissions(self.request, obj)
-        return obj
+        None
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+
+         ## Return
+
+        - The return is a **List** of SessionSerializer objects
+
+        ## Cache:
+
+        - The list is saved in the redis cache if the key do not exist
+        - Else return the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().list(self, request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to request a specific Session object
+
+        # Request: GET
+
+        ## Parameters
+
+        ### Query parameters
+
+        - session_id: the id of the session
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+
+        ## Return
+
+        - The return is a SessionSerializer object
+
+        ## Cache:
+
+        - The requested session object is not saved in the redis cache
+        - The list, used for the lookup, is saved in the redis cache if the key do not exist
+        - Else return the object from the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().retrieve(self, request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to create a Session object
+
+        # Request: POST
+
+        ## Parameters
+
+        None
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+        - The user must be an AdminUser
+
+        ## Return
+
+        - The return is a SessionCUDSerializer object
+
+        ## Cache:
+
+        - The list, used for the lookup, is saved in the redis cache if the key do not exist
+        - Else return the object from the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().create(self, request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to update a specific Session object
+
+        # Request: PUT
+
+        ## Parameters
+
+        ### Query parameters
+
+        - session_id: the id of the session
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+        - The user must be an AdminUser
+
+        ## Return
+
+        - The return is a SessionCUDSerializer object
+
+        ## Cache:
+
+        - The list, used for the lookup, is saved in the redis cache if the key do not exist
+        - Else return the object from the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().update(self, request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to partially_update a specific Session object
+
+        # Request: PATCH
+
+        ## Parameters
+
+        ### Query parameters
+
+        - session_id: the id of the session
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+        - The user must be an AdminUser
+
+        ## Return
+
+        - The return is a SessionCUDSerializer object
+
+        ## Cache:
+
+        - The list, used for the lookup, is saved in the redis cache if the key do not exist
+        - Else return the object from the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().partial_update(self, request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        An Api View which provides a method to delete a specific Session object
+
+        # Request: DELETE
+
+        ## Parameters
+
+        ### Query parameters
+
+        - session_id: the id of the session
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+        - The user must be an AdminUser
+
+        ## Return
+
+        None
+
+        ## Cache:
+
+        - The list, used for the lookup, is saved in the redis cache if the key do not exist
+        - Else return the object from the list already saved in the cache
+        - The cache is delete when a session object is saved or deleted
+        """
+        return super().destroy(self, request, *args, **kwargs)

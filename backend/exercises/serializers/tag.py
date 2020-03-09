@@ -7,3 +7,8 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
+
+
+class TagCUDSerializer(TagSerializer):
+    class Meta(TagSerializer.Meta):
+        fields = ("name",)

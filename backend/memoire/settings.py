@@ -32,6 +32,9 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Custom admin panel
+    # "jet.dashboard",
+    "jet",
     # Base django app
     "django.contrib.admin",
     "django.contrib.auth",
@@ -45,10 +48,12 @@ INSTALLED_APPS = [
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
     "djcelery_email",  # Queue Email Sending
-    "django_seed",
+    # "django_seed", # to fill the db
+    "django_filters",  # Filter in the rest api
     # Internal apps
     "accounts",
-    "exercises"
+    "exercises",
+    "sandbox",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
@@ -114,7 +120,7 @@ CACHES = {
         "KEY_PREFIX": "MEMOIRE",
     },
 }
-CACHE_TTL = 15 * 60  # 15 minutes of cache
+CACHE_TTL = 60 * 60  # 15 minutes of cache
 
 
 # Password validation

@@ -2,41 +2,55 @@
     <v-layout>
         <v-flex>
             <v-row>
+                <!--List of exercices by TP-->
                 <v-col offset="1" mb="6" lg="6" xl="6">
                         <h1>Liste des exercices</h1>
                         <v-card
                             class="mx-auto mr-xs-10"
                             max-width="100%"
-                        >
-                            <v-list>
+                        >                            
+                            <v-text-field color="success" loading disabled v-if="loading"></v-text-field>
+                            <v-list v-else>
                             <!--Loop for the sections-->
                                 <v-list-group
                                     prepend-icon=""
                                     value="true"
-                                    v-for="info in sections.data"
-                                    :key="info.number"
+                                    v-for="info in tps"
+                                    :key="info.id"
                                     sub-group
                                 >
                                     <template v-slot:activator>
                                         <v-list-item-title>
-                                            <b>{{info.number}}: {{info.title}}</b>
+                                            <b>{{info.name}}</b>
                                         </v-list-item-title>
                                     </template>
                                     <v-list-item
-                                        v-for=" exe in exercices.data"
-                                        :key="exe.number"
+                                        v-for=" exe in info.exercices"
+                                        :key="exe.id"
                                         link
-                                        @click="getInfo(exe.number)"
+                                        @click="getInfo(exe.id)"
                                     >
-                                        <v-list-item-title> {{exe.number}} - {{exe.title}}</v-list-item-title>
                                         <v-list-item-icon>
-                                        <v-icon></v-icon>
+                                            <v-icon>mdi-book</v-icon>
                                         </v-list-item-icon>
+                                        <v-list-item-title> {{exe.name}}</v-list-item-title>
+                                        <v-btn :href="'http://localhost:8080/admin/exercises/exercise/'+exe.id+'/change/'" target="_blank">
+                                            <v-icon>mdi-lead-pencil</v-icon>
+                                        </v-btn>
                                     </v-list-item>
+                                    <v-list-item :href="'http://localhost:8080/admin/exercises/exercise/add?id='+info.id" target="_blank">
+                                        <v-list-item-icon>
+                                            <v-icon>mdi-book-plus</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-title style="color:red">Ajouter un exercice</v-list-item-title>
+                                    </v-list-item>
+                                    <v-divider></v-divider>
                                 </v-list-group>
                             </v-list>
                         </v-card>
                 </v-col>
+
+                <!--Details for one exercice choosen-->
                 <v-col offset="1">
                     <h1>Informations</h1>
                         <v-alert type="info" class="mx-auto mr-10" v-if="current_data == null">
@@ -64,11 +78,19 @@
                                 </v-list-item>
                             </v-list>
                         </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-actions class="d-flex align-center justify-center">
+                            <p class="ma-0"> 
+                                <v-btn color="green" class="white--text" :href="'/administration/exercice?id='+current_data" target="_blank">Afficher l'exercice en détails</v-btn>
+                            </p>
+                        </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
+
+            <!--Graph Part - Global view-->
             <v-row>
-                <v-col>
+                <v-col >
                     <v-divider></v-divider>
                     <v-card
                     class="mx-auto text-center mt-10"
@@ -95,37 +117,20 @@
                             v-for="item in items"
                             :key="item.tab"
                         >
-                            <v-card flat> 
-                                <v-card-text>
-   
-                                </v-card-text>
-                            </v-card>
                         </v-tab-item>
                     </v-tabs-items>
                         <v-card-text>
                             <GChart
+                                id="Chart"
                                 type="ColumnChart"
                                 :data="chartData"
                                 :options="chartOptions"
+                                @ready="onChartReady"
                             />
-                        <!--<v-sheet color="rgba(0, 0, 0, .12)">
-                            <v-sparkline
-                            :value="value"
-                            color="rgba(255, 255, 255, .7)"
-                            height="100"
-                            padding="24"
-                            stroke-linecap="round"
-                            smooth
-                            >
-                            <template v-slot:label="item">
-                                {{ item.value }}
-                            </template>
-                            </v-sparkline>
-                        </v-sheet> -->
                         </v-card-text>
 
                         <v-card-text>
-                        <div class="display-1">Nombre de soumissions des exercices</div>
+                        <div class="display-1">{{title}}</div>
                         </v-card-text>
 
                         <v-divider></v-divider>
@@ -144,46 +149,49 @@
 import store from "../store/store"
 import router from "../system/router"
 import { GChart } from 'vue-google-charts'
+import http from '../system/http'
+
 
 export default {
     // ================================================================================================== ==
     // Data
     // ================================================================================================== ==
    data: () => ({
-       //List exercices
-      sections: {data: [{number:"Section 1", title:"Les variables"},
-                        {number:"Section 2", title:"Les conditions"}
-      
-      ]},
-      exercices: {data:[{number:"Exercice 1.1",title:"Donne-moi une valeur", consigne: "Tu dois faire ça"},
-                        {number:"Exercice 1.2",title:"Additione-nous !", consigne: "Tu dois faire comme ceci"}
-      ]},
+        //List exercices et tps
+        tps:[],
 
-      current_data:null,
+        current_data:null,
 
         // Data for Tabs
-      items: [
-          { tab: 'One', content: 'Tab 1 Content' },
-          { tab: 'Two', content: 'Tab 2 Content' },
-          { tab: 'Three', content: 'Tab 3 Content' },
-          { tab: 'Four', content: 'Tab 4 Content' },
-          { tab: 'Five', content: 'Tab 5 Content' },
-          { tab: 'Six', content: 'Tab 6 Content' },
+        items: [
+            { tab: 'One', content: 'Tab 1 Content' },
+            { tab: 'Two', content: 'Tab 2 Content' },
+            { tab: 'Three', content: 'Tab 3 Content' },
+            { tab: 'Four', content: 'Tab 4 Content' },
+            { tab: 'Five', content: 'Tab 5 Content' },
+            { tab: 'Six', content: 'Tab 6 Content' },
         ],
         tab:null,
 
         //Data For Graph
         chartData: [
-        ['Year', 'Soumissions'],
-        ['2014', 1000],
-        ['2015', 1678],
-        ['2016', 660],
-        ['2017', 1030]
-      ],
-      chartOptions: {
-        colors: ['green'],
-        legend:  { position: "none" }
-      }
+            ['Year', 'Soumissions'],
+            ['2014', 1000],
+            ['2015', 1678],
+            ['2016', 660],
+            ['2017', 1030]
+        ],
+        chartOptions: {
+            colors: ['green'],
+            legend:  { position: "none" }
+        },
+        title:'Nombre de soumissions des exercices',
+
+        //loading
+        loading: true,
+
+        //chart in PNG
+        png:'',
     }),
 
     // ================================================================================================== ==
@@ -196,10 +204,30 @@ export default {
     // ================================================================================================== ==
     // Created
     // ================================================================================================== ==
-    created(){
-        if(!store.state.userInformation.is_staff){
+    async created(){
+
+        //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
+        var is_staff = await http.get("user/get/", {headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})
+
+        if(!is_staff){
+            var new_json = store.state.userInformation;
+            new_json["is_staff"]=false;
+            localStorage.setItem('infoUser', JSON.stringify(new_json));
             router.push("/");
         }
+
+        //Get All Tps
+        this.tps = (await http.get("sessions/all/",{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}})).data;
+        //console.log(this.tps);
+
+        var exercices = [];
+        for (const key in this.tps) {
+            exercices = (await (http.get("exercises/by_session/"+this.tps[key].id,{headers:{ 'Authorization': 'Bearer '+ store.state.accessToken}}))).data;
+            this.tps[key]["exercices"] = exercices
+        }
+
+        this.loading = false;
+        
     },
 
     // ================================================================================================== ==
@@ -219,11 +247,30 @@ export default {
                 ['Fonction', 501],
                 ['Structure de données', 1030]
             ]
+            this.title = "Nombre d'erreurs par type"
+        },
+
+        //Transform Chart to PNG
+        onChartReady (chart, google) {
+            var self =this;
+             google.visualization.events.addListener(chart, 'ready', function () {
+                self.png= chart.getImageURI();
+            });
+            
         },
         
         //Print the Graph
         print(){
-            window.print();
+            var WinPrint = window.open('', '', 'left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0');
+            WinPrint.document.write('<html><head>');
+            WinPrint.document.write('<link rel= "stylesheet", href= "/css/print.css">');
+            WinPrint.document.write('</head><body>');
+            WinPrint.document.write('<img src="'+this.png+ '">');
+            WinPrint.document.write('<h1>'+this.title+'</h1>');
+            WinPrint.document.write('</body></html>');
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
         }
     }
     

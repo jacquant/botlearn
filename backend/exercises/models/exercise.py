@@ -1,6 +1,6 @@
 from django.db import models
-from .utils import path_and_rename
-
+from .utils import path_and_rename, validate_file_extensions, OverwriteStorage
+from constrainedfilefield.fields import ConstrainedFileField
 
 class Exercise(models.Model):
     name = models.CharField(max_length=255, verbose_name="nom de l'exercice")
@@ -10,12 +10,12 @@ class Exercise(models.Model):
         to="accounts.User",
         on_delete=models.PROTECT,
         blank=True,
+        null=True,
         verbose_name="Auteur de l'exercice",
     )
     difficulty = models.ForeignKey(
         to="exercises.Difficulty",
         on_delete=models.PROTECT,
-        blank=False,
         verbose_name="Difficulté de l'exercice",
     )
     session = models.ForeignKey(
@@ -28,8 +28,36 @@ class Exercise(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Section de l'exercice",
     )
-    tags = models.ManyToManyField(to="exercises.Tag", verbose_name="Tags associés")
-    project_files = models.FileField(blank=False, null=True, upload_to=path_and_rename)
+
+    tags = models.ManyToManyField(
+        to="exercises.Tag",
+        related_name="exercises_tags",
+        verbose_name="Tags associés",
+        blank=True,
+    )
+
+    project_files = ConstrainedFileField(
+        upload_to=path_and_rename,
+        validators=[validate_file_extensions],
+        content_types=["application/gzip"],
+        default="",
+        storage=OverwriteStorage(),
+    )
+
+    requirements = models.ManyToManyField(
+        to="exercises.Requirement",
+        related_name="exercises_requirements",
+        verbose_name="Dépendances associées",
+        blank=True,
+    )
+
+    dockerImage = models.ForeignKey(
+        to="sandbox.SandboxProfile",
+        on_delete=models.CASCADE,
+        verbose_name="Image docker associée",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return "Exercice n°{id} - {name} - pour le {due_date}".format(

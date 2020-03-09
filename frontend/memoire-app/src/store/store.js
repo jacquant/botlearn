@@ -180,7 +180,6 @@ export default new Vuex.Store({
          * @param {UserInfo} payload - The new user's information.
          */
         userInformation (state, payload) {
-
             // Update the local storage to preserve in case of reloading page
             localStorage.setItem(KEY_USER_INFORMATION, JSON.stringify(payload));
 

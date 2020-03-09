@@ -20,8 +20,11 @@ django-redis = "*"
 drf-orjson-renderer = "*"
 argon2-cffi = "*"
 django-celery-email = "*"
-dialogflow = "*"
-django-seed = "*"
+django-3-jet = "*"
+django-filter = "*"
+epicbox = "*"
+django-constrainedfilefield = "*"
+python-magic = "*"
 
 [requires]
 python_version = "3.8"

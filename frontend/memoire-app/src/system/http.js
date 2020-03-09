@@ -87,13 +87,37 @@ export default {
      * @returns {Promise<void>}
      */
     get (route, config = {}) {
-        if(route.includes("user")){
-            publicInstance.get(baseUrl+route, config)
-                .then(response => Store.commit.userInformation(response.data))
+        let data=null
+        //Get info User - Using to check permission
+        if(route.includes("user/get/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response =>{return response.data.is_staff})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        //Get All Tps        
+        }else if(route.includes("sessions/all/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        //Get Exercices by TP 
+        }else if(route.includes("exercises/by_session/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        //Get details for an exercice
+        }else if(route.includes("exercises/get/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
         }
+        return data;
     },
 
     /**

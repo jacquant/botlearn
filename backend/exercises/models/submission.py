@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.db import models
+from django.utils import timezone
 
 
 class Submission(models.Model):
@@ -13,6 +14,7 @@ class Submission(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Exercice lié à la soumission",
     )
+    submission_date = models.DateTimeField(verbose_name="Moment de la soumission", default=timezone.now)
     code_input = models.TextField()
     code_output = JSONField()  # TODO définir une sémantique des retours d'exécution
     final = models.BooleanField(default=False, verbose_name="Type de la soumission")

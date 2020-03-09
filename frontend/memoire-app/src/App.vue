@@ -16,11 +16,11 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn v-if="admin" color="red" href="/admin" class="d-none d-sm-flex">
+            <v-btn v-if="admin" color="red" href="/administration" class="d-none d-sm-flex">
                 Administrer
                 <!--<v-icon>mdi-border-color</v-icon>-->
             </v-btn>
-            <v-btn icon href="/admin" class="d-flex d-sm-none">
+            <v-btn icon href="/administration" class="d-flex d-sm-none">
                 <v-icon color="red">mdi-border-color</v-icon>
             </v-btn>
           </v-app-bar>
@@ -87,7 +87,7 @@ export default {
             {
                 icon: 'mdi-chart-bubble',
                 title: 'Inspire',
-                to: '/reset'
+                to: '/solution'
             },
             {
                 icon: 'mdi-forum',

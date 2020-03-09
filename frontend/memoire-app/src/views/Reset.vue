@@ -167,7 +167,6 @@ export default {
             this.$router.push("/login");
         }else{
             let data = {"token": this.$route.query.token};
-            console.log(data);
             await http.post('password_reset/validate_token/', data);
         }
 
