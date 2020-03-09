@@ -148,19 +148,7 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
 import axios from "axios"
 
- /*
- window.addEventListener('message', function(event) {
-  console.log("listening")
 
-if(event.origin === 'http://localhost:8888' || event.origin == "null"){ 
-  console.log("enter");
-  console.log(event.data.message)
-  this.data_from_iframe = event.data.message;
-}else{
-  //alert('Origin not allowed!');
-}
-
-}, false)*/
 
 export default {
 
@@ -276,6 +264,7 @@ export default {
                     self.$router.push("/bot?token="+response.data.access);
                 })
                 .catch(function (error) {
+                    self.overlay = !self.overlay;
                     self.error = true;
                     console.log(error);
                 });
@@ -289,6 +278,7 @@ export default {
                     self.$router.push("/bot?token="+response.data.access);
                 })
                 .catch(function (error) {
+                    self.overlay = !self.overlay;
                     self.error = true;
                     console.log(error);
                 });

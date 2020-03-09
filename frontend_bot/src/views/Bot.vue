@@ -1,8 +1,10 @@
 <template>
   <v-layout>
+      <pre>{{data_from_iframe}}</pre>
     <v-flex class="text-center">
       <div id="bot">
-        <div id="chatBotCommandDescription"></div>
+        <v-btn color="#72c288" @click="interactIframe()"> Exécuter </v-btn>
+        <div id="chatBotCommandDescription" class="mt-2"></div>
           <input id="humanInput" type="text" class="mt-5"/>
           <div id="chatBot">
               <div id="chatBotThinkingIndicator"></div>
@@ -31,7 +33,7 @@ export default {
         token: null,
 
         //Code Iframe
-        data_from_iframe: "a"
+        data_from_iframe: ""
     }),
 
     // ================================================================================================== ==
@@ -42,9 +44,9 @@ export default {
         //Partie token
 
         if(this.$route.query.token === undefined) {
-            //this.$router.push("/login");
+            this.$router.push("/login");
         }else{
-            //this.token = this.$route.query.token;
+            this.token = this.$route.query.token;
         }
 
         ///////////////////////////////////////////////////////////////////////////
@@ -87,10 +89,15 @@ export default {
             }, 1200000)
         },
 
-        test(){
-            console.log(window)
-            console.log(window.parent);
-        }
+        //Execute what the iframe requested
+        interactIframe (evt) {
+            parent.window.postMessage("run", "*");
+        },
+
+        //Listening what the iframe sent (code)
+        listeningIframe (evt) {
+            this.data_from_iframe = evt.data.code;
+        },
     },
 
     // ================================================================================================== ==
@@ -100,6 +107,9 @@ export default {
 
         //Call function to check token's validity
         this.startInterval();
+
+        //Listening if a code is submitted from the iframe
+        window.addEventListener("message", this.listeningIframe);
 
     }
     
