@@ -20,11 +20,12 @@ django-redis = "*"
 drf-orjson-renderer = "*"
 argon2-cffi = "*"
 django-celery-email = "*"
-dialogflow = "*"
-django-seed = "*"
+chatterbot = "==1.0.4"
 django-3-jet = "*"
 django-filter = "*"
-chatterbot = "==1.0.4"
+epicbox = "*"
+django-constrainedfilefield = "*"
+python-magic = "*"
 
 
 [requires]

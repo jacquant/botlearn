@@ -1,6 +1,7 @@
 from .category import Category
 from .difficulty import Difficulty
 from .exercise import Exercise
+from .requirement import Requirement
 from .section import Section
 from .session import Session
 from .submission import Submission
