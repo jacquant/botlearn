@@ -1,5 +1,4 @@
 
-
 export var ChatBot = function () {
 
     //// common vars
@@ -348,25 +347,31 @@ export var ChatBot = function () {
 
             //Own Serveur to answer questions
 
-            backendinfo: function () {
+            backendinfo: function (token) {
 
                 // patterns that the engine can resolve
                 var capabilities = [
                     "Bonjour et bienvenue sur l'assistant virtuel du cours [INFOB131] Introduction à la programmation.",
                     "Pour commencer à m'utiliser, réalise un devoir.",
                     "Pour récupérer la liste des devoirs, tape cette commande:",
-                    "'Donne moi la liste des devoirs ?'",
+                    "'Je peux avoir la liste des exercices'",
                 ];
 
                 return {
                     react: function (query) {
-                        $.ajax({
-                            type: 'GET',
-                            url: 'https://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
-                            dataType: 'jsonp'
-                        }).done(function (data) {
+                        let data_request = '{"text":"'+ String(query) + '"}'
 
-                            var content = data.AbstractText;
+                        $.ajax({
+                            type: 'POST',
+                            url: 'http://localhost:8080/api/bot/test/',
+                            dataType:'json',
+                            data: data_request,
+                            headers: { 'Authorization': 'Bearer '+ token},
+                            contentType: "application/json; charset=utf-8",
+                        }).done(function (data) {
+                            //console.log(data)
+                            var content = data.text;
+                            console.log(content)
 
                             // no direct answer? tell about related topics then
                             if (content == '' && data.RelatedTopics.length > 0) {
@@ -410,6 +415,13 @@ export var ChatBot = function () {
 
                             ChatBot.addChatEntry(content, "bot");
                             ChatBot.thinking(false);
+                        }).fail(function () {
+                            //error login
+                            /*$(document).ready( function() {
+                                let url = "/login";
+                                $(location).attr("href", url);
+                             });*/
+
                         });
                     },
                     getCapabilities: function () {

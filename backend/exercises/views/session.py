@@ -32,6 +32,7 @@ class SessionViewSet(viewsets.ModelViewSet):
                 ),
             ).all()
             cache.set(key, sessions, timeout=CACHE_TTL)
+            print(sessions)
             return sessions
 
     def get_permissions(self):

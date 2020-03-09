@@ -13,5 +13,5 @@ RUN mkdir /api
 WORKDIR /api
 COPY ./backend/Pipfile* /api/
 
-RUN pipenv install --system --deploy --ignore-pipfile
+RUN pipenv install --system
 COPY ./backend/ /api/

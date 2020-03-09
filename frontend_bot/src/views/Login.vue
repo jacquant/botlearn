@@ -148,6 +148,8 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
 import axios from "axios"
 
+
+
 export default {
 
     mixins: [validationMixin],
@@ -262,6 +264,7 @@ export default {
                     self.$router.push("/bot?token="+response.data.access);
                 })
                 .catch(function (error) {
+                    self.overlay = !self.overlay;
                     self.error = true;
                     console.log(error);
                 });
@@ -275,6 +278,7 @@ export default {
                     self.$router.push("/bot?token="+response.data.access);
                 })
                 .catch(function (error) {
+                    self.overlay = !self.overlay;
                     self.error = true;
                     console.log(error);
                 });

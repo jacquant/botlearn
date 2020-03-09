@@ -7,7 +7,7 @@ class ExercisesConfig(AppConfig):
     def ready(self):
 
         # Import signals pre_save
-
+        
         # Import signals post_save
         from .signals.category import category_saved
         from .signals.difficulty import difficulty_saved

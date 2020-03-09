@@ -116,6 +116,14 @@ export default {
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
+        //Get All data        
+        }else if(route.includes("/")){
+            data = publicInstance.get(baseUrl+route, config)
+                .then(response => {return response})
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
+        //Get Exercices by TP 
         }
         return data;
     },

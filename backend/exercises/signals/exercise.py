@@ -66,6 +66,10 @@ def build_docker(instance):
     create_docker_image.delay(id_uuid, dockerfile_dir)
 
 
+def empty_cache():
+    cache.delete("exercises_all")
+
+
 @receiver(post_save, sender=Exercise)
 def exercise_saved(sender, instance, created, *args, **kwargs):
     """
@@ -81,4 +85,3 @@ def exercise_deleted_post(sender, instance, *args, **kwargs):
     Handles the remove of a exercise
     """
     empty_cache()
-

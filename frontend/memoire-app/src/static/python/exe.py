@@ -1,6 +1,6 @@
 my_var = 8
 
-if(my_var < 10):
+if(my_var == 10):
     print("Hello World")
 else:
     print("It\'s not working ! ")
