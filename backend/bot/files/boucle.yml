@@ -1,0 +1,52 @@
+categories:
+- boucle
+conversations:
+    #Récupération du context du prolbème
+- - J'ai un problème avec ma boucle.
+  - Tu utilises une boucle "for" ou une boucle "while" ?
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Etrange, détails-moi un peu le problème.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle ne fonctionne pas.
+  - Tu utilises une boucle "for" ou une boucle "while" ?
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ?
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle for ne fonctionne pas.
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+- - Ma boucle while ne fonctionne pas.
+  - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
+  - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
+  - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
+
+    #Type de boucles
+- - Une boucle for
+  - Très bien ! Explique-moi ton erreur
+
+- - Une boucle while
+  - Très bien ! Explique-moi ton erreur
+
+    #Différence boucle while et for
+- - Je ne comprends pas à quoi sert une boucle while
+  - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
+    <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
+    A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
+
+    <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
+  
+- - Je ne comprends pas à quoi sert une boucle for
+  - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
+    <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
+    A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
+
+    <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
+  
+- - Quelle est la différence entre une boucle while et for ?
+  - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
+    <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
+    A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
+
+    <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
+  

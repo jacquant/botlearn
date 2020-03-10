@@ -27,6 +27,5 @@ epicbox = "*"
 django-constrainedfilefield = "*"
 python-magic = "*"
 
-
 [requires]
 python_version = "3.8"

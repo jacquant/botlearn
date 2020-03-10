@@ -26,9 +26,10 @@ class AnswerViewSet(APIView):
                         read_only=True,
                         
                         logic_adapters=[{
-                            'maximum_similarity_threshold': 0.85,
+                            'maximum_similarity_threshold': 0.75,
                             'import_path': "chatterbot.logic.BestMatch",
-                            'default_response': "Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.",
+                            'default_response': 
+                            "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])
 
     #chatterbot.trainer.export_for_training('./files/programmation.yml')
@@ -88,12 +89,6 @@ class AnswerViewSet(APIView):
             'name': self.chatterbot.name
         })
 
-    def needHelp(self, data):
-        a_set = set(["aide","aider","besoin d'aide","help"]) 
-        b_set = set(data) 
-        if (a_set & b_set): 
-            return "Je vais t'aider avec plaisir ! Quel est ton problème ?" 
-
     def getExercice(self, data=None):
         exercices = Exercise.objects.all()
         serializer = ExerciseSerializer(exercices, many=True)
@@ -116,10 +111,12 @@ class AnswerViewSet(APIView):
                         exercices_string +='- <a href="http://localhost:8080' + str(path) +'">' + name + " (à rendre pour le "+ str(time) + ")</a>" + "<br>"
 
         #print(exercices_string)
+        if (exercices_string == ""):
+            exercices_string = "<h5 style='color:red;'>Aucun exercice disponible pour le moment.</h5>"
         return exercices_string
 
     def trainMyBot(self, chatterbot):
-        #chatterbot.storage.drop()
+        chatterbot.storage.drop()
 
         #Corpus Part
         trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
@@ -135,7 +132,7 @@ class AnswerViewSet(APIView):
         trainerOwn = ListTrainer(chatterbot)
 
         #Getting Help
-        trainerOwn.train([
+        """trainerOwn.train([
             "j'ai besoin d'aide s'il te plait !",
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
@@ -156,6 +153,7 @@ class AnswerViewSet(APIView):
         ])
 
         """#Problem With loop
+        """
         trainerOwn.train([
             "J'ai un problème avec ma boucle.",
             "Tu utilises une boucle 'for' ou une boucle 'while' ?",
@@ -190,4 +188,3 @@ class AnswerViewSet(APIView):
             "Je peux avoir la liste des exercices",
             "Oui ! La voici: <br>",
         ])
-
