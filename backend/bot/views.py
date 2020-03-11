@@ -14,10 +14,10 @@ from chatterbot.trainers import ListTrainer
 from chatterbot.ext.django_chatterbot import settings 
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.ext.django_chatterbot import settings
-from chatterbot.comparisons import synset_distance , levenshtein_distance, jaccard_similarity
+from chatterbot.comparisons import levenshtein_distance
 from chatterbot.response_selection import get_most_frequent_response, get_first_response
 
-from .selection import select_response
+from .selection import select_response, owncompare 
 
 from datetime import datetime, time
 
@@ -31,14 +31,14 @@ class AnswerViewSet(APIView):
                         response_selection_method=get_first_response,
                         statement_comparison_function=levenshtein_distance,
                         logic_adapters=[{
-                            'maximum_similarity_threshold': 0.80,
-                            "import_path": "chatterbot.logic.BestMatch",
+                            'maximum_similarity_threshold': 0.90,
+                            "import_path": "chatterbot.logic.MyLogicAdapter",
                             'default_response': 
                             "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])
 
     #Delete Storage
-    #chatterbot.storage.drop()
+    chatterbot.storage.drop()
 
     #Corpus Part
     trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
