@@ -4,6 +4,7 @@
     <v-flex class="text-center">
       <div id="bot">
         <v-btn color="#72c288" @click="interactIframe()"> Exécuter </v-btn>
+        <v-btn color="#28703d" class="ml-5"> Soumettre </v-btn>
         <div id="chatBotCommandDescription" class="mt-2"></div>
           <input id="humanInput" type="text" class="mt-5"/>
           <div id="chatBot">
@@ -117,43 +118,72 @@ export default {
 </script>
 
 <style>
-#bot {
-      /*background-color: #ffffff;*/
-      width: 90%;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 20px;
+    /*Partie Bot*/
+    #bot {
+        /*background-color: #ffffff;*/
+        width: 90%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
 
-      background-color: #F8F8F8;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 10px #999;
-      line-height: 1.4em;
-      font: 13px helvetica,arial,freesans,clean,sans-serif;
-      color: black;
-  }
-  #bot input {
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ddd;
-      width: 400px;
-  }
-  .button {
-      display: inline-block;
-      background-color: darkcyan;
-      color: #fff;
-      padding: 8px;
-      cursor: pointer;
-      float: right;
-  }
-  #chatBotCommandDescription {
-      /*display: none;*/
-      margin-bottom: 20px;
-  }
-  input:focus {
-      outline: none;
-  }
-  .chatBotChatEntry {
-      /*display: none;*/
-  }
+        background-color: #F8F8F8;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px #999;
+        line-height: 1.4em;
+        font: 13px helvetica,arial,freesans,clean,sans-serif;
+        color: black;
+    }
+    #bot input {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        width: 400px;
+    }
+    .button {
+        display: inline-block;
+        background-color: darkcyan;
+        color: #fff;
+        padding: 8px;
+        cursor: pointer;
+        float: right;
+    }
+    #chatBotCommandDescription {
+        /*display: none;*/
+        margin-bottom: 20px;
+    }
+    input:focus {
+        outline: none;
+    }
+    .chatBotChatEntry {
+        /*display: none;*/
+    }
+    /*Partie Tooltip*/
+    .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    width: 350px;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    }
+
+    .tooltip:hover .tooltiptext {
+    visibility: visible;
+    }
+
 </style>

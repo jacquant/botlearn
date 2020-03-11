@@ -43,7 +43,7 @@ conversations:
 
     <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
   
-- - Quelle est la différence entre une boucle while et for ?
+- - Quelle est la différence entre une boucle while et for
   - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
     <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
     A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
