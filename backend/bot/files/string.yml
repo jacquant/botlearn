@@ -1,0 +1,50 @@
+categories:
+- string
+conversations:
+    #Manipuler strings
+- - comment decouper un string en un tableau
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+- - comment decouper un string
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+- - comment utiliser split
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+- - comment utiliser la fonction split
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+    
+    #Convertir strings
+- - convertir un string en int
+  - Il est possible de convertir un string en int (entier).
+    Il faut utiliser la fonction "int()" et mettre en argument le string en question.
+    <pre><code>ma_variable = "42"</code></pre>
+    <pre><code>int(ma_variable)</code></pre>
+    <pre><code>42</code></pre>
+    La fonction a converti le string "42" en un int (entier) 42.
+- - convertir une chaine de caractères en un entier
+  - Il est possible de convertir un string en int (entier).
+    Il faut utiliser la fonction "int()" et mettre en argument le string en question.
+    <pre><code>ma_variable = "42"</code></pre>
+    <pre><code>int(ma_variable)</code></pre>
+    <pre><code>42</code></pre>
+    La fonction a converti le string "42" en un int (entier) 42.
+
+  

@@ -1,12 +1,23 @@
 <template>
   <v-layout>
-      <pre>{{data_from_iframe}}</pre>
+    <pre>{{data_from_iframe}}</pre>
     <v-flex class="text-center">
+        <v-dialog v-model="dialog_soumettre" persistent max-width="490">
+            <v-card>
+                <v-card-title class="headline" style="text-align:center;">Cette action n'est effectuable qu'une fois</v-card-title>
+                <v-card-actions>
+                    <v-btn color="red"  @click="dialog_soumettre = false">Modifier mon code</v-btn>
+                    <v-spacer />
+                    <v-btn color="#28703d">Soumettre</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
       <div id="bot">
         <v-btn color="#72c288" @click="interactIframe()"> Exécuter </v-btn>
-        <v-btn color="#28703d" class="ml-5"> Soumettre </v-btn>
+        <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true"> Soumettre </v-btn>
         <div id="chatBotCommandDescription" class="mt-2"></div>
           <input id="humanInput" type="text" class="mt-5"/>
+          <div class="tooltip ml-10"><i class="fas fa-info"></i> <span class="tooltiptext"><p>Pour ouvrir un lien sur Mac OS: cmd + click</p></span></div>
           <div id="chatBot">
               <div id="chatBotThinkingIndicator"></div>
               <div id="chatBotHistory"></div>
@@ -32,6 +43,8 @@ export default {
         url: "http://localhost:8080/api/",
 
         token: null,
+
+        dialog_soumettre: false,
 
         //Code Iframe
         data_from_iframe: ""
@@ -175,7 +188,7 @@ export default {
     width: 350px;
     top: 100%;
     left: 50%; 
-    margin-left: -60px;
+    margin-left: -300px;
 
     /* Position the tooltip */
     position: absolute;

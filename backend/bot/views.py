@@ -31,8 +31,8 @@ class AnswerViewSet(APIView):
                         response_selection_method=get_first_response,
                         statement_comparison_function=levenshtein_distance,
                         logic_adapters=[{
-                            'maximum_similarity_threshold': 0.90,
-                            "import_path": "chatterbot.logic.MyLogicAdapter",
+                            'maximum_similarity_threshold': 0.75,
+                            "import_path": "chatterbot.logic.BestMatch",
                             'default_response': 
                             "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])

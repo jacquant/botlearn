@@ -1,0 +1,19 @@
+categories:
+- variables
+conversations:
+- - comment utiliser une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+- - qu'est ce que c'est qu'une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>

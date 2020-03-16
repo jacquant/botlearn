@@ -1,4 +1,5 @@
-
+import { library, icon } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 export var ChatBot = function () {
 
     //// common vars
@@ -355,6 +356,11 @@ export var ChatBot = function () {
                     "Pour commencer à m'utiliser, réalise un devoir.",
                     "Pour récupérer la liste des devoirs, tape cette commande:",
                     "'Je peux avoir la liste des exercices'",
+                    "J'aurais deux fonctions:",
+                    "1° La première aura de répondre à tes questions que tu poseras dans le chat.",
+                    "Je suis capable de comprendre les questions liées à la programmation",
+                    "2° La deuxième fonction sera de te donner un feedback plus précis sur ton code.",
+                    "Pour se faire, il te suffit d'exéctuer ton code via la bouton juste au-dessus de moi.",
                 ];
 
                 return {
@@ -501,12 +507,13 @@ export var ChatBot = function () {
                 return;
             }else{
                 var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
-
+                /*Partie tooltip
                 let tooltip_message = ""
                 if(text.includes("</a>")){
                     tooltip_message=' <div class="tooltip"><i class="fas fa-info"></i> <span class="tooltiptext"><p>Ouvrir le lien Mac OS:cmd + click</p></span></div>' 
-                }
-                entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text + tooltip_message);
+                }*/
+                console.log(text);
+                entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text); //+ tooltip_message);
                 $('#chatBotHistory').prepend(entryDiv);
                 if (addChatEntryCallback != undefined) {
                     addChatEntryCallback.call(this, entryDiv, text, origin);

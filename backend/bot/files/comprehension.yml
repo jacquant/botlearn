@@ -1,0 +1,6 @@
+categories:
+- comprehension
+conversations:
+- - je ne comprend pas quelque chose
+  - Il s'agit d'une erreur de compréhension au niveau du code. Quelle partie du code cela concerne-t-il ?
+    Est-ce que cela concerne les boucles, les variables, les print, les structures de données, etc.
