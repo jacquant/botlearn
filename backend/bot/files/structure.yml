@@ -1,0 +1,19 @@
+categories:
+- structure
+conversations:
+    #Dictionnaire
+- - Comment ajouter un élément dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé (existante ou non) et de lui donner une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire["Clé"] = "Toto" </code></pre>
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+- - C'est quoi une clé d'un dictionnaire 
+  - Une clé est un "identifiant" permettant d'accéder à une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dict = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
+    Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
+
+    <p>Exemple:</p>
+    <pre><code>print(mon_dict["nom"])</code></pre>
+    Dans cette exemple, la valeur affichée sera "Andrew"

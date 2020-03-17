@@ -371,7 +371,7 @@ export var ChatBot = function () {
                         }).done(function (data) {
                             //console.log(data)
                             var content = data.text;
-                            console.log(content)
+
 
                             // no direct answer? tell about related topics then
                             if (content == '' && data.RelatedTopics.length > 0) {
@@ -490,13 +490,14 @@ export var ChatBot = function () {
                 return;
             }
             if (text == '') {
-                text = 'Sorry, I have no idea.';
-            }
-            var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
-            entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
-            $('#chatBotHistory').prepend(entryDiv);
-            if (addChatEntryCallback != undefined) {
-                addChatEntryCallback.call(this, entryDiv, text, origin);
+                text = 'Je ne sais pas encore lire dans les pensées malheureusement :(';
+            }else{
+                var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
+                entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
+                $('#chatBotHistory').prepend(entryDiv);
+                if (addChatEntryCallback != undefined) {
+                    addChatEntryCallback.call(this, entryDiv, text, origin);
+                }
             }
         },
         thinking: function (on) {

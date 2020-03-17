@@ -1,0 +1,19 @@
+categories:
+- aide
+conversations:
+    #demande aide
+- - J'ai besoin d'aide
+  - Je vais t'aide bien évidemment ! Quel est ton problème ?
+  - En quoi puis-je t'aider ?
+- - aide
+  - En quoi puis-je t'aider ?
+- - aide-moi
+  - En quoi puis-je t'aider ?
+- - need help
+  - En quoi puis-je t'aider ?
+- - help me
+  - En quoi puis-je t'aider ?
+- - help
+  - En quoi puis-je t'aider ?
+
+  
