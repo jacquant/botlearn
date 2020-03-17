@@ -15,3 +15,4 @@ class CodeSerializer(serializers.Serializer):
 
 class CodeSerializerExercise(CodeSerializer):
     exercise_id = serializers.IntegerField()
+    exercise_filename = serializers.CharField()

@@ -1,5 +1,8 @@
 # Pull base image
-FROM python:latest
+FROM python:slim
+
+# Install libmagic
+RUN apt update && apt upgrade && apt install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1

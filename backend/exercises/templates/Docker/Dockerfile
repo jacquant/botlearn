@@ -4,6 +4,9 @@ FROM python:slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Install Restricted Python
+RUN pip install RestrictedPython
+
 # Work directory
 RUN mkdir sandbox
 WORKDIR sandbox

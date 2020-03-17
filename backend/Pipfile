@@ -26,7 +26,7 @@ django-filter = "*"
 epicbox = "*"
 django-constrainedfilefield = "*"
 python-magic = "*"
-
+restrictedpython = "*"
 
 [requires]
 python_version = "3.8"

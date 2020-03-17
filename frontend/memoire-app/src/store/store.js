@@ -26,7 +26,7 @@ const KEY_USER_INFORMATION = "infoUser";
  * @param {string} key - The key associated to the token.
  * @returns {string|null}
  */
-function loadToken (key) {
+function loadToken(key) {
     const access = localStorage.getItem(key);
     return access;
 }
@@ -84,7 +84,7 @@ export default new Vuex.Store({
          * @readonly
          * @member {UserInfo|null} Store#userInformation
          */
-        userInformation: JSON.parse(localStorage.getItem("infoUser") || "{}"),
+        userInformation: JSON.parse(localStorage.getItem("infoUser") || "{}"),
 
 
     },
@@ -99,7 +99,7 @@ export default new Vuex.Store({
          * @function Store#accessToken
          * @param {string|null} payload - The new access token.
          */
-        accessToken (state, payload) {
+        accessToken(state, payload) {
             localStorage.setItem(KEY_ACCESS_TOKEN, payload);
             state.accessToken = payload;
         },
@@ -109,7 +109,7 @@ export default new Vuex.Store({
          * @function Store#internalError
          * @param {boolean} payload - The new state of the *internalError* member.
          */
-        internalError (state, payload) {
+        internalError(state, payload) {
             state.internalError = payload;
             //reset the succeed if it occured before
             state.internalSucceed = false;
@@ -120,16 +120,16 @@ export default new Vuex.Store({
          * @function Store#typeError
          * @param {object} payload - The new state of the *typeError* member.
          */
-        typeError (state, payload) {
+        typeError(state, payload) {
             state.typeError = payload;
         },
 
-         /**
+        /**
          * [MUTATION] Change the state of the *internalSucceed* member of the store.
          * @function Store#internalSucceed
          * @param {boolean} payload - The new state of the *internalSucceed* member.
          */
-        internalSucceed (state, payload) {
+        internalSucceed(state, payload) {
             state.internalSucceed = payload;
             //reset the error if it occured before
             state.internalError = false;
@@ -142,7 +142,7 @@ export default new Vuex.Store({
          * @param {string} payload.access - The access token.
          * @param {string} payload.refresh - The refresh token.
          */
-        login (state, payload) {
+        login(state, payload) {
 
             // Update the local storage to preserve in case of reloading page
             localStorage.setItem(KEY_ACCESS_TOKEN, payload.access);
@@ -159,7 +159,7 @@ export default new Vuex.Store({
          * [MUTATION] Removes the access token, the refresh token and the user's information to logout him.
          * @function Store#logout
          */
-        logout (state) {
+        logout(state) {
             // Update the local storage to preserve in case of reloading page
             localStorage.removeItem(KEY_ACCESS_TOKEN);
             localStorage.removeItem(KEY_REFRESH_TOKEN);
@@ -179,7 +179,7 @@ export default new Vuex.Store({
          * @function Store#userInformation
          * @param {UserInfo} payload - The new user's information.
          */
-        userInformation (state, payload) {
+        userInformation(state, payload) {
             // Update the local storage to preserve in case of reloading page
             localStorage.setItem(KEY_USER_INFORMATION, JSON.stringify(payload));
 

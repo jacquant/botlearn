@@ -31,25 +31,25 @@ function renewAccessToken() {
     if (access != null && JwtDecode(access).exp * 1000 - Date.now() <= 0) {
         const refresh = Store.state.refreshToken;
 
-        if (refresh === null || JwtDecode(refresh).exp * 1000 - Date.now() <= 0){
-            Store.commit("logout"); 
+        if (refresh === null || JwtDecode(refresh).exp * 1000 - Date.now() <= 0) {
+            Store.commit("logout");
             return Promise.reject();
-        }else{
-             return Axios.post(baseUrl+"token/refresh/", {"refresh": refresh})
-            .then(response => {
-                Store.commit("accessToken", response.data.access);
-                return Promise.resolve();
-            })
-            .catch(() => {
-                Store.commit("logout"); 
-                return Promise.reject();
-            });
+        } else {
+            return Axios.post(baseUrl + "token/refresh/", {"refresh": refresh})
+                .then(response => {
+                    Store.commit("accessToken", response.data.access);
+                    return Promise.resolve();
+                })
+                .catch(() => {
+                    Store.commit("logout");
+                    return Promise.reject();
+                });
         }
     } else return Promise.resolve();
 }
+
 //After each load of a page, try to reload the token
 renewAccessToken();
-
 
 
 // ================================================================================================================== ==
@@ -69,8 +69,8 @@ export default {
      * @param {object} [config] - Additional configuration for the request.
      * @returns {Promise<void>}
      */
-    delete (route, manager, config = {}) {
-        publicInstance.delete(baseUrl+route, config)
+    delete(route, manager, config = {}) {
+        publicInstance.delete(baseUrl + route, config)
             .then(response => manager.execute(response.status, response.data))
             .catch(error => {
                 if (Axios.isCancel(error)) return;
@@ -86,44 +86,54 @@ export default {
      * @param {object} [config] - Additional configuration for the request.
      * @returns {Promise<void>}
      */
-    get (route, config = {}) {
-        let data=null
+    get(route, config = {}) {
+        let data = null;
         //Get info User - Using to check permission
-        if(route.includes("user/get/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response =>{return response.data.is_staff})
+        if (route.includes("user/get/")) {
+            data = publicInstance.get(baseUrl + route, config)
+                .then(response => {
+                    return response.data.is_staff
+                })
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get All Tps        
-        }else if(route.includes("sessions/all/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
+            //Get All Tps
+        } else if (route.includes("sessions/all/")) {
+            data = publicInstance.get(baseUrl + route, config)
+                .then(response => {
+                    return response
+                })
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get Exercices by TP 
-        }else if(route.includes("exercises/by_session/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
+            //Get Exercices by TP
+        } else if (route.includes("exercises/by_session/")) {
+            data = publicInstance.get(baseUrl + route, config)
+                .then(response => {
+                    return response
+                })
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get details for an exercice
-        }else if(route.includes("exercises/get/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
+            //Get details for an exercice
+        } else if (route.includes("exercises/get/")) {
+            data = publicInstance.get(baseUrl + route, config)
+                .then(response => {
+                    return response
+                })
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get All data        
-        }else if(route.includes("/")){
-            data = publicInstance.get(baseUrl+route, config)
-                .then(response => {return response})
+            //Get All data
+        } else if (route.includes("/")) {
+            data = publicInstance.get(baseUrl + route, config)
+                .then(response => {
+                    return response
+                })
                 .catch(error => {
                     Store.commit("internalError", true)
                 });
-        //Get Exercices by TP 
+            //Get Exercices by TP
         }
         return data;
     },
@@ -137,49 +147,51 @@ export default {
      * @param {object} [config] - Additional configuration for the request.
      * @returns {Promise<void>}
      */
-    post (route, data, config = {}) {
+    post(route, data, config = {}) {
         //Login Requests
-        if(route.includes("token") && !route.includes("validate")){
-            publicInstance.post(baseUrl+route, data, config)
-                .then(function(response){
-                    Store.commit("login",response.data)
-                    publicInstance.get(baseUrl + "user/get/", {headers:{ 'Authorization': 'Bearer '+ Store.state.accessToken}})
-                    .then(function(responseUser){
-                        Store.commit("userInformation", responseUser.data);
-                        //router.push("/");
-                        router.back();
-                    })
+        if (route.includes("token") && !route.includes("validate")) {
+            publicInstance.post(baseUrl + route, data, config)
+                .then(function (response) {
+                    Store.commit("login", response.data);
+                    publicInstance.get(baseUrl + "user/get/", {headers: {'Authorization': 'Bearer ' + Store.state.accessToken}})
+                        .then(function (responseUser) {
+                            Store.commit("userInformation", responseUser.data);
+                            //router.push("/");
+                            router.back();
+                        })
                 })
                 .catch(error => {
                     //if (Axios.isCancel(error)) return;
                     Store.commit("internalError", true)
                 });
 
-        }else if(route.includes("password_reset") && route.includes("confirm")){
-            publicInstance.post(baseUrl+route, data, config)
-            .then(function(response){
-                Store.commit("internalSucceed", true)
-                router.push("/login");
-            })
-            .catch(error => {
-                Store.commit("internalError", true)
-            });
+        } else if (route.includes("password_reset") && route.includes("confirm")) {
+            publicInstance.post(baseUrl + route, data, config)
+                .then(function (response) {
+                    Store.commit("internalSucceed", true);
+                    router.push("/login");
+                })
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
 
-        }else if(route.includes("password_reset") && route.includes("validate_token")){
-            publicInstance.post(baseUrl+route, data, config)
-            .then(function(response){
-                Store.commit("internalSucceed", true)
-            })
-            .catch(error => {
-                router.push("/login");
-            });
+        } else if (route.includes("password_reset") && route.includes("validate_token")) {
+            publicInstance.post(baseUrl + route, data, config)
+                .then(function (response) {
+                    Store.commit("internalSucceed", true)
+                })
+                .catch(error => {
+                    router.push("/login");
+                });
 
-        }else if(route.includes("password_reset")){
-            publicInstance.post(baseUrl+route, data, config)
-            .then(response => {Store.commit("internalSucceed", true)})
-            .catch(error => {
-                Store.commit("internalError", true)
-            });
+        } else if (route.includes("password_reset")) {
+            publicInstance.post(baseUrl + route, data, config)
+                .then(response => {
+                    Store.commit("internalSucceed", true)
+                })
+                .catch(error => {
+                    Store.commit("internalError", true)
+                });
         }
     },
 
@@ -192,8 +204,8 @@ export default {
      * @param {object} [config] - Additional configuration for the request.
      * @returns {Promise<void>}
      */
-    put (route, data, manager, config = {}) {
-        publicInstance.put(baseUrl+route, data, config)
+    put(route, data, manager, config = {}) {
+        publicInstance.put(baseUrl + route, data, config)
             .then(response => manager.execute(response.status, response.data))
             .catch(error => {
                 if (Axios.isCancel(error)) return;

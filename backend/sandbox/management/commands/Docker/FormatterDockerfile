@@ -1,0 +1,8 @@
+FROM python:slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install depedencie
+RUN pip install black
