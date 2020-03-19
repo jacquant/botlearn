@@ -9,10 +9,11 @@ import Register from '../views/Register.vue'
 
 //General Parts
 import Home from '../views/Home.vue'
-import Bot from '../views/Bot.vue'
 
 //Students parts
+import AllSolutions from '../views/AllSolutions.vue'
 import Solution from '../views/Solution.vue'
+
 //Admin Parts
 import Admin from '../views/Admin.vue'
 import Exercice from '../views/Exercice.vue'
@@ -79,15 +80,15 @@ let router = new Router({
       component: Home,
       beforeEnter: ifAuthenticated
     },
-    {
-      path: '/bot',
-      name: 'bot',
-      component: Bot,
-      beforeEnter: ifAuthenticated
-    },
 
 
     //Students Parts
+    {
+      path: '/mysolutions',
+      name: 'allsolution',
+      component: AllSolutions,
+      beforeEnter: ifAuthenticated
+    },
     {
       path: '/solution',
       name: 'solution',

@@ -87,12 +87,7 @@ export default {
             {
                 icon: 'mdi-chart-bubble',
                 title: 'Inspire',
-                to: '/solution'
-            },
-            {
-                icon: 'mdi-forum',
-                title: 'bot',
-                to: '/bot'
+                to: '/mysolutions'
             },
             {
                 icon: 'mdi-login-variant',

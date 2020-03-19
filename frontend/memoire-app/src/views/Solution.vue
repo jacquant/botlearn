@@ -1,7 +1,7 @@
 <template>
     <v-layout>
         <v-flex>
-            <v-row>
+            <v-row class="mr-10 ml-10">
             <!--Détails des exerices-->
                 <v-col offset="1" offset-sm="3" cols="10" sm="6">
                     <v-card
@@ -37,6 +37,34 @@
             <!--Partie FeedBack-->
             <v-row>
                 <v-col class="ml-10 mr-10">
+                    <v-card>
+                        <v-card-title class="red lighten-2">
+                            <v-icon
+                                dark
+                                size="42"
+                                class="mr-4"
+                            >
+                                mdi-pencil
+                            </v-icon>
+                            <h2 class="display-1 white--text font-weight-light">Donner un feedback</h2>
+                            </v-card-title>
+                            <v-container>
+                                <v-row>
+                                    <v-col>
+                                        <v-textarea
+                                        v-model="feedback"
+                                        color="teal"
+                                        >
+                                            <template v-slot:label>
+                                                <div>
+                                                    FeedBack
+                                                </div>
+                                            </template>
+                                        </v-textarea>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                    </v-card>
                     <v-timeline :dense="$vuetify.breakpoint.smAndDown">
                         <v-timeline-item
                         color="cyan lighten-2"
@@ -130,7 +158,7 @@ export default {
     // Data
     // ================================================================================================== ==
     data: () => ({
-       sourcecode:`my_var = 8
+        sourcecode:`my_var = 8
 
 if(my_var < 10):
     print("Hello World")
@@ -141,7 +169,9 @@ else:
 my_tab = [1,2,4,8,16,32,64]
 
 for i in my_tab:
-    print(i)`
+    print(i)`,
+
+        feedback:''
 
     }),
 
