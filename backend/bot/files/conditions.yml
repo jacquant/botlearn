@@ -33,6 +33,17 @@ conversations:
     Les deux moyens ont un but différent chacun.
     <a href="https://python.doctor/page-apprendre-conditions-structures-conditionnelles-if-else-python-cours-debutant" target="_blank">Plus d'infos ici</a>.
 
+- - comment realiser plusieurs conditions
+  - Pour réaliser plusieurs conditions, il y a plusieurs moyens possibles.
+    Le premier concerne l'utilisation des "or" et "and". Grâce à ces opérateurs, il est possible de tester plusieurs choses dans une même condition.
+    <pre><code>if ma_variable == "coucou" and mon_autre_variable >= 8 :</code></pre>
+    Dans cette seule condition, deux tests sont effectués et les deux doivent être vrais car il s'agit d'un "and".
+    Si on avait utilisé un "or", un seul des deux tests aurait suffit pour que la condition soit vraie (l'un ou l'autre).
+    <br>Un autre moyen peut être l'utilisation de "elif".
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:12em"><code>ma_valeur = 8<br>if ma_valeur > 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething<br>elif ma_valeur == 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething</pre></code>
+    Les deux moyens ont un but différent chacun.
+    <a href="https://python.doctor/page-apprendre-conditions-structures-conditionnelles-if-else-python-cours-debutant" target="_blank">Plus d'infos ici</a>.
+    
 - - comment fonctionne elif
   - Pour réaliser plusieurs conditions à la suite, on utilise le 'elif'.
       <pre style="text-align:left;margin-left:auto;margin-right:auto;width:12em"><code>ma_valeur = 8<br>if ma_valeur > 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething<br>elif ma_valeur == 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;#DoSomething</pre></code>
