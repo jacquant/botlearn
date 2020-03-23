@@ -15,31 +15,31 @@ english:
   E125: continuation line with same indent as next logical line
   E126: continuation line over-indented for hanging indent
   E127: continuation line over-indented for visual indent
-  E128:	continuation line under-indented for visual indent
+  E128: continuation line under-indented for visual indent
   E129: visually indented line with same indent as next logical line
   E131: continuation line unaligned for hanging indent
   E133: closing bracket is missing indentation
 
   E2: Whitespace
-  E201:	whitespace after ‘(‘
-  E202:	whitespace before ‘)’
-  E203:	whitespace before ‘:’
+  E201: whitespace after ‘(‘
+  E202: whitespace before ‘)’
+  E203: whitespace before ‘:’
 
-  E211:	whitespace before ‘(‘
+  E211: whitespace before ‘(‘
 
-  E221:	multiple spaces before operator
+  E221: multiple spaces before operator
   E222: multiple spaces after operator
   E223: tab before operator
   E224: tab after operator
   E225: missing whitespace around operator
-  E226:	missing whitespace around arithmetic operator
-  E227:	missing whitespace around bitwise or shift operator
-  E228:	missing whitespace around modulo operator
+  E226: missing whitespace around arithmetic operator
+  E227: missing whitespace around bitwise or shift operator
+  E228: missing whitespace around modulo operator
 
-  E231:	missing whitespace after ‘,’, ‘;’, or ‘:’
+  E231: missing whitespace after ‘,’, ‘;’, or ‘:’
 
-  E241:	multiple spaces after ‘,’
-  E242:	tab after ‘,’
+  E241: multiple spaces after ‘,’
+  E242: tab after ‘,’
 
   E251: unexpected spaces around keyword / parameter equals
 
@@ -51,132 +51,132 @@ english:
   E271: multiple spaces after keyword
   E272: multiple spaces before keyword
   E273: tab after keyword
-  E274:	tab before keyword
-  E275:	missing whitespace after keyword
+  E274: tab before keyword
+  E275: missing whitespace after keyword
 
   E3: Blank line
   E301: expected 1 blank line, found 0
-  E302:	expected 2 blank lines, found 0
-  E303:	too many blank lines (3)
-  E304:	blank lines found after function decorator
-  E305:	expected 2 blank lines after end of function or class
-  E306:	expected 1 blank line before a nested definition
+  E302: expected 2 blank lines, found 0
+  E303: too many blank lines (3)
+  E304: blank lines found after function decorator
+  E305: expected 2 blank lines after end of function or class
+  E306: expected 1 blank line before a nested definition
 
-  E4:	Import
-  E401:	multiple imports on one line
-  E402:	module level import not at top of file
+  E4: Import
+  E401: multiple imports on one line
+  E402: module level import not at top of file
 
   E5: Line length
-  E501:	line too long (82 > 79 characters)
-  E502:	the backslash is redundant between brackets
+  E501: line too long (82 > 79 characters)
+  E502: the backslash is redundant between brackets
 
   E7: Statement
-  E701:	multiple statements on one line (colon)
-  E702:	multiple statements on one line (semicolon)
-  E703:	statement ends with a semicolon
-  E704:	multiple statements on one line (def)
-  E711:	comparison to None should be ‘if cond is None:’
-  E712:	comparison to True should be ‘if cond is True:’ or ‘if cond:’
-  E713:	test for membership should be ‘not in’
-  E714:	test for object identity should be ‘is not’
-  E721:	do not compare types, use ‘isinstance()’
-  E722:	do not use bare except, specify exception instead
-  E731:	do not assign a lambda expression, use a def
-  E741:	do not use variables named ‘l’, ‘O’, or ‘I’
-  E742:	do not define classes named ‘l’, ‘O’, or ‘I’
-  E743:	do not define functions named ‘l’, ‘O’, or ‘I’
+  E701: multiple statements on one line (colon)
+  E702: multiple statements on one line (semicolon)
+  E703: statement ends with a semicolon
+  E704: multiple statements on one line (def)
+  E711: comparison to None should be ‘if cond is None:’
+  E712: comparison to True should be ‘if cond is True:’ or ‘if cond:’
+  E713: test for membership should be ‘not in’
+  E714: test for object identity should be ‘is not’
+  E721: do not compare types, use ‘isinstance()’
+  E722: do not use bare except, specify exception instead
+  E731: do not assign a lambda expression, use a def
+  E741: do not use variables named ‘l’, ‘O’, or ‘I’
+  E742: do not define classes named ‘l’, ‘O’, or ‘I’
+  E743: do not define functions named ‘l’, ‘O’, or ‘I’
 
   E9: Runtime
-  E901:	SyntaxError or IndentationError
-  E902:	IOError
+  E901: SyntaxError or IndentationError
+  E902: IOError
 french:
   E1: Indentation
-  E101: indentation contains mixed spaces and tabs
-  E111: indentation is not a multiple of four
-  E112: expected an indented block
-  E113: unexpected indentation
-  E114: indentation is not a multiple of four (comment)
-  E115: expected an indented block (comment)
-  E116: unexpected indentation (comment)
-  E117: over-indented
-  E121: continuation line under-indented for hanging indent
-  E122: continuation line missing indentation or outdented
-  E123: closing bracket does not match indentation of opening bracket’s line
-  E124: closing bracket does not match visual indentation
-  E125: continuation line with same indent as next logical line
-  E126: continuation line over-indented for hanging indent
-  E127: continuation line over-indented for visual indent
-  E128:	continuation line under-indented for visual indent
-  E129: visually indented line with same indent as next logical line
-  E131: continuation line unaligned for hanging indent
-  E133: closing bracket is missing indentation
+  E101: l'identation contient un mélange d'espaces et de tabulations
+  E111: l'identation n'est pas un multiple de quatre
+  E112: attendu un bloc indenté
+  E113: indentation inattendue
+  E114: l'identation n'est pas un multiple de quatre (commentaire)
+  E115: attendu un bloc indenté (commentaire)
+  E116: indentation inattendue (commentaire)
+  E117: surindentation
+  E121: ligne de continuation sous-indentée pour l'indentation attendue
+  E122: ligne de continuation sans indentation ou décalée
+  E123: la parenthèse de fermeture ne correspond pas à l'indentation de la ligne de la parenthèse d'ouverture
+  E124: la parenthèse fermante ne correspond pas à l'indentation visuelle
+  E125: ligne de continuation avec la même indentation que la ligne logique suivante
+  E126: ligne de continuation trop indentée pour l'indentation
+  E127: ligne de continuation sur-indentée pour l'indentation visuelle
+  E128: ligne de continuation sous-indentée pour l'indentation visuelle
+  E129: ligne visuellement indentée avec la même indentation que la prochaine ligne logique
+  E131: ligne de continuation non-alignée par rapport à l'indentation attendue
+  E133: la paranthèse fermante est sans indentation
 
-  E2: Whitespace
-  E201:	whitespace after ‘(‘
-  E202:	whitespace before ‘)’
-  E203:	whitespace before ‘:’
+  E2: Espace blanc
+  E201: espace blanc après ‘(‘
+  E202: espace blanc avant ‘)’
+  E203: espace blanc avant ‘:’
 
-  E211:	whitespace before ‘(‘
+  E211: espace blanc avant ‘(‘
 
-  E221:	multiple spaces before operator
-  E222: multiple spaces after operator
-  E223: tab before operator
-  E224: tab after operator
-  E225: missing whitespace around operator
-  E226:	missing whitespace around arithmetic operator
-  E227:	missing whitespace around bitwise or shift operator
-  E228:	missing whitespace around modulo operator
+  E221: espaces multiples avant un opérateur
+  E222: espaces multiples après un opérateur
+  E223: tabulation avant un opérateur
+  E224: tabulation après un opérateur
+  E225: manque un espace blanc autour de l'opérateur
+  E226: manque un espace blanc autour de l'opérateur arithmétique
+  E227: manque un espace blanc autour de l'opérateur bit à bit ou de décalage
+  E228: manque un espace blanc autour de l'opérateur modulo
 
-  E231:	missing whitespace after ‘,’, ‘;’, or ‘:’
+  E231: manque un espace blanc après ‘,’, ‘;’, ou ‘:’
 
-  E241:	multiple spaces after ‘,’
-  E242:	tab after ‘,’
+  E241: espaces multiples après ‘,’
+  E242: tabulation après ‘,’
 
-  E251: unexpected spaces around keyword / parameter equals
+  E251: espaces inattendus autour du mot-clé / paramètre égal
 
-  E261: at least two spaces before inline comment
-  E262: inline comment should start with ‘# ‘
-  E265: block comment should start with ‘# ‘
-  E266: too many leading ‘#’ for block comment
+  E261: au moins deux espaces avant le commentaire en ligne
+  E262: le commentaire en ligne doit commencer par ‘# ’
+  E265: le commentaire en bloc doit commencer par ‘# ‘
+  E266: trop  de ‘#’ en tête pour le bloc de commentaire
 
-  E271: multiple spaces after keyword
-  E272: multiple spaces before keyword
-  E273: tab after keyword
-  E274:	tab before keyword
-  E275:	missing whitespace after keyword
+  E271: espaces multiples après le mot clé
+  E272: espaces multiples avant le mot clé
+  E273: tabulation après le mot clé
+  E274: tabulation avant le mot clé
+  E275: manque un espace blanc après le mot clé
 
-  E3: Blank line
-  E301: expected 1 blank line, found 0
-  E302:	expected 2 blank lines, found 0
-  E303:	too many blank lines (3)
-  E304:	blank lines found after function decorator
-  E305:	expected 2 blank lines after end of function or class
-  E306:	expected 1 blank line before a nested definition
+  E3: Ligne vide
+  E301: 1 ligne vide attendue, 0 trouvée
+  E302: 2 lignes vides attendues, 0 trouvée
+  E303: trop de lignes vides (3)
+  E304: lignes vides trouvées après une fonction décorateur
+  E305: 2 lignes vides attendues après la fin d'une fonction
+  E306: 1 ligne vide attendue avant une définition emboîtée
 
-  E4:	Import
-  E401:	multiple imports on one line
-  E402:	module level import not at top of file
+  E4: Import
+  E401: imports multiples sur une ligne
+  E402: l'import au niveau du module n'est pas en haut du fichier
 
-  E5: Line length
-  E501:	line too long (82 > 79 characters)
-  E502:	the backslash is redundant between brackets
+  E5: Longeur de la ligne
+  E501: ligne trop longue (82 > 79 caractères)
+  E502: la barre oblique inversée est redondante entre parenthèses
 
-  E7: Statement
-  E701:	multiple statements on one line (colon)
-  E702:	multiple statements on one line (semicolon)
-  E703:	statement ends with a semicolon
-  E704:	multiple statements on one line (def)
-  E711:	comparison to None should be ‘if cond is None:’
-  E712:	comparison to True should be ‘if cond is True:’ or ‘if cond:’
-  E713:	test for membership should be ‘not in’
-  E714:	test for object identity should be ‘is not’
-  E721:	do not compare types, use ‘isinstance()’
-  E722:	do not use bare except, specify exception instead
-  E731:	do not assign a lambda expression, use a def
-  E741:	do not use variables named ‘l’, ‘O’, or ‘I’
-  E742:	do not define classes named ‘l’, ‘O’, or ‘I’
-  E743:	do not define functions named ‘l’, ‘O’, or ‘I’
+  E7: Déclaration
+  E701: déclarations multiples sur une ligne (deux points)
+  E702: déclarations multiples sur une ligne (point-virgule)
+  E703: déclaration se termine avec un point-virgule
+  E704: déclarations multiples sur une ligne (def)
+  E711: la comparaison avec None devrait être ‘if cond is None:’
+  E712: la comparaison avec True devrait être ‘if cond is True:’ or ‘if cond:’
+  E713: test de l'appartenance devrait être ‘not in’
+  E714: test de l'identité de l'objet devrait être ‘is not’
+  E721: ne pas comparer les types, utiliser ‘isinstance()’
+  E722: ne pas utiliser des exception vide, spécifier l'exception plutôt
+  E731: ne pas attribuer une expression lambda, utilise un def
+  E741: ne pas utiliser des variables nommées ‘l’, ‘O’, or ‘I’
+  E742: ne pas définir des classes nommées ‘l’, ‘O’, or ‘I’
+  E743: ne pas définir des fonctions nommées ‘l’, ‘O’, or ‘I’
 
-  E9: Runtime
-  E901:	SyntaxError or IndentationError
-  E902:	IOError
+  E9: Temps d'exécution
+  E901: Erreur de syntaxe or Erreur d'indentation
+  E902: Erreur d'entrée-sortie
