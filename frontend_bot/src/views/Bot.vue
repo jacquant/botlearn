@@ -47,7 +47,8 @@ export default {
         dialog_soumettre: false,
 
         //Code Iframe
-        data_from_iframe: ""
+        data_from_iframe: "",
+        id_execut: 1,
     }),
 
     // ================================================================================================== ==
@@ -66,7 +67,7 @@ export default {
         ///////////////////////////////////////////////////////////////////////////
 
         //Partie Bot
-        var config = {
+        var config = { 
         // what inputs should the bot listen to? this selector should point to at least one input field
         inputs: '#humanInput',
         // if you want to show the capabilities of the bot under the search input
@@ -110,7 +111,25 @@ export default {
 
         //Listening what the iframe sent (code)
         listeningIframe (evt) {
-            this.data_from_iframe = evt.data.code;
+            
+            let data = {"code_input": evt.data.code,
+                        "filename": "string",
+                        "translate": true
+                        }
+            axios.post(this.url + 'code/lint/', data, {headers: {"Authorization": "Bearer " + this.token}}
+            
+            ).then(function (response) {
+                let css_response="<ul style='text-align: left;'>"
+                for (const key in response.data.lint_results) {
+                    css_response += "<li>" + response.data.lint_results[key] + "</li>"
+                }
+                css_response += "</ul>"
+                var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>');
+                entryDiv.html('<span class="origin">' + 'Bot' + '</span>' + css_response);
+
+                $('#chatBotHistory').prepend(entryDiv);
+                
+            })
         },
     },
 
