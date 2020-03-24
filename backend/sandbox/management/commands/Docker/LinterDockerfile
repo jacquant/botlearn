@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Install depedencie
-RUN pip install flake8
+RUN pip install flake8 pyyaml
 
 RUN mkdir sandbox
 WORKDIR sandbox

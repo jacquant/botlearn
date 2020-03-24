@@ -1,48 +1,24 @@
-english:
-  W1: Indentation warning
-  W191:	indentation contains tabs
+W1 Indentation warning: W1 Avertissement d'indentation
+W191 indentation contains tabs: W191 l'indentation contient des tabulations
 
-  W2: Whitespace warning
-  W291:	trailing whitespace
-  W292:	no newline at end of file
-  W293:	blank line contains whitespace
+W2 Whitespace warning: W2 Avertissement d'espace blanc
+W291 trailing whitespace: W291 espace blanc à la fin
 
-  W3: Blank line warning
-  W391:	blank line at end of file
+W292 no newline at end of file: W292 pas de nouvelle ligne à la fin du fichier
+W293 blank line contains whitespace: W293 la ligne vide contient des espaces blancs
 
-  W5: Line break warning
-  W503:	line break before binary operator
-  W504:	line break after binary operator
-  W505:	doc line too long (82 > 79 characters)
+W3 Blank line warning: W3 avertissement sur la ligne vide
+W391 blank line at end of file: W391 ligne vide à la fin du fichier
 
-  W6: Deprecation warning
-  W601:	.has_key() is deprecated, use ‘in’
-  W602:	deprecated form of raising exception
-  W603:	‘<>’ is deprecated, use ‘!=’
-  W604:	backticks are deprecated, use ‘repr()’
-  W605:	invalid escape sequence ‘x’
-  W606:	‘async’ and ‘await’ are reserved keywords starting with Python 3.7
-french:
-  W1: Avertissement d'indentation
-  W191: l'indentation contient des tabulations
+W5 Line break warning: W5 Avertissement de saut de ligne
+W503 line break before binary operator: W503 saut de ligne avant un opérateur binaire
+W504 line break after binary operator: W504 saut de ligne après un opérateur binaire
+W505 doc line too long (82 > 79 characters): W505 ligne de doc trop longue (82 > 79 caractères)
 
-  W2: Avertissement d'espace blanc
-  W291:	espace blanc à la fin
-  W292:	pas de nouvelle ligne à la fin du fichier
-  W293:	la ligne vide contient des espaces blancs
-
-  W3: avertissement sur la ligne vide
-  W391:	ligne vide à la fin du fichier
-
-  W5: Avertissement de saut de ligne
-  W503:	saut de ligne avant un opérateur binaire
-  W504:	saut de ligne après un opérateur binaire
-  W505:	ligne de doc trop longue (82 > 79 caractères)
-
-  W6: Avertissement de dépréciation
-  W601:	.has_key() est déprécié, utilise ‘in’
-  W602:	forme de levée d'exception dépréciée
-  W603:	‘<>’ est déprécié, utilise ‘!=’
-  W604:	backticks (`) sont dépréciés, utilise ‘repr()’
-  W605:	séquence d'échappement non valide ‘x’
-  W606:	‘async’ et ‘await’ sont des mots-clés réservés à partir de Python 3.7
+W6 Deprecation warning: W6 Avertissement de dépréciation
+W601 .has_key() is deprecated, use 'in’: W601 .has_key() est déprécié, utilise 'in’
+W602 deprecated form of raising exception: W602 forme de levée d'exception dépréciée
+W603 '<>’ is deprecated, use '!=’: W603 '<>’ est déprécié, utilise '!=’
+W604 backticks are deprecated, use 'repr()’: W604 backticks (`) sont dépréciés, utilise 'repr()’
+W605 invalid escape sequence 'x’: W605 séquence d'échappement non valide 'x’
+W606 'async’ and 'await’ are reserved keywords starting with Python 3.7: W606 'async’ et 'await’ sont des mots-clés réservés à partir de Python 3.7

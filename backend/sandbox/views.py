@@ -1,4 +1,5 @@
 import html
+
 import epicbox
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
@@ -8,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from exercises.models.exercise import Exercise
-from .serializers import CodeSerializer, CodeSerializerExercise
+from .serializers import CodeSerializer, CodeSerializerLint, CodeSerializerExercise
 
 
 def docker_run(profile, command, files, limits):
@@ -44,7 +45,12 @@ class CodeExecute(APIView):
                 ),
             ]
             epicbox.configure(profiles=profiles)
-            files = [{"name": serializer.validated_data["exercise_filename"], "content": main_code.encode()}]
+            files = [
+                {
+                    "name": serializer.validated_data["exercise_filename"],
+                    "content": main_code.encode(),
+                }
+            ]
             limits = {"cputime": 25, "memory": 64}
             result = docker_run(
                 exercise.dockerImage.profile_name,
@@ -58,18 +64,33 @@ class CodeExecute(APIView):
 
 
 class CodeLint(APIView):
-    @swagger_auto_schema(request_body=CodeSerializer)
+    @swagger_auto_schema(request_body=CodeSerializerLint)
     def post(self, request, format=None):
-        serializer = CodeSerializer(data=request.data)
+        serializer = CodeSerializerLint(data=request.data)
         if serializer.is_valid():
             files = [
                 {
-                    "name": "to_lint.py",
+                    "name": serializer.validated_data["filename"],
                     "content": serializer.validated_data["code_input"].encode(),
                 }
             ]
             limits = {"cputime": 5, "memory": 64}
-            result = docker_run("linter", "python linter.py", files=files, limits=limits)
+            if serializer.validated_data["translate"]:
+                args = "--translate "
+            else:
+                args = ""
+            result = docker_run(
+                "linter",
+                "python linter.py {translate}{filename}".format(
+                    translate=args, filename=serializer.validated_data["filename"]
+                ),
+                files=files,
+                limits=limits,
+            )
+            if result["exit_code"]:
+                result["lint_results"] = []
+            else:
+                result["lint_results"] = result["stdout"].splitlines()[:-1]
             return Response(result, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
