@@ -111,9 +111,10 @@ export default {
 
         //Listening what the iframe sent (code)
         listeningIframe (evt) {
-            
+            let namefile = evt.data.filename.split("/")
+
             let data = {"code_input": evt.data.code,
-                        "filename": "string",
+                        "filename": String(namefile[namefile.length - 1]),
                         "translate": true
                         }
             axios.post(this.url + 'code/lint/', data, {headers: {"Authorization": "Bearer " + this.token}}
