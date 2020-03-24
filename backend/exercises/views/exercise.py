@@ -228,4 +228,3 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         - The cache is delete when a exercise object is saved or deleted
         """
         return super().destroy(self, request, *args, **kwargs)
-

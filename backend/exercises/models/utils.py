@@ -13,14 +13,7 @@ def path_and_rename(instance, filename):
     upload_to = "exercises/{}".format(uuid.uuid5(uuid.NAMESPACE_DNS, instance.name))
     ext = "".join(pathlib.Path(filename).suffixes)
     # get filename
-    if instance.pk:
-        filename = "{file_name}{extension}".format(
-            file_name=instance.pk, extension=ext
-        )
-    else:
-        filename = "{file_name}{extension}".format(
-            file_name=uuid4().hex, extension=ext
-        )
+    filename = "archive"+ext
     # return the whole path of the file
     return os.path.join(upload_to, filename)
 

@@ -13,5 +13,11 @@ class CodeSerializer(serializers.Serializer):
     code_input = serializers.CharField()
 
 
+class CodeSerializerLint(CodeSerializer):
+    filename = serializers.CharField()
+    translate = serializers.BooleanField()
+
+
 class CodeSerializerExercise(CodeSerializer):
     exercise_id = serializers.IntegerField()
+    exercise_filename = serializers.CharField()

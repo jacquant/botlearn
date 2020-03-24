@@ -9,9 +9,9 @@ from .models import SandboxProfile
 def remove_docker_image(id_image):
     client = docker.from_env()
     client.images.remove(image=id_image)
-    print("done")
 
 
 @receiver(pre_delete, sender=SandboxProfile)
 def sandbox_deleted_pre(sender, instance, *args, **kwargs):
-    remove_docker_image.delay(instance.image_name)
+    if instance.image_id:
+        remove_docker_image.delay(instance.image_id)

@@ -18,7 +18,6 @@ def empty_cache():
 
 
 def create_dockerfile(instance):
-    # la mise à jour de la many to many n'est surement pas encore faite
     requirements_list = " ".join(
         instance.requirements.all().distinct().values_list("name", flat=True)
     )
@@ -41,33 +40,38 @@ def create_dockerfile(instance):
     )
     with open(path, "w") as dockerfile:
         print(dockerfile_string, file=dockerfile)
-    return path
+    path_without_media = path[6:]
+    return path_without_media
 
 
 @shared_task
-def create_docker_image(id_image, dockerfile_dir):
+def create_docker_image(tag_image, dockerfile_dir, id_docker_image):
     client = docker.from_env()
-    image = client.images.build(
-        tag=id_image, path=dockerfile_dir, dockerfile="Dockerfile"
+    image_tuple = client.images.build(
+        tag=tag_image,
+        path=dockerfile_dir,
+        dockerfile="Dockerfile",
+        rm=True,
+        forcerm=True,
+    )
+    SandboxProfile.objects.filter(id=id_docker_image).update(
+        image_id=image_tuple[0].short_id
     )
 
 
 def build_docker(instance):
     id_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, str(instance.id)))
     path_dockerfile = create_dockerfile(instance)
-    instance.dockerImage, created = SandboxProfile.objects.update_or_create(
+    docker_image, created = SandboxProfile.objects.update_or_create(
         profile_name=id_uuid,
         image_name="{id}:latest".format(id=id_uuid),
         dockerfile=path_dockerfile,
     )
+    Exercise.objects.filter(id=instance.id).update(dockerImage=docker_image)
     dockerfile_dir = "media/exercises/{}/".format(
         uuid.uuid5(uuid.NAMESPACE_DNS, instance.name)
     )
-    create_docker_image.delay(id_uuid, dockerfile_dir)
-
-
-def empty_cache():
-    cache.delete("exercises_all")
+    create_docker_image.delay(id_uuid, dockerfile_dir, docker_image.id)
 
 
 @receiver(post_save, sender=Exercise)
@@ -76,7 +80,9 @@ def exercise_saved(sender, instance, created, *args, **kwargs):
     Handles the save of a exercise
     """
     empty_cache()
-    transaction.on_commit(lambda: build_docker(instance))
+    transaction.on_commit(
+        lambda: build_docker(instance)
+    )  # Wait until the m2m is fully updated
 
 
 @receiver(post_delete, sender=Exercise)
@@ -85,3 +91,5 @@ def exercise_deleted_post(sender, instance, *args, **kwargs):
     Handles the remove of a exercise
     """
     empty_cache()
+    if instance.dockerImage:
+        instance.dockerImage.delete()

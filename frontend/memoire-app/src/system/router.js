@@ -19,8 +19,7 @@ import Admin from '../views/Admin.vue'
 import Exercice from '../views/Exercice.vue'
 
 
-
-Vue.use(Router)
+Vue.use(Router);
 
 /**
  * Define a variable to redirect if user is not logged in
@@ -28,12 +27,12 @@ Vue.use(Router)
  * @returns {null}
  */
 const ifNotAuthenticated = (to, from, next) => {
-  if (!store.getters.isConnected) {
-    next()
-    return
-  }
-  next('/')
-}
+    if (!store.getters.isConnected) {
+        next();
+        return
+    }
+    next('/')
+};
 
 /**
  * Define a variable to redirect if user is logged in
@@ -41,12 +40,12 @@ const ifNotAuthenticated = (to, from, next) => {
  * @returns {null}
  */
 const ifAuthenticated = (to, from, next) => {
-  if (store.getters.isConnected) {
-    next()
-    return
-  }
-  next('/login')
-}
+    if (store.getters.isConnected) {
+        next();
+        return
+    }
+    next('/login')
+};
 
 let router = new Router({
   mode: 'history',
@@ -72,7 +71,7 @@ let router = new Router({
       beforeEnter: ifNotAuthenticated
     },
 
-
+                        
     //General Parts
     {
       path: '/',

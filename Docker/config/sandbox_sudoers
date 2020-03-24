@@ -1,3 +1,0 @@
-root ALL=(sandbox) SETENV:NOPASSWD:/sandbox-virtualenv/bin/python
-root ALL=(sandbox) SETENV:NOPASSWD:/usr/bin/find
-root ALL=(ALL) NOPASSWD:/usr/bin/pkill
