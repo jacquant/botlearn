@@ -14,6 +14,10 @@ from chatterbot.trainers import ListTrainer
 from chatterbot.ext.django_chatterbot import settings 
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.ext.django_chatterbot import settings
+from chatterbot.comparisons import levenshtein_distance
+from chatterbot.response_selection import get_most_frequent_response, get_first_response
+
+from .selection import select_response, owncompare 
 
 from datetime import datetime, time
 
@@ -24,15 +28,31 @@ class AnswerViewSet(APIView):
     #Defined and train the bot
     chatterbot = ChatBot(**settings.CHATTERBOT,
                         read_only=True,
-                        
+                        response_selection_method=get_first_response,
+                        statement_comparison_function=levenshtein_distance,
                         logic_adapters=[{
                             'maximum_similarity_threshold': 0.75,
-                            'import_path': "chatterbot.logic.BestMatch",
+                            "import_path": "chatterbot.logic.BestMatch",
                             'default_response': 
                             "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])
 
-    #chatterbot.trainer.export_for_training('./files/programmation.yml')
+    #Delete Storage
+    chatterbot.storage.drop()
+
+    #Corpus Part
+    trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
+
+    trainerCoprus.train('chatterbot.corpus.french')
+    
+
+
+    #trainerOwn.train("./files/")
+
+
+    #Own training
+    trainerOwn = ListTrainer(chatterbot)
+
 
     def post(self, request, *args, **kwargs):
         """
@@ -60,7 +80,7 @@ class AnswerViewSet(APIView):
 
         """
         print("################################################################################")
-        self.trainMyBot(self.chatterbot)
+        #self.trainMyBot(self.chatterbot)
 
         input_data = json.loads(request.body.decode('utf-8'))
         

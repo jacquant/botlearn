@@ -1,0 +1,84 @@
+categories:
+- variables
+conversations:
+- - comment utiliser une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur avec l'opérateur =.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - qu'est ce que c'est qu'une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur avec l'opérateur =.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - qu'est ce qu'une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur avec l'opérateur =.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi une variable
+  - Une variable est un "conteneur" permettant de stocker des données dedans.
+    Pour sotcker une valeur, il suffit de définir un nom de variable et de lui assigner une valeur avec l'opérateur =.
+    Il est vivement recommandé de donner un nom pertinent à une variable afin de comprendre rapidement son utilité.
+    <pre><code>mon_string = "Coucou"</code></pre>
+    <pre><code>mon_chiffre = 42</code></pre>
+    Dans cet exemple, nous avons défini 2 variables où l'une contient un string (chaine de caractère) et l'autre un int (entier).
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - comment connaitre le type de ma variable
+  - Il est effectivement possible de connaitre le type d'une variable en utilisant la fonction "type()".
+    <pre><code>ma_variable = "Coucou"</code></pre>
+    <pre><code>type(ma_variable)</code></pre>
+    Dans cet exemple, lorsque la fonction type va renvoyer la valeur 'str' pour string.
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - comment additionner deux variables 
+  - Pour réaliser une opération entre deux variables, il suffit d'utiliser un opérateur entres les variables.
+    <pre><code>ma_variable = 42</code></pre>
+    <pre><code>mon_autre_variable = 1</code></pre>
+    <pre><code>resultat = ma_variable + mon_autre_variable</code></pre>
+    Dans cet exemple, la variable resultat aura comme valeur 43.
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - comment additionner plusieurs variables 
+  - Pour réaliser une opération entre deux variables, il suffit d'utiliser un opérateur entres les variables.
+    <pre><code>ma_variable = 42</code></pre>
+    <pre><code>mon_autre_variable = 1</code></pre>
+    <pre><code>resultat = ma_variable + mon_autre_variable</code></pre>
+    Dans cet exemple, la variable resultat aura comme valeur 43.
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - comment faire une operation entre les variables 
+  - Pour réaliser une opération entre deux variables, il suffit d'utiliser un opérateur entres les variables.
+    <pre><code>ma_variable = "test"</code></pre>
+    <pre><code>mon_autre_variable = "bonsoir"</code></pre>
+    <pre><code>resultat = ma_variable + mon_autre_variable</code></pre>
+    Dans cet exemple, la variable resultat aura comme valeur "testbonsoir".
+    <a href="https://python.doctor/page-apprendre-variables-debutant-python" target="_blank">Plus d'infos ici</a>
+
+- - comment definir un nom de variable
+  - Il est très important de donner un nom adéquat à une variable afin de comprendre rapidement ce qu'elle contient.
+    Les variables x, y, test, coucou, etc... ne sont pas des noms pertinents.
+    En plus d'avoir un nom pertinent, il y a quelques règles à respecter.
+    <ul>
+    <li>Le nom d'une variable doit commencer par une lettre ou par le tiret du bas.</li>
+    <li>Un nom de variable ne peut pas commencer par un numéro.</li>
+    <li>Un nom de variable ne peut contenir que des caractères alphanumériques et des tirets du bas (A-z, 0-9 et _ ).</li>
+    <li>Les noms des variables sont sensibles à la casse (age, Age et AGE sont trois variables différentes).</li>
+    </ul>
+
+- - qu'est ce qu'une variable globale
+  - Pour faire simple, une variable globale est une variable définie en dehors d'une fonction (tout au-dessus du code) mais qui peut être utilisée dans une fonction.
+    Pas besoin de le mettre en argument de la fonction. Toutefois cette pratique est largement déconseillée et ne permet pas d'avoir un code propre et adéquat.

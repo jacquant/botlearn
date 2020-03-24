@@ -9,10 +9,11 @@ import Register from '../views/Register.vue'
 
 //General Parts
 import Home from '../views/Home.vue'
-import Bot from '../views/Bot.vue'
 
 //Students parts
+import AllSolutions from '../views/AllSolutions.vue'
 import Solution from '../views/Solution.vue'
+
 //Admin Parts
 import Admin from '../views/Admin.vue'
 import Exercice from '../views/Exercice.vue'
@@ -47,72 +48,71 @@ const ifAuthenticated = (to, from, next) => {
 };
 
 let router = new Router({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes: [
-        //Login Parts
-        {
-            path: '/register',
-            name: 'register',
-            component: Register,
-            beforeEnter: ifNotAuthenticated
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login,
-            beforeEnter: ifNotAuthenticated
-        },
-        {
-            path: '/reset',
-            name: 'reset',
-            component: Reset,
-            beforeEnter: ifNotAuthenticated
-        },
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes: [
+    //Login Parts
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: Reset,
+      beforeEnter: ifNotAuthenticated
+    },
+
+                        
+    //General Parts
+    {
+      path: '/',
+      name: 'home',
+      component: Home,
+      beforeEnter: ifAuthenticated
+    },
 
 
-        //General Parts
-        {
-            path: '/',
-            name: 'home',
-            component: Home,
-            beforeEnter: ifAuthenticated
-        },
-        {
-            path: '/bot',
-            name: 'bot',
-            component: Bot,
-            beforeEnter: ifAuthenticated
-        },
+    //Students Parts
+    {
+      path: '/mysolutions',
+      name: 'allsolution',
+      component: AllSolutions,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/solution',
+      name: 'solution',
+      component: Solution,
+      beforeEnter: ifAuthenticated
+    },
 
 
-        //Students Parts
-        {
-            path: '/solution',
-            name: 'solution',
-            component: Solution,
-            beforeEnter: ifAuthenticated
-        },
-
-
-        //Admin Parts
-        {
-            path: '/administration',
-            name: 'admin',
-            component: Admin,
-            beforeEnter: ifAuthenticated
-        },
-        {
-            path: '/administration/exercice',
-            name: 'exercice',
-            component: Exercice,
-            beforeEnter: ifAuthenticated
-        },
-        {
-            path: "*",
-            redirect: "/"
-        }
-    ]
-});
+    //Admin Parts
+    {
+      path: '/administration',
+      name: 'admin',
+      component: Admin,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/administration/exercice',
+      name: 'exercice',
+      component: Exercice,
+      beforeEnter: ifAuthenticated
+    },
+    { path: "*", 
+      redirect: "/" 
+    }
+  ]
+})
 
 export default router

@@ -1,0 +1,56 @@
+categories:
+- fichiers
+conversations:
+- - comment lire un fichier 
+  - Pour un lire un fichier, il faut utiliser la fonction "open()".
+    Celle-ci prend en argument le chemin du fichier et le mode d'ouverture du fichier.
+    <pre style><code>fichier = open("dossier1/classement/data.txt", "r")</code></pre>
+    Dans cet exemple, nous ouvrons un fichier contenu dans le dossier "classement" qui lui même est dans le dossier "dossier1" fichier.
+    le "r" signifie le mode de lecture (<a href="https://python.doctor/page-lire-ecrire-creer-fichier-python" target="_blank">voir les différents modes de lecture</a>).
+    La variable "fichier" contient maintenant le contenu du fichier "data.txt".
+
+- - comment recuperer les informations d'un fichier 
+  - Pour un lire un fichier, il faut utiliser la fonction "open()".
+    Celle-ci prend en argument le chemin du fichier et le mode d'ouverture du fichier.
+    <pre style><code>fichier = open("dossier1/classement/data.txt", "r")</code></pre>
+    Dans cet exemple, nous ouvrons un fichier contenu dans le dossier "classement" qui lui même est dans le dossier "dossier1" fichier.
+    le "r" signifie le mode de lecture (<a href="https://python.doctor/page-lire-ecrire-creer-fichier-python" target="_blank">voir les différents modes de lecture</a>).
+    La variable "fichier" contient maintenant le contenu du fichier "data.txt".
+
+- - comment ecrire dans un fichier 
+  - Pour un écrire dans un fichier, il faut utiliser la fonction "open()".
+    Celle-ci prend en argument le chemin du fichier (path) et le mode d'ouverture du fichier.
+    <pre style="text-align:left;"><code>mon_fichier = open("classement/data.txt", "w")<br>mon_fichier.write("Hello there !")<br>mon_fichier.close()</code></pre>
+    Dans cet exemple, nous ouvrons un fichier contenu dans le dossier "classement" et nous écrivons dedans "Hello there !".
+    Avec le mode "w", à chaque ouverture le contenu du fichier est écrasé. Si le fichier n'existe pas python le crée.
+    <a href="https://python.doctor/page-lire-ecrire-creer-fichier-python" target="_blank">Plus d'infos</a>.
+
+- - comment utiliser les paths
+  - Un "path" est un chemin d'accès. il existe deux types de chemins.
+    <p>1° Le chemin absolu:L'idée est de donner le chemin complet depuis la racine jusqu'au fichier.</p>
+    <p>2° Le chemin relatif:L'idée est de partir du dossier courant où on se situe et de lui donner le chemin jusqu'au fichier.</p>
+    <a href="https://www.alsacreations.com/astuce/lire/78-Quelle-est-la-difference-entre-les-chemins-relatifs-et-absolus-.html" target="_blank">Plus d'infos</a>.
+
+- - qu'est ce qu'un chemin
+  - Un "path" est un chemin d'accès. il existe deux types de chemins.
+    <p>1° Le chemin absolu:L'idée est de donner le chemin complet depuis la racine jusqu'au fichier.</p>
+    <p>2° Le chemin relatif:L'idée est de partir du dossier courant où on se situe et de lui donner le chemin jusqu'au fichier.</p>
+    <a href="https://www.alsacreations.com/astuce/lire/78-Quelle-est-la-difference-entre-les-chemins-relatifs-et-absolus-.html" target="_blank">Plus d'infos</a>.
+
+- - c'est quoi un chemin
+  - Un "path" est un chemin d'accès. il existe deux types de chemins.
+    <p>1° Le chemin absolu:L'idée est de donner le chemin complet depuis la racine jusqu'au fichier.</p>
+    <p>2° Le chemin relatif:L'idée est de partir du dossier courant où on se situe et de lui donner le chemin jusqu'au fichier.</p>
+    <a href="https://www.alsacreations.com/astuce/lire/78-Quelle-est-la-difference-entre-les-chemins-relatifs-et-absolus-.html" target="_blank">Plus d'infos</a>.
+
+- - acceder a un fichier
+  - Pour accéder à un fichier, tu dois lui donner un "path" (ou chemin d'accès en français). il existe deux types de chemins.
+    <p>1° Le chemin absolu:L'idée est de donner le chemin complet depuis la racine jusqu'au fichier.</p>
+    <p>2° Le chemin relatif:L'idée est de partir du dossier courant où on se situe et de lui donner le chemin jusqu'au fichier.</p>
+    <a href="https://www.alsacreations.com/astuce/lire/78-Quelle-est-la-difference-entre-les-chemins-relatifs-et-absolus-.html" target="_blank">Plus d'infos</a>.
+
+- - chemin vers un fichier
+  - Pour accéder à un fichier, tu dois lui donner un "path" (ou chemin d'accès en français). il existe deux types de chemins.
+    <p>1° Le chemin absolu:L'idée est de donner le chemin complet depuis la racine jusqu'au fichier.</p>
+    <p>2° Le chemin relatif:L'idée est de partir du dossier courant où on se situe et de lui donner le chemin jusqu'au fichier.</p>
+    <a href="https://www.alsacreations.com/astuce/lire/78-Quelle-est-la-difference-entre-les-chemins-relatifs-et-absolus-.html" target="_blank">Plus d'infos</a>.

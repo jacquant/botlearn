@@ -2,51 +2,127 @@ categories:
 - boucle
 conversations:
     #Récupération du context du prolbème
-- - J'ai un problème avec ma boucle.
+- - j'ai un probleme avec ma boucle.
   - Tu utilises une boucle "for" ou une boucle "while" ?
   - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
   - Etrange, détails-moi un peu le problème.
   - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
-- - Ma boucle ne fonctionne pas.
+- - ma boucle ne fonctionne pas.
   - Tu utilises une boucle "for" ou une boucle "while" ?
   - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
   - Pourquoi cela ne fonctionne pas ?
   - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
-- - Ma boucle for ne fonctionne pas.
+- - ma boucle for ne fonctionne pas.
   - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
   - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
   - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
-- - Ma boucle while ne fonctionne pas.
+- - ma boucle while ne fonctionne pas.
   - Explique-moi ce qu'il se passe avec ta boucle s'il te plait.
   - Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.
   - On va regarder ça ensemble, explique moi en détails ce qu'il se passe.
 
     #Type de boucles
-- - Une boucle for
+- - une boucle for
   - Très bien ! Explique-moi ton erreur
 
-- - Une boucle while
+- - une boucle while
   - Très bien ! Explique-moi ton erreur
 
     #Différence boucle while et for
-- - Je ne comprends pas à quoi sert une boucle while
+- - je ne comprends pas à quoi sert une boucle while
   - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
     <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
     A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
 
     <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
   
-- - Je ne comprends pas à quoi sert une boucle for
+- - je ne comprends pas a quoi sert une boucle for
   - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
     <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
     A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
 
     <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
   
-- - Quelle est la différence entre une boucle while et for ?
+- - quelle est la différence entre une boucle while et for
   - <p>Il faut savoir que la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span> font la même chose. Elles itèrent un certain nombre de fois.</p>
     <p>Cependant, une boucle <span style='font-weight:bold'>for</span> va répéter un nombre de fois <span style='font-weight:bold'>défini</span> l'instruction que tu demandes de faire.
     A la différence d'une boucle <span style='font-weight:bold'>while</span> qui va répéter indéfiniment l'instruction tant que la <span style='font-weight:bold'>condition</span> n'est pas réalisée.</>
 
     <p>Un jour, si tu dois faire une boucle mais que tu ne sais pas combien de fois tu vas passer et repasser dedans, tu devras faire un <span style='font-weight:bold'>while</span> et non pas un <span style='font-weight:bold'>for</span>.</p>
+    
+
+
+    #Utiliser une boucle
+- - comment utiliser une boucle
+  - Une boucle a pour objectif de répéter plusieurs fois un excécution. Cela permet d'alléger le code en écrivant plusieurs fois la même exécution.
+    Il existe deux types de boucles, la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span>.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>i = 0 <br>while i < 10:<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")<br>&nbsp;&nbsp;&nbsp;&nbsp; i = i + 1</pre></code>
+    Dans cet exemple, la phrase "Hello There" sera affichée 10 fois grâce à la boucle while.
+    Il est possible de faire pareil avec une boucle for.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>for i in range(0,10):<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")</pre></code>
+    <a href="https://python.doctor/page-apprendre-boucles-python-loop" target="_blank">Plus d'infos ici</a>
+
+- - comment faire une boucle
+  - Une boucle a pour objectif de répéter plusieurs fois un excécution. Cela permet d'alléger le code en écrivant plusieurs fois la même exécution.
+    Il existe deux types de boucles, la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span>.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>i = 0 <br>while i < 10:<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")<br>&nbsp;&nbsp;&nbsp;&nbsp; i = i + 1</pre></code>
+    Dans cet exemple, la phrase "Hello There" sera affichée 10 fois grâce à la boucle while.
+    Il est possible de faire pareil avec une boucle for.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>for i in range(0,10):<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")</pre></code>
+    <a href="https://python.doctor/page-apprendre-boucles-python-loop" target="_blank">Plus d'infos ici</a>
+
+- - je ne sais pas utiliser une boucle
+  - Une boucle a pour objectif de répéter plusieurs fois un excécution. Cela permet d'alléger le code en écrivant plusieurs fois la même exécution.
+    Il existe deux types de boucles, la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span>.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>i = 0 <br>while i < 10:<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")<br>&nbsp;&nbsp;&nbsp;&nbsp; i = i + 1</pre></code>
+    Dans cet exemple, la phrase "Hello There" sera affichée 10 fois grâce à la boucle while.
+    Il est possible de faire pareil avec une boucle for.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>for i in range(0,10):<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")</pre></code>
+    <a href="https://python.doctor/page-apprendre-boucles-python-loop" target="_blank">Plus d'infos ici</a>
+
+- - comment faire un for
+  - Une boucle a pour objectif de répéter plusieurs fois un excécution. Cela permet d'alléger le code en écrivant plusieurs fois la même exécution.
+    Il existe deux types de boucles, la boucle <span style='font-weight:bold'>while</span> et la boucle <span style='font-weight:bold'>for</span>.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>for i in range(0,10):<br>&nbsp;&nbsp;&nbsp;&nbsp; print("Hello There !")</pre></code>
+    Dans cet exemple, la phrase "Hello There" sera affichée 10 fois grâce à la boucle for.
+    <a href="https://python.doctor/page-apprendre-boucles-python-loop" target="_blank">Plus d'infos ici</a>
   
+    #Itérer sur structure de données
+- - comment iterer sur des cles
+  - Il est possible d'itérer sur les strutures de données grâce aux boucles.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:6em"><code>for key in mon_dict:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(mon_dict[key])</pre></code>
+    Dans cet exemple, nous utilisons une boucle for bouclant sur tous les éléments du dictionnaire et nous affichons les valeurs avec un print.
+
+- - comment iterer sur un dictionnaire
+  - Il est possible d'itérer sur les strutures de données grâce aux boucles.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:6em"><code>for key in mon_dict:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(mon_dict[key])</pre></code>
+    Dans cet exemple, nous utilisons une boucle for bouclant sur tous les éléments du dictionnaire et nous affichons les valeurs avec un print.
+
+- - comment iterer sur des indices
+  - Il est possible d'itérer sur les strutures de données grâce aux boucles.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:6em"><code>for value in mon_tableau:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(mon_dict[value])</pre></code>
+    Dans cet exemple, nous utilisons une boucle for bouclant sur tous les éléments du tableau et nous affichons les valeurs avec un print.
+     <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>.
+     
+- - comment iterer sur un tableau
+  - Il est possible d'itérer sur les strutures de données grâce aux boucles.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:12em"><code>for value in mon_tableau:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(value)</pre></code>
+    Dans cet exemple, nous utilisons une boucle for bouclant sur tous les éléments du tableau et nous affichons les valeurs avec un print.
+     <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>.
+
+- - comment iterer sur une liste
+  - Il est possible d'itérer sur les strutures de données grâce aux boucles.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:12em"><code>for value in ma_liste:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(value)</pre></code>
+    Dans cet exemple, nous utilisons une boucle for bouclant sur tous les éléments de la liste et nous affichons les valeurs avec un print.
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>.
+
+
+    #Comment afficher à répétition
+- - comment faire plusieurs fois la même chose
+  - Il te suffit d'utiliser une boucle ! Tu ne sais pas comment l'utiliser ? Tape "Comment utiliser une boucle"
+
+- - comment répéter plusieurs fois la même chose
+  - Il te suffit d'utiliser une boucle ! Tu ne sais pas comment l'utiliser ? Tape "Comment utiliser une boucle"
+
+- - comment répéter plusieurs fois quelque chose
+  - Il te suffit d'utiliser une boucle ! Tu ne sais pas comment l'utiliser ? Tape "Comment utiliser une boucle"

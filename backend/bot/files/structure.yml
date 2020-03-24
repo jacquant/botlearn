@@ -1,19 +1,303 @@
 categories:
 - structure
 conversations:
-    #Dictionnaire
-- - Comment ajouter un élément dans un dictionnaire
+- - comment fonctionne un dictionnaire
+  - Un dictionnaire en python est une sorte de liste mais au lieu d'utiliser des index , on utilise des clés alphanumériques.
+    L'idée est d'associer une valeur à une clé. Pour faire l'analogie avec un "vrai dictionnaire", la clé serait le mot et la valeur serait la définition.
+    <pre><code>mon_dictionnaire = {"Nom":"Gerrard","Prénom":"Steven"}</code></pre>
+    Nom et Prénom sont des clés et Gerrard et Steven sont des valeurs à ces clés.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi un dictionnaire
+  - Un dictionnaire en python est une sorte de liste mais au lieu d'utiliser des index , on utilise des clés alphanumériques.
+    L'idée est d'associer une valeur à une clé. Pour faire l'analogie avec un "vrai dictionnaire", la clé serait le mot et la valeur serait la définition.
+    <pre><code>mon_dictionnaire = {"Nom":"Gerrard","Prénom":"Steven"}</code></pre>
+    Nom et Prénom sont des clés et Gerrard et Steven sont des valeurs à ces clés.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment utiliser un dictionnaire
+  - Un dictionnaire en python est une sorte de liste mais au lieu d'utiliser des index , on utilise des clés alphanumériques.
+    L'idée est d'associer une valeur à une clé. Pour faire l'analogie avec un "vrai dictionnaire", la clé serait le mot et la valeur serait la définition.
+    <pre><code>mon_dictionnaire = {"Nom":"Gerrard","Prénom":"Steven"}</code></pre>
+    Nom et Prénom sont des clés et Gerrard et Steven sont des valeurs à ces clés.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment creer un dictionnaire
+  - Pour créer (ou initialiser) un dictionnaire, il te suffit de faire comme ceci
+    <pre><code>mon_dictionnaire = {}</code></pre>
+    Tu peux également lui donner des valeurs directement
+    <pre><code>mon_dictionnaire = {"Nom":"Origi","Prenom":"Divock"}</code></pre>
+    Où Nom et Prénom sont des clés et Origi et Divock sont des valeurs à ces clés.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - creer un dictionnaire
+  - Pour créer (ou initialiser) un dictionnaire, il te suffit de faire comme ceci
+    <pre><code>mon_dictionnaire = {}</code></pre>
+    Tu peux également lui donner des valeurs directement
+    <pre><code>mon_dictionnaire = {"Nom":"Origi","Prenom":"Divock"}</code></pre>
+    Où Nom et Prénom sont des clés et Origi et Divock sont des valeurs à ces clés.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment ajouter un element dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé (existante ou non) et de lui donner une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire["Cle"] = "Toto" </code></pre>
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+- - comment ajouter une chose dans un dictionnaire
   - Il te suffit de prendre ton dictionnaire, de lui mettre une clé (existante ou non) et de lui donner une valeur.
     <p>Exemple:</p>
     <pre><code>mon_dictionnaire["Clé"] = "Toto" </code></pre>
     <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
-- - C'est quoi une clé d'un dictionnaire 
+
+- - ajouter une entrée dans un dico
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé (existante ou non) et de lui donner une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire["Clé"] = "Toto" </code></pre>
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment supprimer un element dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante de mettre le mot clé "del" juste avant.
+    <p>Exemple:</p>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé":"Arthur", "Clé2":"Bruce"}</code></pre>
+    <pre><code>del mon_dictionnaire["Clé"]</code></pre>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé2":"Bruce"}</code></pre>
+    Dans cette exemple, la clé "Clé" ainsi que sa valeur ont été supprimée.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment modifier un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante et lui assigner une nouvelle donnée.
+    <p>Exemple:</p>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé":"Arthur", "Clé2":"Bruce"}</code></pre>
+    <pre><code>mon_dictionnaire["Clé"] = "Toto" </code></pre>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé":"Toto", "Clé2":"Bruce"}</code></pre>
+    Dans cette exemple, la clé "Clé" aura changée de valeur.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - comment modifier un element dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante et lui assigner une nouvelle donnée.
+    <p>Exemple:</p>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé":"Arthur", "Clé2":"Bruce"}</code></pre>
+    <pre><code>mon_dictionnaire["Clé"] = "Toto" </code></pre>
+    <pre><code>print(mon_dictionnaire)</code></pre>
+    <pre><code>{"Clé":"Toto", "Clé2":"Bruce"}</code></pre>
+    Dans cette exemple, la clé "Clé" aura changée de valeur.
+    <a href="https://python.doctor/page-apprendre-dictionnaire-python" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi une cle d'un dictionnaire 
   - Une clé est un "identifiant" permettant d'accéder à une valeur.
     <p>Exemple:</p>
-    <pre><code>mon_dict = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John"}</code></pre>
     Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
     Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
 
     <p>Exemple:</p>
     <pre><code>print(mon_dict["nom"])</code></pre>
     Dans cette exemple, la valeur affichée sera "Andrew"
+
+- - je ne comprends pas les cles dans un dictionnaire 
+  - Une clé est un "identifiant" permettant d'accéder à une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
+    Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
+
+    <p>Exemple:</p>
+    <pre><code>print(mon_dict["nom"])</code></pre>
+    Dans cette exemple, la valeur affichée sera "Andrew"
+
+- - je ne comprends pas les cles 
+  - Une clé est un "identifiant" permettant d'accéder à une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
+    Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
+
+    <p>Exemple:</p>
+    <pre><code>print(mon_dict["nom"])</code></pre>
+    Dans cette exemple, la valeur affichée sera "Andrew"
+
+- - qu'est ce qu'une cle
+  - Une clé est un "identifiant" permettant d'accéder à une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
+    Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
+    <p>Exemple:</p>
+    <pre><code>print(mon_dict["nom"])</code></pre>
+    Dans cette exemple, la valeur affichée sera "Andrew"
+
+- - c'est quoi une cle
+  - Une clé est un "identifiant" permettant d'accéder à une valeur.
+    <p>Exemple:</p>
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John"}</code></pre>
+    Avec cet exemple, nous définissons un dictionnaire qui comporte deux clés (nom et prénom) et donc deux valeurs associées.
+    Tu souhaites accéder à ces valeurs ? Il te suffit de mettre entre deux crochets le nom de la clé.
+    <p>Exemple:</p>
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Dans cette exemple, la valeur affichée sera "Andrew"
+
+- - acceder à une valeur dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante entre crochets "[" "]"
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Nous récuperons la valeur stockée à la clé "nom"
+
+- - comment recuperer une valeur dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante entre crochets "[" "]"
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Nous récuperons la valeur stockée à la clé "nom"
+
+- - comment acceder à une valeur dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante entre crochets "[" "]"
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Nous récuperons la valeur stockée à la clé "nom"
+
+- - comment récupérer une valeur dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante entre crochets "[" "]"
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Nous récuperons la valeur stockée à la clé "nom"
+
+- - récupérer une valeur dans un dictionnaire
+  - Il te suffit de prendre ton dictionnaire, de lui mettre une clé existante entre crochets "[" "]"
+    <pre><code>print(mon_dictionnaire["nom"])</code></pre>
+    Nous récuperons la valeur stockée à la clé "nom"
+
+    #Gestion des dictionnaires imbriqués
+- - que faire si ce dictionnaire a plusieurs cles et sous-cles
+  - Récupérer une valeur dans des dictionnaires imbriqués n'est pas plus compliqué qu'avec un seul dictionnaire.
+    Prenons un dictionnaire qui contient lui même un dictionnaire et essayons de récupérer une valeur dans ce dictionnaire.
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John", "adresse":{"rue":"Rue Grandgagnage","numero":21,"cp":5000,"localite":"Namur"}}</code></pre>
+    <pre><code>print(mon_dictionnaire["adresse"]["rue"])</code></pre>
+    Dans cet exemple, nous récupérons la rue contenue dans l'adresse.
+
+- - que faire si ce dictionnaire est dans un autre dictionnaire
+  - Récupérer une valeur dans des dictionnaires imbriqués n'est pas plus compliqué qu'avec un seul dictionnaire.
+    Prenons un dictionnaire qui contient lui même un dictionnaire et essayons de récupérer une valeur dans ce dictionnaire.
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John", "adresse":{"rue":"Rue Grandgagnage","numero":21,"cp":5000,"localite":"Namur"}}</code></pre>
+    <pre><code>print(mon_dictionnaire["adresse"]["rue"])</code></pre>
+    Dans cet exemple, nous récupérons la rue contenue dans l'adresse.
+
+- - que faire si les dictionnaires sont imbriques
+  - Récupérer une valeur dans des dictionnaires imbriqués n'est pas plus compliqué qu'avec un seul dictionnaire.
+    Prenons un dictionnaire qui contient lui même un dictionnaire et essayons de récupérer une valeur dans ce dictionnaire.
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John", "adresse":{"rue":"Rue Grandgagnage","numero":21,"cp":5000,"localite":"Namur"}}</code></pre>
+    <pre><code>print(mon_dictionnaire["adresse"]["rue"])</code></pre>
+    Dans cet exemple, nous récupérons la rue contenue dans l'adresse.
+
+- - comment recuperer une valeur dans des dictionnaires imbriques
+  - Récupérer une valeur dans des dictionnaires imbriqués n'est pas plus compliqué qu'avec un seul dictionnaire.
+    Prenons un dictionnaire qui contient lui même un dictionnaire et essayons de récupérer une valeur dans ce dictionnaire.
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John", "adresse":{"rue":"Rue Grandgagnage","numero":21,"cp":5000,"localite":"Namur"}}</code></pre>
+    <pre><code>print(mon_dictionnaire["adresse"]["rue"])</code></pre>
+    Dans cet exemple, nous récupérons la rue contenue dans l'adresse.
+
+- - comment recuperer une valeur de plusieurs dictionnaires
+  - Récupérer une valeur dans des dictionnaires imbriqués n'est pas plus compliqué qu'avec un seul dictionnaire.
+    Prenons un dictionnaire qui contient lui même un dictionnaire et essayons de récupérer une valeur dans ce dictionnaire.
+    <pre><code>mon_dictionnaire = {"nom":"Andrew", "prenom":"John", "adresse":{"rue":"Rue Grandgagnage","numero":21,"cp":5000,"localite":"Namur"}}</code></pre>
+    <pre><code>print(mon_dictionnaire["adresse"]["rue"])</code></pre>
+    Dans cet exemple, nous récupérons la rue contenue dans l'adresse.
+
+
+    #Liste
+- - comment crer une liste
+  - Pour créer (ou initialiser) une liste, il te suffit de faire comme ceci
+    <pre><code>ma_liste = []</code></pre>
+    Tu peux également lui donner des valeurs directement
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Où "Hazard", "De Bruyne" et "Witsel" sont des valeurs.
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi une liste
+  - Une liste en python est conteneur permettant de stocker plusieurs données dans une même variable.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple, nous avons 3 données (des strings) contenues dans la variable "ma_liste".
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment fonctionne une liste
+  - Une liste en python est conteneur permettant de stocker plusieurs données dans une même variable.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple, nous avons 3 données (des strings) contenues dans la variable "ma_liste".
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment marche une liste
+  - Une liste en python est conteneur permettant de stocker plusieurs données dans une même variable.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple, nous avons 3 données (des strings) contenues dans la variable "ma_liste".
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi une liste
+  - Une liste en python est conteneur permettant de stocker plusieurs données dans une même variable.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple, nous avons 3 données (des strings) contenues dans la variable "ma_liste".
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment modifier une liste
+  - Pour modifier une liste, il te suffit de prendre la liste en question et de lui donner la position de l'élément à modifier (son index).
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","De Bruyne", "Witsel"]</code></pre>
+    <pre><code>ma_liste[1] = "Tielemans"</code></pre>
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","Tielemans","Witsel"]</code></pre>
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment modifier un élement de ma liste
+  - Pour modifier une liste, il te suffit de prendre la liste en question et de lui donner la position de l'élément à modifier (son index).
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","De Bruyne", "Witsel"]</code></pre>
+    <pre><code>ma_liste[1] = "Tielemans"</code></pre>
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","Tielemans","Witsel"]</code></pre>
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment supprimer un element d'une liste
+  - Pour supprimer un élément d'une liste, il te suffit de prendre la liste en question, de lui donner un index et mettre le mot clé "del" à sa gauche.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    <pre><code>del ma_liste[1]</code></pre>
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","Witsel"]</code></pre>
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment ajouter un élément dans une liste
+  - Pour ajouter un élément à une liste, il te suffit d'utiliser la fonction "append".
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","De Bruyne","Witsel"]</code></pre>
+    <pre><code>ma_liste.append("Lukaku")</code></pre>
+    <pre><code>print(ma_liste)</code></pre>
+    <pre><code>["Hazard","Tielemans","Witsel","Lukaku"]</code></pre>
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment recuperer la valeur d'un element dans une liste
+  - Pour récupérer une valeur d'une liste, il te suffit de mettre son index à coté de la variable contenant la liste.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    <pre><code>ma_liste[0]</code></pre>
+    <pre><code>"Hazard"</code></pre>
+    Dans cet exemple, nous récupèrons l'élément à la position 0 ce qui nous donne la valeur "Hazard".
+    Il ne faut pas oublier qu'une liste commence toujours à partir de 0 en python.
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - comment connaitre la taille de ma liste
+  - Pour obtenir la taille d'une liste, il faut utiliser la fonction "len()" et mettre la liste à l'intérieur.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    <pre><code>len(ma_liste)</code></pre>
+    <pre><code>3</code></pre>
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+- - c'est quoi un index
+  - L'index dans une liste est la position d'un élément dans une liste.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple de liste, Hazard est à l'index 0, De Bruyne à l'index 1 et Witsel à l'index 2.
+    L'index est donc le moyen de localiser les éléments d'une liste.
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>
+
+
+- - qu'est ce qu'un index
+  - L'index dans une liste est la position d'un élément dans une liste.
+    <pre><code>ma_liste = ["Hazard","De Bruyne","Witsel"]</code></pre>
+    Dans cet exemple de liste, Hazard est à l'index 0, De Bruyne à l'index 1 et Witsel à l'index 2.
+    L'index est donc le moyen de localiser les éléments d'une liste.
+    <a href="https://python.doctor/page-apprendre-listes-list-tableaux-tableaux-liste-array-python-cours-debutant" target="_blank">Plus d'infos ici</a>

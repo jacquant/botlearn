@@ -1,0 +1,67 @@
+categories:
+- string
+conversations:
+    #Manipuler strings
+- - comment decouper un string en un tableau
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+
+- - comment decouper un string
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+
+- - comment utiliser split
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+
+- - comment utiliser la fonction split
+  - Il est possible de découper un string en un tableau en utilisant la fonction "split()".
+    Cette fonction prend en argument le caractère qui découpera le string.
+    <pre><code>mon_string ="Salut à tous, je vais bien, je suis heureux"</code></pre>
+    <pre><code>mon_string.split(",")</code></pre>
+    <pre><code>["Salut à tous","je vais bien", "je suis heureux"]</code></pre>
+    Nous obtenons une liste de 3 éléments.
+
+- - comment additionner des strings entre eux
+  - Pour concaténer des strings entre eux, il suffit d'utiliser l'opérateur +.
+    Attention toutefois qu'il n'est pas possbile de concaténer un string et un int (il faudra alors convertir le int en string).
+    <pre><code>mon_string ="Salut à tous"</code></pre>
+    <pre><code>resultat = mon_string + " Nice"</code></pre>
+    Dans cet exemple, la variable resultat aura comme valeur "Salut à tous Nice".
+
+- - comment concatener des strings entre eux
+  - Pour concaténer des strings entre eux, il suffit d'utiliser l'opérateur +.
+    Attention toutefois qu'il n'est pas possbile de concaténer un string et un int (il faudra alors convertir le int en string).
+    <pre><code>mon_string ="Salut à tous"</code></pre>
+    <pre><code>resultat = mon_string + " Nice"</code></pre>
+    Dans cet exemple, la variable resultat aura comme valeur "Salut à tous Nice".
+    
+    #Convertir strings
+- - convertir un string en int
+  - Il est possible de convertir un string en int (entier).
+    Il faut utiliser la fonction "int()" et mettre en argument le string en question.
+    <pre><code>ma_variable = "42"</code></pre>
+    <pre><code>int(ma_variable)</code></pre>
+    <pre><code>42</code></pre>
+    La fonction a converti le string "42" en un int (entier) 42.
+- - convertir une chaine de caractères en un entier
+  - Il est possible de convertir un string en int (entier).
+    Il faut utiliser la fonction "int()" et mettre en argument le string en question.
+    <pre><code>ma_variable = "42"</code></pre>
+    <pre><code>int(ma_variable)</code></pre>
+    <pre><code>42</code></pre>
+    La fonction a converti le string "42" en un int (entier) 42.
+
+  

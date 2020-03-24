@@ -1,19 +1,55 @@
 categories:
-- aide
+  - aide
 conversations:
-    #demande aide
-- - J'ai besoin d'aide
-  - Je vais t'aide bien évidemment ! Quel est ton problème ?
+#Bonjour
+- - salut
+  - Hello ! En quoi puis-je t'aider ?
+
+- - bonjour
+  - Bonjour ! En quoi puis-je t'aider ?
+
+- - bonsoir
+  - Bonjour ! En quoi puis-je t'aider ?
+
+- - hello
+  - Salut ! En quoi puis-je t'aider ?
+  
+#demande aide
+- - j'ai besoin d'aide
+  - Je vais t'aider bien évidemment ! Quel est ton problème ?
   - En quoi puis-je t'aider ?
+
+- - tu sais m'aider
+  - En quoi puis-je t'aider ?
+
 - - aide
   - En quoi puis-je t'aider ?
+
 - - aide-moi
   - En quoi puis-je t'aider ?
+
+- - aide moi
+  - En quoi puis-je t'aider ?
+
 - - need help
   - En quoi puis-je t'aider ?
+
 - - help me
   - En quoi puis-je t'aider ?
+
 - - help
   - En quoi puis-je t'aider ?
 
-  
+- - j'ai un probleme
+  - Je vais t'aider ! Quel est ton problème ?
+
+
+  #Gérer les messages "flous"
+- - je comprends rien
+  - Il va falloir être plus précis que ça ! Explique ton problème, est-ce que c'est au niveau des boucles, des fonctions, des structures de données, etc ?
+
+- - je pige rien
+- Il va falloir être plus précis que ça ! Explique ton problème, est-ce que c'est au niveau des boucles, des fonctions, des structures de données, etc ?
+
+- - je peux avoir la liste des exercices
+  - Oui ! La voici

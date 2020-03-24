@@ -120,29 +120,66 @@
             ]
         }),
 
-        // ================================================================================================== ==
-        // Computed
-        // ================================================================================================== ==
-
-        computed: {
-            //Check if user is logged to display information differently
-            loggedIn() {
-                return store.getters.isConnected;
+  },
+  // ================================================================================================== ==
+  // Data
+  // ================================================================================================== ==
+  data: () => ({
+        clipped: false,
+        drawer: false,
+        fixed: false,
+        items: [
+            {
+                icon: 'mdi-apps',
+                title: 'Acceuil',
+                to: '/'
             },
-            //Check if a user is in the staff
-            admin() {
-                return store.getters.isStaff;
-            }
+            {
+                icon: 'mdi-chart-bubble',
+                title: 'Inspire',
+                to: '/mysolutions'
+            },
+            {
+                icon: 'mdi-login-variant',
+                title: 'Se connecter',
+                to: '/login'
+            },
+            {
+                icon: 'mdi-account-edit',
+                title: 'S\'inscrire',
+                to: '/register'
+            },
+            {
+                icon: 'mdi-logout-variant',
+                title: 'Se déconnecter',
+                to: null,
+            },
+        ]
+    }),
 
+    // ================================================================================================== ==
+    // Computed
+    // ================================================================================================== =
+
+    computed: {
+        //Check if user is logged to display information differently
+        loggedIn() {
+            return store.getters.isConnected;
         },
-
-        // ================================================================================================== ==
-        // Methods
-        // ================================================================================================== ==
-        methods: {
-            logout() {
-                store.commit("logout");
-            }
+        //Check if a user is in the staff
+        admin() {
+            return store.getters.isStaff;
         }
-    };
+
+    },
+
+    // ================================================================================================== ==
+    // Methods
+    // ================================================================================================== ==
+    methods: {
+        logout() {
+            store.commit("logout");
+        }
+    }
+};
 </script>

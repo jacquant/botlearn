@@ -1,0 +1,34 @@
+categories:
+- recursivite
+conversations:
+- - c'est quoi la recursivite
+  - Une fonction récursive est une fonction qui s'appelle elle-même dans son propre code.
+    L'idée est de résoudre des problèmes de plus en plus simples.
+    La factorielle est un bon exemple de l'utilisation récursive d'une fonction.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>def fact(n):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n<2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return n*fact(n-1)</code></pre>
+    Dans cet exemple, tant que la valeur de n de sera pas inférieur à 2, la fonction fact continuera de s'appeller elle-même en diminuant de 1 n.
+    <p>Supposons que nous appelons fact avec 5 comme valeur de n (fact(5)). L'éxécution va aller dans le else 4 fois et une fois dans le if pour donner 5*4*3*2*1 </p>
+
+- - c'est quoi une fonction recursive
+  - Une fonction récursive est une fonction qui s'appelle elle-même dans son propre code.
+    L'idée est de résoudre des problèmes de plus en plus simples.
+    La factorielle est un bon exemple de l'utilisation récursive d'une fonction.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>def fact(n):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n<2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return n*fact(n-1)</code></pre>
+    Dans cet exemple, tant que la valeur de n de sera pas inférieur à 2, la fonction fact continuera de s'appeller elle-même en diminuant de 1 n.
+    <p>Supposons que nous appelons fact avec 5 comme valeur de n (fact(5)). L'éxécution va aller dans le else 4 fois et une fois dans le if pour donner 5*4*3*2*1 </p>
+
+- - comment faire de la recursivite
+  - Une fonction récursive est une fonction qui s'appelle elle-même dans son propre code.
+    L'idée est de résoudre des problèmes de plus en plus simples.
+    La factorielle est un bon exemple de l'utilisation récursive d'une fonction.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>def fact(n):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n<2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return n*fact(n-1)</code></pre>
+    Dans cet exemple, tant que la valeur de n de sera pas inférieur à 2, la fonction fact continuera de s'appeller elle-même en diminuant de 1 n.
+    <p>Supposons que nous appelons fact avec 5 comme valeur de n (fact(5)). L'éxécution va aller dans le else 4 fois et une fois dans le if pour donner 5*4*3*2*1 </p>
+
+- - comment faire une fonction recursive
+  - Une fonction récursive est une fonction qui s'appelle elle-même dans son propre code.
+    L'idée est de résoudre des problèmes de plus en plus simples.
+    La factorielle est un bon exemple de l'utilisation récursive d'une fonction.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>def fact(n):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n<2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return n*fact(n-1)</code></pre>
+    Dans cet exemple, tant que la valeur de n de sera pas inférieur à 2, la fonction fact continuera de s'appeller elle-même en diminuant de 1 n.
+    <p>Supposons que nous appelons fact avec 5 comme valeur de n (fact(5)). L'éxécution va aller dans le else 4 fois et une fois dans le if pour donner 5*4*3*2*1 </p>

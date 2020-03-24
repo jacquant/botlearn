@@ -1,0 +1,33 @@
+categories:
+  - fonctions
+conversations:
+- - c'est quoi une fonction
+  - Une fonction (ou function en anglais) est une suite d'instructions que l'on peut appeler avec un nom.
+    En d'autres mot, le but d'une fonction est de regrouper un ensemble d'instructions dans un seul et même endroit.
+    Il existe deux grands types de fonctions, des fonctions avec paramètres et d'autres sans paramètre. Lorsque l'on crée une fonction, il faut utiliser le mot clé "def".
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:12em"><code>def calcul_multiplication(entier1,entier2):<br>&nbsp;&nbsp;&nbsp;&nbsp;return entier1*entier2</pre></code>
+    Dans cet exemple, on définit une fonction avec deux arguments qui va calculer la valeur de deux entiers.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:10em"><code>def dire_bonjour():<br>&nbsp;&nbsp;&nbsp;&nbsp;return "Hello There !"</pre></code>
+    Dans cet exemple, on définit une fonction qui n'a pas d'arguments et qui retourne (return) une chaine de caractères "Hello There !".
+    <br>
+    Maintenant que nos fonctions sont crées, il ne reste plus qu'à les appeler !
+    <pre><code>print(calcul_multiplication(5,6))</pre></code>
+    <pre><code>print(dire_bonjour())</pre></code>
+    La valeur des deux prints sera 30 et "Hello There !".
+    <a href="https://python.doctor/page-apprendre-creer-fonction-en-python" target="_blank">Plus d'infos ici</a>.
+
+- - comment creer une fonction
+  - Pour créer une fonction, il faut commencer par utiliser le mot clé "def". Par la suite on lui donne un nom et les arugments nécessaires entre parenthèses.
+    <pre><code>def add(a):</pre></code>
+    <pre><code>def ma_fonction():</pre></code>
+    Voici deux exemple dans lesquels nous avons créer deux fonctions. Il reste maintenant à leur ajouter du contenu à la ligne suivante (et avec une tabulation) comme ceci.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:6em"><code>def add(a):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a+1</pre></code>
+    <a href="https://python.doctor/page-apprendre-creer-fonction-en-python" target="_blank">Plus d'infos ici</a>.
+
+- - comment faire une fonction
+  - Pour créer une fonction, il faut commencer par utiliser le mot clé "def". Par la suite on lui donne un nom et les arugments nécessaires entre parenthèses.
+    <pre><code>def add(a):</pre></code>
+    <pre><code>def ma_fonction():</pre></code>
+    Voici deux exemple dans lesquels nous avons créer deux fonctions. Il reste maintenant à leur ajouter du contenu à la ligne suivante (et avec une tabulation) comme ceci.
+    <pre style="text-align:left;margin-left:auto;margin-right:auto;width:6em"><code>def add(a):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a+1</pre></code>
+    <a href="https://python.doctor/page-apprendre-creer-fonction-en-python" target="_blank">Plus d'infos ici</a>.

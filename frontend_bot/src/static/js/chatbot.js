@@ -1,4 +1,5 @@
-
+import { library, icon } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 export var ChatBot = function () {
 
     //// common vars
@@ -355,81 +356,94 @@ export var ChatBot = function () {
                     "Pour commencer à m'utiliser, réalise un devoir.",
                     "Pour récupérer la liste des devoirs, tape cette commande:",
                     "'Je peux avoir la liste des exercices'",
+                    "J'aurais deux fonctions:",
+                    "1° La première aura de répondre à tes questions que tu poseras dans le chat.",
+                    "Je suis capable de comprendre les questions liées à la programmation",
+                    "2° La deuxième fonction sera de te donner un feedback plus précis sur ton code.",
+                    "Pour se faire, il te suffit d'exéctuer ton code via la bouton juste au-dessus de moi.",
                 ];
 
                 return {
                     react: function (query) {
-                        let data_request = '{"text":"'+ String(query) + '"}'
 
-                        $.ajax({
-                            type: 'POST',
-                            url: 'http://localhost:8080/api/bot/test/',
-                            dataType:'json',
-                            data: data_request,
-                            headers: { 'Authorization': 'Bearer '+ token},
-                            contentType: "application/json; charset=utf-8",
-                        }).done(function (data) {
-                            //console.log(data)
-                            var content = data.text;
+                        query = ChatBot.removeAccents(query);
+
+                        let data_request = '{"text":"'+ String(query.toLowerCase()) + '"}'
+
+                        if(query != ""){
+
+                            $.ajax({
+                                type: 'POST',
+                                url: 'http://localhost:8080/api/bot/test/',
+                                dataType:'json',
+                                data: data_request,
+                                headers: { 'Authorization': 'Bearer '+ token},
+                                contentType: "application/json; charset=utf-8",
+                            }).done(function (data) {
+                                //console.log(data)
+                                var content = data.text;
 
 
-                            // no direct answer? tell about related topics then
-                            if (content == '' && data.RelatedTopics.length > 0) {
+                                // no direct answer? tell about related topics then
+                                if (content == '' && data.RelatedTopics.length > 0) {
 
-                                content = '<p>I found multiple answers for you:</p>';
+                                    content = '<p>I found multiple answers for you:</p>';
 
-                                var media = [];
-                                for (var i = 0; i < data.RelatedTopics.length; i++) {
-                                    var ob = data.RelatedTopics[i];
-                                    if (ob.Result == undefined) {
-                                        continue;
+                                    var media = [];
+                                    for (var i = 0; i < data.RelatedTopics.length; i++) {
+                                        var ob = data.RelatedTopics[i];
+                                        if (ob.Result == undefined) {
+                                            continue;
+                                        }
+                                        if (ob.Icon.URL != '' && ob.Icon.URL.indexOf(".ico") < 0) {
+                                            media.push(ob.Icon.URL);
+                                        }
+
+                                        content += '<p>' + ob.Result.replace("</a>", "</a> ") + '</p>';
                                     }
-                                    if (ob.Icon.URL != '' && ob.Icon.URL.indexOf(".ico") < 0) {
-                                        media.push(ob.Icon.URL);
+
+                                    ///content += '<img src="' + ob.Icon.URL + '" align="left" />' +
+
+                                    for (i = 0; i < media.length; i++) {
+                                        var m = media[i];
+                                        content += '<img src="' + m + '" style="margin-right:5px"/>';
                                     }
 
-                                    content += '<p>' + ob.Result.replace("</a>", "</a> ") + '</p>';
-                                }
+                                } else {
 
-                                ///content += '<img src="' + ob.Icon.URL + '" align="left" />' +
+                                    if (data.Image != undefined && data.Image != '') {
 
-                                for (i = 0; i < media.length; i++) {
-                                    var m = media[i];
-                                    content += '<img src="' + m + '" style="margin-right:5px"/>';
-                                }
+                                        content += '<br>';
 
-                            } else {
+                                        content += '<div class="imgBox">' +
+                                            '<img src="' + data.Image + '" />' +
+                                            '<div class="title">' + data.Heading + '</div>' +
+                                            '</div>';
 
-                                if (data.Image != undefined && data.Image != '') {
-
-                                    content += '<br>';
-
-                                    content += '<div class="imgBox">' +
-                                        '<img src="' + data.Image + '" />' +
-                                        '<div class="title">' + data.Heading + '</div>' +
-                                        '</div>';
+                                    }
 
                                 }
 
-                            }
+                                ChatBot.addChatEntry(content, "bot");
+                                ChatBot.thinking(false);
+                            }).fail(function () {
+                                //error login
+                                /*$(document).ready( function() {
+                                    let url = "/login";
+                                    $(location).attr("href", url);
+                                });*/
 
-                            ChatBot.addChatEntry(content, "bot");
+                            });
+                        }else{
                             ChatBot.thinking(false);
-                        }).fail(function () {
-                            //error login
-                            /*$(document).ready( function() {
-                                let url = "/login";
-                                $(location).attr("href", url);
-                             });*/
-
-                        });
+                        }
                     },
                     getCapabilities: function () {
                         return capabilities;
                     },
                     getSuggestUrl: function() {
                         return null;
-                    }
+                    },
                 }
             }
         },
@@ -490,10 +504,16 @@ export var ChatBot = function () {
                 return;
             }
             if (text == '') {
-                text = 'Je ne sais pas encore lire dans les pensées malheureusement :(';
+                return;
             }else{
                 var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
-                entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
+                /*Partie tooltip
+                let tooltip_message = ""
+                if(text.includes("</a>")){
+                    tooltip_message=' <div class="tooltip"><i class="fas fa-info"></i> <span class="tooltiptext"><p>Ouvrir le lien Mac OS:cmd + click</p></span></div>' 
+                }*/
+                console.log(text);
+                entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text); //+ tooltip_message);
                 $('#chatBotHistory').prepend(entryDiv);
                 if (addChatEntryCallback != undefined) {
                     addChatEntryCallback.call(this, entryDiv, text, origin);
@@ -552,7 +572,7 @@ export var ChatBot = function () {
                             }
                             break;
                         case 'response':
-//                                var response = text.replace(r, pattern.actionValue);
+                            //var response = text.replace(r, pattern.actionValue);
                             var response = pattern.actionValue;
                             if (response != undefined) {
                                 for (var j = 1; j < matches.length; j++) {
@@ -614,7 +634,20 @@ export var ChatBot = function () {
                 callback: callback
             };
             this.addPatternObject(obj);
-        }
+        },
+        removeAccents: function (str) {
+            var accents    = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+            var accentsOut = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+            str = str.split('');
+            var strLen = str.length;
+            var i, x;
+            for (i = 0; i < strLen; i++) {
+              if ((x = accents.indexOf(str[i])) != -1) {
+                str[i] = accentsOut[x];
+              }
+            }
+            return str.join('');
+          }
 
     }
 }();
