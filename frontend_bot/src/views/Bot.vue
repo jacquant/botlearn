@@ -56,6 +56,9 @@ export default {
     // ================================================================================================== ==
     mounted(){
 
+        //Render the HighLight for the code
+        Prism.highlightAll()
+
         //Partie token
 
         if(this.$route.query.token === undefined) {

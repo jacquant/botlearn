@@ -506,6 +506,7 @@ export var ChatBot = function () {
             if (text == '') {
                 return;
             }else{
+                console.log(text);
                 var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
                 /*Partie tooltip
                 let tooltip_message = ""

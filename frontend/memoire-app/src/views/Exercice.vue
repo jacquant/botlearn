@@ -28,16 +28,16 @@
                   <div style="font-weight:bold">
                     Difficulté (1 à 4)
                   </div>
-                  : {{ exercice.difficulty }}
+                  : {{ exercice.difficulty.name }}
                 </v-list-item>
                 <v-list-item
                   v-for="tag in exercice.tags"
                   :key="tag"
                 >
                   <div style="font-weight:bold">
-                    Tag:
+                    Tag: 
                   </div>
-                  {{ tag }}
+                   {{ tag.name }}
                 </v-list-item>
                 <v-list-item>
                   <div style="font-weight:bold">

@@ -28,6 +28,7 @@ django-constrainedfilefield = "*"
 python-magic = "*"
 restrictedpython = "*"
 flake8 = "*"
+django-ckeditor = "*"
 
 [requires]
 python_version = "3.8"

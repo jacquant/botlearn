@@ -1,3 +1,5 @@
 from django.contrib import admin
+from bot.models import Question,Reponse
 
-# Register your models here.
+admin.site.register(Question)
+admin.site.register(Reponse)
