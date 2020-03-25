@@ -147,7 +147,7 @@ class TrainingBot(APIView):
             for question in response.question.all():
                 trainerOwn.train([question.intitule, response.reponse])
                 test = response.reponse
-
+        # ToDo => Regex
         return JsonResponse({
             'text': test
         })
