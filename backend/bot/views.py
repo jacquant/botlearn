@@ -14,13 +14,14 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from chatterbot.ext.django_chatterbot import settings 
 from chatterbot.trainers import ChatterBotCorpusTrainer
-from chatterbot.ext.django_chatterbot import settings
 from chatterbot.comparisons import levenshtein_distance
-from chatterbot.response_selection import get_most_frequent_response, get_first_response
+from chatterbot.response_selection import get_first_response
 
-from .selection import select_response, owncompare 
+
 
 from datetime import datetime, time
+
+import re
 
 
 class AnswerViewSet(APIView):
@@ -38,14 +39,6 @@ class AnswerViewSet(APIView):
                             "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])
 
-    # Delete Storage
-    # chatterbot.storage.drop()
-
-    # Corpus Part
-    # trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
-
-    # trainerCoprus.train('chatterbot.corpus.french')
-
     def post(self, request, *args, **kwargs):
         """
         An Api View which provides a method to send a message to the bot an get an answer
@@ -55,10 +48,6 @@ class AnswerViewSet(APIView):
         ## Parameters
 
         None
-
-        ### Query parameters
-
-        - difficulty_id: the id of the difficulty
 
         ## Permissions
 
@@ -71,11 +60,8 @@ class AnswerViewSet(APIView):
         - The return is a message in string include in a JSON
 
         """
-        print("################################################################################")
-        # self.trainMyBot(self.chatterbot)
-
         input_data = json.loads(request.body.decode('utf-8'))
-        
+      
         if 'text' not in input_data:
             return JsonResponse({
                 'text': [
@@ -119,14 +105,6 @@ class AnswerViewSet(APIView):
             exercices_string = "<h5 style='color:red;'>Aucun exercice disponible pour le moment.</h5>"
         return exercices_string
 
-    def trainMyBot(self, chatterbot):
-        chatterbot.storage.drop()
-
-        # Corpus Part
-        trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
-
-        trainerCoprus.train('chatterbot.corpus.french')
-
 
 class TrainingBot(APIView):
 
@@ -134,20 +112,41 @@ class TrainingBot(APIView):
 
     def get(self, request, *args, **kwargs):
         """
-        Train the bot
+        An Api View which provides a method to train the chatbot
+
+        # Request: GET
+
+        ## Parameters
+
+        None
+
+        ## Permissions
+
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+
+        ## Return
+
+        - The return is a message in string include in a JSON
+
         """
         self.chatterbot.storage.drop()
 
+        # Training based on corpus (YML)
         trainerCoprus = ChatterBotCorpusTrainer(self.chatterbot)
 
         trainerCoprus.train('chatterbot.corpus.french')
 
+        # Training based on question written by the admin panel
         trainerOwn = ListTrainer(self.chatterbot)
         for response in Reponse.objects.all():
             for question in response.question.all():
-                trainerOwn.train([question.intitule, response.reponse])
-                test = response.reponse
-        # ToDo => Regex
+                # Modify the code snippet to HMTL to diplay it correctly in the chatbot
+                modify_code = re.sub(r'    ', "&nbsp;&nbsp;&nbsp;&nbsp;", response.reponse)
+                modify_code = re.sub(r'(\r\n){1}(?!\r\n)', "<br>", modify_code)
+                trainerOwn.train([question.intitule, modify_code])
+
         return JsonResponse({
-            'text': test
+            'text': "done"
         })
