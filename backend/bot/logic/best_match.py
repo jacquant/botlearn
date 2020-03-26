@@ -1,6 +1,8 @@
 from chatterbot.logic import LogicAdapter
 from chatterbot import filters
 
+# from bot.models import Question
+
 
 class BestMatch(LogicAdapter):
     """
@@ -29,7 +31,7 @@ class BestMatch(LogicAdapter):
         closest_match = next(search_results, input_statement)
 
         # Search for the closest match to the input statement
-        #Little modification to not stop even if threshold is respected
+        # Little modification to not stop even if threshold is respected
         current_similarity = 0
         for result in search_results:
             # update
@@ -90,10 +92,10 @@ class BestMatch(LogicAdapter):
                 self.chatbot.storage
             )
 
-            #If the threshold wasn't respected before => but a bad answer
+            # If the threshold wasn't respected before => but a bad answer
 
             if (closest_match.confidence < self.maximum_similarity_threshold):
-                response.text= "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>"
+                response.text = "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>"
 
             response.confidence = closest_match.confidence
             self.chatbot.logger.info('Response selected. Using "{}"'.format(response.text))

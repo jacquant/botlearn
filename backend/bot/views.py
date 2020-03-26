@@ -17,7 +17,8 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.comparisons import levenshtein_distance
 from chatterbot.response_selection import get_first_response
 
-
+from bot.models import Question
+from memoire.settings import BACK_URL
 
 from datetime import datetime, time
 
@@ -72,6 +73,15 @@ class AnswerViewSet(APIView):
         response = self.chatterbot.get_response(input_data)
 
         response_data = response.serialize()
+        # Save question if no answer => Better way to do it ?
+        if "<p>Désolé mais je n'ai pas compris la question" in response_data["text"]:
+            if Question.objects.filter(intitule=input_data["text"]).first() is not None:
+                question = Question.objects.filter(intitule=input_data["text"]).first()
+                question.asked += 1
+                question.save()
+            else:
+                Question.objects.create(intitule=input_data["text"], matched=False)
+
         # Modify data to add exercices if it's requested
         if("liste des exercices" in input_data["text"]):
             response_data["text"] += self.getExercice()
@@ -135,16 +145,15 @@ class TrainingBot(APIView):
 
         # Training based on corpus (YML)
         trainerCoprus = ChatterBotCorpusTrainer(self.chatterbot)
-
         trainerCoprus.train('chatterbot.corpus.french')
 
         # Training based on question written by the admin panel
         trainerOwn = ListTrainer(self.chatterbot)
         for response in Reponse.objects.all():
+            # Modify the code snippet to HMTL to diplay it correctly in the chatbot
+            modify_code = re.sub(r'    ', "&nbsp;&nbsp;&nbsp;&nbsp;", response.reponse)
+            modify_code = re.sub(r'(\r\n){1}(?!\r\n)', "<br>", modify_code)
             for question in response.question.all():
-                # Modify the code snippet to HMTL to diplay it correctly in the chatbot
-                modify_code = re.sub(r'    ', "&nbsp;&nbsp;&nbsp;&nbsp;", response.reponse)
-                modify_code = re.sub(r'(\r\n){1}(?!\r\n)', "<br>", modify_code)
                 trainerOwn.train([question.intitule, modify_code])
 
         return JsonResponse({

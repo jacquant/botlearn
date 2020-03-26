@@ -250,7 +250,7 @@ DIALOGFLOW = {
     ),
 }
 
-#CKEDITOR
+# CKEDITOR
 CKEDITOR_CONFIGS = {
     "default": {
         "skin": "moono",
