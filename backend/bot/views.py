@@ -86,7 +86,7 @@ class AnswerViewSet(APIView):
         if("liste des exercices" in input_data["text"]):
             response_data["text"] += self.getExercice()
 
-        print("################################################################################")
+        print("###########################################################")
         return JsonResponse(response_data, status=200)
 
     def getExercice(self, data=None):
