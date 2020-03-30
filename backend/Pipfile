@@ -29,6 +29,7 @@ python-magic = "*"
 restrictedpython = "*"
 flake8 = "*"
 django-ckeditor = "*"
+django-model-utils = "*"
 
 [requires]
 python_version = "3.8"
