@@ -39,5 +39,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PublicUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model= User
-        fields = ("mail", "last_name", "first_name",)
+        model = User
+        fields = (
+            "mail",
+            "last_name",
+            "first_name",
+        )

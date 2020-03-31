@@ -44,10 +44,7 @@ class UserAdmin(BaseAdmin):
                 ),
             },
         ),
-        (
-            "Permissions",
-            {"classes": ("wide",), "fields": ("is_staff", "is_superuser", "is_active")},
-        ),
+        ("Permissions", {"classes": ("wide",), "fields": ("is_staff", "is_superuser", "is_active")},),
     )
     search_fields = ("mail", "last_name", "first_name")
     ordering = ("mail", "last_name", "first_name")

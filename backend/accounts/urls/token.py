@@ -15,5 +15,5 @@ urlpatterns = [
     # /api/token/verify/
     path("verify/", TokenVerifyView.as_view(), name="verify"),
     # /api/token/login_by_unamur/
-    path("login_by_unamur/", UNamurTokenObtainPairView.as_view(), name="login_unamur")
+    path("login_by_unamur/", UNamurTokenObtainPairView.as_view(), name="login_unamur"),
 ]

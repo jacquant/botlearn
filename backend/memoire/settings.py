@@ -26,7 +26,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]
 
 
 # Application definition
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "accounts",
     "exercises",
     "sandbox",
-    "bot"
+    "bot",
 ]
 
 MIDDLEWARE = [
@@ -137,14 +137,11 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -177,7 +174,6 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_PARSER_CLASSES": ("drf_orjson_renderer.parsers.ORJSONParser",),
-    
 }
 if DEBUG:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
@@ -185,9 +181,7 @@ if DEBUG:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 else:
-    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
-        "drf_orjson_renderer.renderers.ORJSONRenderer",
-    )
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ("drf_orjson_renderer.renderers.ORJSONRenderer",)
 
 DJANGO_REST_LOOKUP_FIELD = "mail"
 # Configuration du token jwt
@@ -229,9 +223,7 @@ SWAGGER_SETTINGS = {
     "LOGIN_URL": "rest_framework:login",
     "LOGOUT_URL": "rest_framework:logout",
     "USE_SESSION_AUTH": True,
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
-    },
+    "SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
 }
 FRONT_URL = os.environ.get("FRONT_URL", "0.0.0.0:8080")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
@@ -244,7 +236,5 @@ CELERY_RESULT_SERIALIZER = "json"
 
 # Dialogflow settings
 DIALOGFLOW = {
-    "client_access_token": os.environ.get(
-        "DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"
-    ),
+    "client_access_token": os.environ.get("DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"),
 }

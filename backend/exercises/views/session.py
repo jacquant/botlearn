@@ -25,11 +25,7 @@ class SessionViewSet(viewsets.ModelViewSet):
             return cache.get(key)
         else:
             sessions = Session.objects.prefetch_related(
-                "target",
-                Prefetch(
-                    "in_charge_persons",
-                    queryset=User.objects.only("mail", "first_name", "last_name"),
-                ),
+                "target", Prefetch("in_charge_persons", queryset=User.objects.only("mail", "first_name", "last_name"),),
             ).all()
             cache.set(key, sessions, timeout=CACHE_TTL)
             print(sessions)

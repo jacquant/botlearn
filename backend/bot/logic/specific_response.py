@@ -16,9 +16,9 @@ class SpecificResponseAdapter(LogicAdapter):
         super().__init__(chatbot, **kwargs)
         from chatterbot.conversation import Statement
 
-        self.input_text = kwargs.get('input_text')
+        self.input_text = kwargs.get("input_text")
 
-        output_text = kwargs.get('output_text')
+        output_text = kwargs.get("output_text")
         self.response_statement = Statement(text=output_text)
 
     def can_process(self, statement):

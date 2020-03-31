@@ -35,36 +35,22 @@ class LogicAdapter(Adapter):
         super().__init__(chatbot, **kwargs)
         from chatterbot.response_selection import get_first_response
 
-        self.search_algorithm_name = kwargs.get(
-            'search_algorithm_name',
-            IndexedTextSearch.name
-        )
+        self.search_algorithm_name = kwargs.get("search_algorithm_name", IndexedTextSearch.name)
 
-        self.search_algorithm = self.chatbot.search_algorithms[
-            self.search_algorithm_name
-        ]
+        self.search_algorithm = self.chatbot.search_algorithms[self.search_algorithm_name]
 
-        self.maximum_similarity_threshold = kwargs.get(
-            'maximum_similarity_threshold', 0.95
-        )
+        self.maximum_similarity_threshold = kwargs.get("maximum_similarity_threshold", 0.95)
 
         # By default, select the first available response
-        self.select_response = kwargs.get(
-            'response_selection_method',
-            get_first_response
-        )
+        self.select_response = kwargs.get("response_selection_method", get_first_response)
 
-        default_responses = kwargs.get('default_response', [])
+        default_responses = kwargs.get("default_response", [])
 
         # Convert a single string into a list
         if isinstance(default_responses, str):
-            default_responses = [
-                default_responses
-            ]
+            default_responses = [default_responses]
 
-        self.default_responses = [
-            Statement(text=default) for default in default_responses
-        ]
+        self.default_responses = [Statement(text=default) for default in default_responses]
 
     def can_process(self, statement):
         """
@@ -115,9 +101,7 @@ class LogicAdapter(Adapter):
             except StorageAdapter.EmptyDatabaseException:
                 response = input_statement
 
-        self.chatbot.logger.info(
-            'No known response to the input was found. Selecting a random response.'
-        )
+        self.chatbot.logger.info("No known response to the input was found. Selecting a random response.")
 
         # Set confidence to zero because a random response is selected
         response.confidence = 0

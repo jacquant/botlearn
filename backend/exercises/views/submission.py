@@ -228,4 +228,3 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         - The cache is delete when a submission object is saved or deleted
         """
         return super().destroy(self, request, *args, **kwargs)
-

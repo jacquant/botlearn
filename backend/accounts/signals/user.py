@@ -12,9 +12,7 @@ from memoire.settings import DEFAULT_FROM_EMAIL
 
 
 @receiver(reset_password_token_created)
-def password_reset_token_created(
-    sender, instance, reset_password_token, *args, **kwargs
-):
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
     """
     Handles password reset tokens
     When a token is created, an e-mail needs to be sent to the user
@@ -22,9 +20,7 @@ def password_reset_token_created(
     context = {
         "last_name": reset_password_token.user.last_name,
         "first_name": reset_password_token.user.first_name,
-        "reset_password_url": "{}reset?token={}".format(
-            settings.FRONT_URL, reset_password_token.key
-        ),
+        "reset_password_url": "{}reset?token={}".format(settings.FRONT_URL, reset_password_token.key),
     }
 
     html_message = render_to_string("mails/user/reset_password.html", context)

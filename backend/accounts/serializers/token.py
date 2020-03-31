@@ -19,9 +19,7 @@ class UNamurTokenObtainSerializer(serializers.Serializer):
                 "user": attrs["eid"],
                 "password": attrs["password"],
             }
-            req = requests.post(
-                "https://auth.unamur.be", payload, allow_redirects=False
-            )
+            req = requests.post("https://auth.unamur.be", payload, allow_redirects=False)
             if req.status_code == 303:
                 data = {}
                 refresh = self.get_token(user[0])

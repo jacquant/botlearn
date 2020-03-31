@@ -1,0 +1,100 @@
+F401:
+    - F401 (.+) imported but unused
+    - F401 \1 a été importé mais n'est pas utilisé
+F402:
+    - F402 import (.+) from line (\d+) shadowed by loop variable
+    - F402 import \1 à la ligne \2  suivi par une variable boucle
+F403:
+    - F403 'from (.+) import *' used; unable to detect undefined names
+    - F403 'from \1 import *' utilisé; impossible de détecter les noms
+F404:
+    - F404 future import\(s\) (.+) after other statements
+    - F404 importation(s) future(s) \1 après d'autres déclarations
+F405:
+    - "F405 (.+) may be undefined, or defined from star imports : (.+)"
+    - "F405 \1 pourrait être indéfini ou défini à partir d'imports étoiles: \2"
+F406:
+    - F406 'from (.+) import *' only allowed at module level
+    - F406 'from \1 import *' seulement autorisé à un niveau de module
+F407:
+    - F407 an undefined (.+) feature name was imported
+    - F407 un nom d'élement indéfini \1 a été importé
+
+F601:
+    - F601 dictionary key ('.+') repeated with different values
+    - F601 un nom de clé de dictionnaire \1 a été répété avec différentes valeurs
+F602:
+    - F602 dictionary key variable name repeated with different values
+    - F602 nom de la variable de la clé du dictionnaire répétée avec des valeurs différentes
+F621:
+    - F621 too many expressions in an assignment with star-unpacking
+    - F621 trop d'expressions dans l'assignement avec un dépaquetage étoile
+F622:
+    - F622 two or more starred expressions in an assignment \(a, *b, *c = d\)
+    - F622 deux ou plus expressions étoiles lors d'un assignement ()
+F631:
+    - F631 assertion test is a tuple, which are always True
+    - F631 un test assertif est un tuple, qui est toujours True
+F632:
+    - F632 use ==/!= to compare str, bytes, and int literals
+    - F632 utilise ==/!= pour comparer str, bytes et int littéraux
+F633:
+    - F633 use of >> is invalid with print function
+    - F633 utilisation de >> est incompatible avec la fonction print
+
+F701:
+    - F701 a break statement outside of a while or for loop
+    -
+F702:
+    - F702 a continue statement outside of a while or for loop
+    -
+F703:
+    - F703 a continue statement in a finally block in a loop
+    -
+F704:
+    - F704 a yield or yield from statement outside of a function
+    -
+F705:
+    - F705 a return statement with arguments inside a generator
+    -
+F706:
+    - F706 a return statement outside of a function/method
+    -
+F707:
+    - "F707 an except: block as not the last exception handler"
+    -
+F721:
+    - F721syntax error in doctest
+    -
+F722:
+    - F722 syntax error in forward annotation
+    -
+F723:
+    - F723 syntax error in type comment
+    -
+
+F811:
+    - F811 redefinition of unused name from line N
+    -
+F812:
+    - F812 list comprehension redefines name from line N
+    -
+F821:
+    - F821 undefined name name
+    -
+F822:
+    - F822 undefined name name in __all__
+    -
+F823:
+    - F823 local variable name … referenced before assignment
+    -
+F831:
+    - F831 duplicate argument name in function definition
+    -
+F841:
+    - F841 local variable name is assigned to but never used
+    -
+
+F901:
+    - F901 raise NotImplemented should be raise NotImplementedError
+    -

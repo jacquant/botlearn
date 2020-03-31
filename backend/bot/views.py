@@ -1,58 +1,52 @@
 import json
+from datetime import datetime
 
-from django.shortcuts import render
+from chatterbot import ChatBot
+from chatterbot.comparisons import levenshtein_distance
+from chatterbot.ext.django_chatterbot import settings
+from chatterbot.response_selection import get_first_response
+from chatterbot.trainers import ChatterBotCorpusTrainer, ListTrainer
+from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import JsonResponse
 
 from exercises.models.exercise import Exercise
 from exercises.serializers.exercise import ExerciseSerializer
-
-from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
-from chatterbot.ext.django_chatterbot import settings 
-from chatterbot.trainers import ChatterBotCorpusTrainer
-from chatterbot.ext.django_chatterbot import settings
-from chatterbot.comparisons import levenshtein_distance
-from chatterbot.response_selection import get_most_frequent_response, get_first_response
-
-from .selection import select_response, owncompare 
-
-from datetime import datetime, time
 
 
 class AnswerViewSet(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
-    #Defined and train the bot
-    chatterbot = ChatBot(**settings.CHATTERBOT,
-                        read_only=True,
-                        response_selection_method=get_first_response,
-                        statement_comparison_function=levenshtein_distance,
-                        logic_adapters=[{
-                            'maximum_similarity_threshold': 0.75,
-                            "import_path": "chatterbot.logic.BestMatch",
-                            'default_response': 
-                            "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
-                        }])
+    # Defined and train the bot
+    chatterbot = ChatBot(
+        **settings.CHATTERBOT,
+        read_only=True,
+        response_selection_method=get_first_response,
+        statement_comparison_function=levenshtein_distance,
+        logic_adapters=[
+            {
+                "maximum_similarity_threshold": 0.75,
+                "import_path": "chatterbot.logic.BestMatch",
+                "default_response": "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il "
+                "te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je "
+                "réponds aux questions liées à la programmation en générale, "
+                "pas sur l'exercice.</p>",
+            }
+        ]
+    )
 
-    #Delete Storage
-    chatterbot.storage.drop()
+    # Delete Storage
+    # chatterbot.storage.drop()
 
-    #Corpus Part
+    # Corpus Part
     trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
 
-    trainerCoprus.train('chatterbot.corpus.french')
-    
+    trainerCoprus.train("chatterbot.corpus.french")
 
+    # trainerOwn.train("./files/")
 
-    #trainerOwn.train("./files/")
-
-
-    #Own training
+    # Own training
     trainerOwn = ListTrainer(chatterbot)
-
 
     def post(self, request, *args, **kwargs):
         """
@@ -80,23 +74,19 @@ class AnswerViewSet(APIView):
 
         """
         print("################################################################################")
-        #self.trainMyBot(self.chatterbot)
+        # self.trainMyBot(self.chatterbot)
 
-        input_data = json.loads(request.body.decode('utf-8'))
-        
-        if 'text' not in input_data:
-            return JsonResponse({
-                'text': [
-                    'The attribute "text" is required.'
-                ]
-            }, status=400)
+        input_data = json.loads(request.body.decode("utf-8"))
+
+        if "text" not in input_data:
+            return JsonResponse({"text": ['The attribute "text" is required.']}, status=400)
 
         response = self.chatterbot.get_response(input_data)
 
         response_data = response.serialize()
-        #Modify data to add exercices if it's requested
-        if("liste des exercices" in input_data["text"]):
-            response_data["text"] += self.getExercice()
+        # Modify data to add exercices if it's requested
+        if "liste des exercices" in input_data["text"]:
+            response_data["text"] += self.get_exercice()
 
         print("################################################################################")
         return JsonResponse(response_data, status=200)
@@ -105,53 +95,57 @@ class AnswerViewSet(APIView):
         """
         Return data corresponding to the current conversation.
         """
-        return JsonResponse({
-            'name': self.chatterbot.name
-        })
+        return JsonResponse({"name": self.chatterbot.name})
 
-    def getExercice(self, data=None):
+    def get_exercice(self, data=None):
         exercices = Exercise.objects.all()
         serializer = ExerciseSerializer(exercices, many=True)
 
-        #Get Current Time
+        # Get Current Time
         now = datetime.now()
 
         exercices_string = ""
-        #print(serializer.data)
+        # print(serializer.data)
 
         for exercice in serializer.data:
             for info in exercice.items():
-                if(info[0] ==  "name"):
+                if info[0] == "name":
                     name = info[1]
-                if(info[0] ==  "due_date"):
-                    time = datetime.strptime(info[1],'%Y-%m-%dT%H:%M:%S%fZ')
-                if (info[0] == "project_files"):
+                if info[0] == "due_date":
+                    time = datetime.strptime(info[1], "%Y-%m-%dT%H:%M:%S%fZ")
+                if info[0] == "project_files":
                     path = info[1]
-                    if (now < time):
-                        exercices_string +='- <a href="http://localhost:8080' + str(path) +'">' + name + " (à rendre pour le "+ str(time) + ")</a>" + "<br>"
+                    if now < time:
+                        exercices_string += (
+                            '- <a href="http://localhost:8080'
+                            + str(path)
+                            + '">'
+                            + name
+                            + " (à rendre pour le "
+                            + str(time)
+                            + ")</a>"
+                            + "<br>"
+                        )
 
-        #print(exercices_string)
-        if (exercices_string == ""):
+        # print(exercices_string)
+        if exercices_string == "":
             exercices_string = "<h5 style='color:red;'>Aucun exercice disponible pour le moment.</h5>"
         return exercices_string
 
     def trainMyBot(self, chatterbot):
         chatterbot.storage.drop()
 
-        #Corpus Part
+        # Corpus Part
         trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
 
-        trainerCoprus.train('chatterbot.corpus.french')
-        
+        trainerCoprus.train("chatterbot.corpus.french")
 
+        # trainerOwn.train("./files/")
 
-        #trainerOwn.train("./files/")
-
-
-        #Own training
+        # Own training
         trainerOwn = ListTrainer(chatterbot)
 
-        #Getting Help
+        # Getting Help
         """trainerOwn.train([
             "j'ai besoin d'aide s'il te plait !",
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
@@ -172,7 +166,7 @@ class AnswerViewSet(APIView):
             "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
         ])
 
-        """#Problem With loop
+        """  # Problem With loop
         """
         trainerOwn.train([
             "J'ai un problème avec ma boucle.",
@@ -203,8 +197,5 @@ class AnswerViewSet(APIView):
             "On va regarder ça ensemble, explique moi en détails ce qu'il se passe.",
         ])"""
 
-        #Getting Exercices
-        trainerOwn.train([
-            "Je peux avoir la liste des exercices",
-            "Oui ! La voici: <br>",
-        ])
+        # Getting Exercices
+        trainerOwn.train(["Je peux avoir la liste des exercices", "Oui ! La voici: <br>"])

@@ -22,4 +22,3 @@ def section_deleted(sender, instance, *args, **kwargs):
     Handles the remove of a section
     """
     empty_cache()
-

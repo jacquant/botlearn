@@ -7,6 +7,7 @@ from exercises.serializers.section import SectionSerializer
 from exercises.serializers.session import SessionSerializer
 from accounts.serializers.user import PublicUserSerializer
 
+
 class ExerciseSerializer(serializers.ModelSerializer):
     difficulty = DifficultySerializer()
     tags = TagSerializer(many=True, read_only=True)

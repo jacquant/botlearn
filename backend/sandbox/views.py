@@ -20,11 +20,7 @@ def docker_run(profile, command, files, limits):
 
 
 def render_main(code_input, filename):
-    return html.unescape(
-        render_to_string(
-            "Python/main.py", {"code_input": code_input, "filename": filename}
-        )
-    )
+    return html.unescape(render_to_string("Python/main.py", {"code_input": code_input, "filename": filename}))
 
 
 class CodeExecute(APIView):
@@ -33,24 +29,14 @@ class CodeExecute(APIView):
         serializer = CodeSerializerExercise(data=request.data)
         if serializer.is_valid():
             main_code = render_main(
-                serializer.validated_data["code_input"],
-                serializer.validated_data["exercise_filename"],
+                serializer.validated_data["code_input"], serializer.validated_data["exercise_filename"],
             )
-            exercise = get_object_or_404(
-                Exercise, id=serializer.validated_data["exercise_id"]
-            )
+            exercise = get_object_or_404(Exercise, id=serializer.validated_data["exercise_id"])
             profiles = [
-                epicbox.Profile(
-                    exercise.dockerImage.profile_name, exercise.dockerImage.image_name
-                ),
+                epicbox.Profile(exercise.dockerImage.profile_name, exercise.dockerImage.image_name),
             ]
             epicbox.configure(profiles=profiles)
-            files = [
-                {
-                    "name": serializer.validated_data["exercise_filename"],
-                    "content": main_code.encode(),
-                }
-            ]
+            files = [{"name": serializer.validated_data["exercise_filename"], "content": main_code.encode(),}]
             limits = {"cputime": 25, "memory": 64}
             result = docker_run(
                 exercise.dockerImage.profile_name,
@@ -101,16 +87,9 @@ class CodeFormat(APIView):
     def post(self, request, format=None):
         serializer = CodeSerializer(data=request.data)
         if serializer.is_valid():
-            files = [
-                {
-                    "name": "main.py",
-                    "content": serializer.validated_data["code_input"].encode(),
-                }
-            ]
+            files = [{"name": "main.py", "content": serializer.validated_data["code_input"].encode(),}]
             limits = {"cputime": 5, "memory": 64}
-            result = docker_run(
-                "formatter", "black main.py && cat main.py", files=files, limits=limits
-            )
+            result = docker_run("formatter", "black main.py && cat main.py", files=files, limits=limits)
             return Response(result, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

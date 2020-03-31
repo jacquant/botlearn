@@ -12,10 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, verbose_name="Prénom")
     student = models.BooleanField(default=True, blank=True, verbose_name="étudiant")
     student_card = models.PositiveIntegerField(
-        unique=True,
-        validators=[MinValueValidator(20000000), MaxValueValidator(21000000)],
-        blank=True,
-        null=True,
+        unique=True, validators=[MinValueValidator(20000000), MaxValueValidator(21000000)], blank=True, null=True,
     )
     eid = models.CharField(max_length=12, unique=True, verbose_name="Eid étudiant", blank=True)
 

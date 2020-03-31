@@ -3,24 +3,20 @@
     <!-- ============================================================================================== ----
         ---- Page's content
         ---- ============================================================================================== -->
-        <v-content class="mt-10">
-          <router-view></router-view>
-        </v-content>
-    </v-app>
+    <v-content class="mt-10">
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-
-
-
 export default {
-  name: 'App',
+  name: "App",
 
-  components: {
-  },
+  components: {},
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>

@@ -29,17 +29,13 @@ def send_reset_password(modeladmin, request, queryset):
         password_reset_token_validation_time = get_password_reset_token_expiry_time()
 
         # datetime.now minus expiry hours
-        now_minus_expiry_time = timezone.now() - timedelta(
-            hours=password_reset_token_validation_time
-        )
+        now_minus_expiry_time = timezone.now() - timedelta(hours=password_reset_token_validation_time)
 
         # delete all tokens where created_at < now - 24 hours
         clear_expired(now_minus_expiry_time)
 
         # find a user by email address (case insensitive search)
-        users = User.objects.filter(
-            **{"{}__iexact".format(get_password_reset_lookup_field()): email}
-        )
+        users = User.objects.filter(**{"{}__iexact".format(get_password_reset_lookup_field()): email})
 
         active_user_found = False
 
@@ -52,9 +48,7 @@ def send_reset_password(modeladmin, request, queryset):
 
         # No active user found, raise a validation error
         # but not if DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE == True
-        if not active_user_found and not getattr(
-            settings, "DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE", False
-        ):
+        if not active_user_found and not getattr(settings, "DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE", False):
             raise exceptions.ValidationError(
                 {
                     "email": [
@@ -90,6 +84,4 @@ def send_reset_password(modeladmin, request, queryset):
                 )
 
 
-send_reset_password.short_description = (
-    "Propose la réinitialisation des mots de passes à ces utilisateurs!"
-)
+send_reset_password.short_description = "Propose la réinitialisation des mots de passes à ces utilisateurs!"

@@ -22,7 +22,7 @@ class MathematicalEvaluation(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
 
-        self.language = kwargs.get('language', languages.ENG)
+        self.language = kwargs.get("language", languages.ENG)
         self.cache = {}
 
     def can_process(self, statement):
@@ -55,9 +55,7 @@ class MathematicalEvaluation(LogicAdapter):
         response = Statement(text=expression)
 
         try:
-            response.text += ' = ' + str(
-                mathparse.parse(expression, language=self.language.ISO_639.upper())
-            )
+            response.text += " = " + str(mathparse.parse(expression, language=self.language.ISO_639.upper()))
 
             # The confidence is 1 if the expression could be evaluated
             response.confidence = 1

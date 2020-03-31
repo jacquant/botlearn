@@ -6,13 +6,11 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sandbox', '0002_sandboxprofile_image_id'),
+        ("sandbox", "0002_sandboxprofile_image_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sandboxprofile',
-            name='image_id',
-            field=models.CharField(blank=True, max_length=60, null=True),
+            model_name="sandboxprofile", name="image_id", field=models.CharField(blank=True, max_length=60, null=True),
         ),
     ]

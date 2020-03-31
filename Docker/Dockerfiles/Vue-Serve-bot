@@ -16,5 +16,5 @@ ENV PORT=3001
 RUN yarn
 
 # start command
-CMD [ "yarn", "serve" , "--silent"]
+CMD [ "yarn", "serve"]
 
