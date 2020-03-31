@@ -11,42 +11,38 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 
 from exercises.models.exercise import Exercise
+from bot.models import Reponse
 from exercises.serializers.exercise import ExerciseSerializer
+
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+from chatterbot.ext.django_chatterbot import settings 
+from chatterbot.trainers import ChatterBotCorpusTrainer
+from chatterbot.comparisons import levenshtein_distance
+from chatterbot.response_selection import get_first_response
+
+from bot.models import Question
+from memoire.settings import BACK_URL
+
+from datetime import datetime, time
+
+import re
 
 
 class AnswerViewSet(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
     # Defined and train the bot
-    chatterbot = ChatBot(
-        **settings.CHATTERBOT,
-        read_only=True,
-        response_selection_method=get_first_response,
-        statement_comparison_function=levenshtein_distance,
-        logic_adapters=[
-            {
-                "maximum_similarity_threshold": 0.75,
-                "import_path": "chatterbot.logic.BestMatch",
-                "default_response": "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il "
-                "te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je "
-                "réponds aux questions liées à la programmation en générale, "
-                "pas sur l'exercice.</p>",
-            }
-        ]
-    )
-
-    # Delete Storage
-    # chatterbot.storage.drop()
-
-    # Corpus Part
-    trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
-
-    trainerCoprus.train("chatterbot.corpus.french")
-
-    # trainerOwn.train("./files/")
-
-    # Own training
-    trainerOwn = ListTrainer(chatterbot)
+    chatterbot = ChatBot(**settings.CHATTERBOT,
+                        read_only=True,
+                        response_selection_method=get_first_response,
+                        statement_comparison_function=levenshtein_distance,
+                        logic_adapters=[{
+                            'maximum_similarity_threshold': 0.75,
+                            "import_path": "chatterbot.logic.BestMatch",
+                            'default_response': 
+                            "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
+                        }])
 
     def post(self, request, *args, **kwargs):
         """
@@ -57,10 +53,6 @@ class AnswerViewSet(APIView):
         ## Parameters
 
         None
-
-        ### Query parameters
-
-        - difficulty_id: the id of the difficulty
 
         ## Permissions
 
@@ -73,31 +65,38 @@ class AnswerViewSet(APIView):
         - The return is a message in string include in a JSON
 
         """
-        print("################################################################################")
-        # self.trainMyBot(self.chatterbot)
 
-        input_data = json.loads(request.body.decode("utf-8"))
-
-        if "text" not in input_data:
-            return JsonResponse({"text": ['The attribute "text" is required.']}, status=400)
+        input_data = json.loads(request.body.decode('utf-8'))
+      
+        if 'text' not in input_data:
+            return JsonResponse({
+                'text': [
+                    'The attribute "text" is required.'
+                ]
+            }, status=400)
 
         response = self.chatterbot.get_response(input_data)
 
         response_data = response.serialize()
-        # Modify data to add exercices if it's requested
-        if "liste des exercices" in input_data["text"]:
-            response_data["text"] += self.get_exercice()
 
-        print("################################################################################")
+        # Save question if no answer => Better way to do it ?
+        if "<p>Désolé mais je n'ai pas compris la question" in response_data["text"]:
+            if Question.objects.filter(intitule=input_data["text"]).first() is not None:
+                question = Question.objects.filter(intitule=input_data["text"]).first()
+                question.asked += 1
+                question.save()
+            else:
+                Question.objects.create(intitule=input_data["text"], matched=False)
+
+        # Modify data to add exercices if it's requested
+        if("liste des exercices" in input_data["text"]):
+            response_data["text"] += self.getExercice()
+
+        print("###########################################################")
         return JsonResponse(response_data, status=200)
 
-    def get(self, request, *args, **kwargs):
-        """
-        Return data corresponding to the current conversation.
-        """
-        return JsonResponse({"name": self.chatterbot.name})
+    def getExercice(self, data=None):
 
-    def get_exercice(self, data=None):
         exercices = Exercise.objects.all()
         serializer = ExerciseSerializer(exercices, many=True)
 
@@ -109,93 +108,61 @@ class AnswerViewSet(APIView):
 
         for exercice in serializer.data:
             for info in exercice.items():
-                if info[0] == "name":
+                if(info[0] == "name"):
                     name = info[1]
-                if info[0] == "due_date":
-                    time = datetime.strptime(info[1], "%Y-%m-%dT%H:%M:%S%fZ")
-                if info[0] == "project_files":
+                if(info[0] == "due_date"):
+                    time = datetime.strptime(info[1],'%Y-%m-%dT%H:%M:%S%fZ')
+                if (info[0] == "project_files"):
                     path = info[1]
-                    if now < time:
-                        exercices_string += (
-                            '- <a href="http://localhost:8080'
-                            + str(path)
-                            + '">'
-                            + name
-                            + " (à rendre pour le "
-                            + str(time)
-                            + ")</a>"
-                            + "<br>"
-                        )
+                    if (now < time):
+                        exercices_string +='- <a href="http://localhost:8080' + str(path) +'">' + name + " (à rendre pour le "+ str(time) + ")</a>" + "<br>"
 
         # print(exercices_string)
-        if exercices_string == "":
+        if (exercices_string == ""):
             exercices_string = "<h5 style='color:red;'>Aucun exercice disponible pour le moment.</h5>"
         return exercices_string
 
-    def trainMyBot(self, chatterbot):
-        chatterbot.storage.drop()
 
-        # Corpus Part
-        trainerCoprus = ChatterBotCorpusTrainer(chatterbot)
+class TrainingBot(APIView):
 
-        trainerCoprus.train("chatterbot.corpus.french")
+    chatterbot = AnswerViewSet.chatterbot
 
-        # trainerOwn.train("./files/")
-
-        # Own training
-        trainerOwn = ListTrainer(chatterbot)
-
-        # Getting Help
-        """trainerOwn.train([
-            "j'ai besoin d'aide s'il te plait !",
-            "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
-        ])
-
-        trainerOwn.train([
-            "aide moi",
-            "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
-        ])
-
-        trainerOwn.train([
-            "je peux avoir de l'aide ?",
-            "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
-        ])
-
-        trainerOwn.train([
-            "tu saurais m'aider ?",
-            "Bien sûr je vais t'aider avec plaisir ! Quel est ton problème ?",
-        ])
-
-        """  # Problem With loop
+    def get(self, request, *args, **kwargs):
         """
-        trainerOwn.train([
-            "J'ai un problème avec ma boucle.",
-            "Tu utilises une boucle 'for' ou une boucle 'while' ?",
-            "une boucle for.",
-            "Merci pour l'info ! Donne moi plus d'infos sur ton erreur s'il te plait."
-        ])
+        An Api View which provides a method to train the chatbot
 
-        trainerOwn.train([
-            "J'ai un problème avec ma boucle.",
-            "Tu utilises une boucle 'for' ou une boucle 'while' ?",
-            "une boucle while.",
-            "Merci pour l'info ! Donne moi plus d'infos sur ton erreur s'il te plait."
-        ])
+        # Request: GET
 
-        trainerOwn.train([
-            "Ma boucle ne fonctionne pas.",
-            "Explique-moi ce qu'il se passe avec ta boucle s'il te plait.",
-        ])
+        ## Parameters
 
-        trainerOwn.train([
-            "Ma boucle for ne fonctionne pas.",
-            "Pourquoi cela ne fonctionne pas ? Détails-moi ton erreur.",
-        ])
+        None
 
-        trainerOwn.train([
-            "Ma boucle while ne fonctionne pas.",
-            "On va regarder ça ensemble, explique moi en détails ce qu'il se passe.",
-        ])"""
+        ## Permissions
 
-        # Getting Exercices
-        trainerOwn.train(["Je peux avoir la liste des exercices", "Oui ! La voici: <br>"])
+        ### Token: Bearer
+
+        - The user must be **authenticated**, so the given token must be valid
+
+        ## Return
+
+        - The return is a message in string include in a JSON
+
+        """
+        self.chatterbot.storage.drop()
+
+        # Training based on corpus (YML)
+        trainerCoprus = ChatterBotCorpusTrainer(self.chatterbot)
+        trainerCoprus.train('chatterbot.corpus.french')
+
+        # Training based on question written by the admin panel
+        trainerOwn = ListTrainer(self.chatterbot)
+        for response in Reponse.objects.all():
+            # Modify the code snippet to HMTL to diplay it correctly in the chatbot
+            modify_code = re.sub(r'    ', "&nbsp;&nbsp;&nbsp;&nbsp;", response.reponse)
+            modify_code = re.sub(r'(\r\n){1}(?!\r\n)', "<br>", modify_code)
+            for question in response.question.all():
+                trainerOwn.train([question.intitule, modify_code])
+
+        return JsonResponse({
+            'text': "done"
+        })

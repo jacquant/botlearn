@@ -47,43 +47,49 @@ import { ChatBot } from "../static/js/chatbot";
 import axios from "axios";
 
 export default {
-  // ================================================================================================== ==
-  // Data
-  // ================================================================================================== ==
-  data: () => ({
-    url: "http://localhost:8080/api/",
+    // ================================================================================================== ==
+    // Data
+    // ================================================================================================== ==
+    data: () => ({
 
-    token: null,
+        url: "http://localhost:8080/api/",
 
-    dialog_soumettre: false,
+        token: null,
 
-    //Code Iframe
-    data_from_iframe: ""
-  }),
+        dialog_soumettre: false,
 
-  // ================================================================================================== ==
-  // Mounted
-  // ================================================================================================== ==
-  mounted() {
-    //Partie token
+        //Code Iframe
+        data_from_iframe: "",
+        id_execut: 1,
+    }),
 
-    if (this.$route.query.token === undefined) {
-      this.$router.push("/login");
-    } else {
-      this.token = this.$route.query.token;
-    }
+    // ================================================================================================== ==
+    // Mounted
+    // ================================================================================================== ==
+    mounted(){
 
-    ///////////////////////////////////////////////////////////////////////////
+        //Render the HighLight for the code
+        Prism.highlightAll()
 
-    //Partie Bot
-    var config = {
-      // what inputs should the bot listen to? this selector should point to at least one input field
-      inputs: "#humanInput",
-      // if you want to show the capabilities of the bot under the search input
-      inputCapabilityListing: true,
-      // optionally, you can specify which conversation engines the bot should use, e.g. webknox, spoonacular, or duckduckgo
-      engines: [ChatBot.Engines.backendinfo(this.token)],
-      // you can specify what should happen to newly added messages
+        //Partie token
+
+        if(this.$route.query.token === undefined) {
+            this.$router.push("/login");
+        }else{
+            this.token = this.$route.query.token;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        //Partie Bot
+        var config = { 
+        // what inputs should the bot listen to? this selector should point to at least one input field
+        inputs: '#humanInput',
+        // if you want to show the capabilities of the bot under the search input
+        inputCapabilityListing: true,
+        // optionally, you can specify which conversation engines the bot should use, e.g. webknox, spoonacular, or duckduckgo
+        engines: [ChatBot.Engines.backendinfo(this.token)],
+        // you can specify what should happen to newly added messages
         addChatEntryCallback: function(entryDiv, text, origin) { //eslint-disable-line
         entryDiv.slideDown();
       }
@@ -122,9 +128,54 @@ export default {
       }, 1200000);
     },
 
-    //Execute what the iframe requested
-    interactIframe() {
-      parent.window.postMessage("run", "*");
+    // ================================================================================================== ==
+    // Methods
+    // ================================================================================================== ==
+    methods:{
+        //Check token's validity every 20 minutes (1200000)
+        startInterval() {
+            let self = this;
+            let timer = setInterval(() => {
+                axios.post(this.url + 'token/verify/', {
+                    "token": this.token,
+                })
+                .catch(function (error) {
+                    //console.log(error);
+                    clearInterval(timer);
+                    self.$router.push("/login");
+                });
+
+            }, 1200000)
+        },
+
+        //Execute what the iframe requested
+        interactIframe (evt) {
+            parent.window.postMessage("run", "*");
+        },
+
+        //Listening what the iframe sent (code)
+        listeningIframe (evt) {
+            let namefile = evt.data.filename.split("/")
+
+            let data = {"code_input": evt.data.code,
+                        "filename": String(namefile[namefile.length - 1]),
+                        "translate": true
+                        }
+            axios.post(this.url + 'code/lint/', data, {headers: {"Authorization": "Bearer " + this.token}}
+            
+            ).then(function (response) {
+                let css_response="<ul style='text-align: left;'>"
+                for (const key in response.data.lint_results) {
+                    css_response += "<li>" + response.data.lint_results[key] + "</li>"
+                }
+                css_response += "</ul>"
+                var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>');
+                entryDiv.html('<span class="origin">' + 'Bot' + '</span>' + css_response);
+
+                $('#chatBotHistory').prepend(entryDiv);
+                
+            })
+        },
     },
 
     //Listening what the iframe sent (code)

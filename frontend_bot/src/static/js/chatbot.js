@@ -506,13 +506,14 @@ export var ChatBot = function () {
             if (text == '') {
                 return;
             }else{
+                console.log(text);
                 var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
                 /*Partie tooltip
                 let tooltip_message = ""
                 if(text.includes("</a>")){
                     tooltip_message=' <div class="tooltip"><i class="fas fa-info"></i> <span class="tooltiptext"><p>Ouvrir le lien Mac OS:cmd + click</p></span></div>' 
                 }*/
-                console.log(text);
+                //console.log(text);
                 entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text); //+ tooltip_message);
                 $('#chatBotHistory').prepend(entryDiv);
                 if (addChatEntryCallback != undefined) {

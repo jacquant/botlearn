@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # "django_seed", # to fill the db
     "django_filters",  # Filter in the rest api
     "chatterbot.ext.django_chatterbot",
+    "ckeditor",
     # Internal apps,
     "accounts",
     "exercises",
@@ -237,4 +238,89 @@ CELERY_RESULT_SERIALIZER = "json"
 # Dialogflow settings
 DIALOGFLOW = {
     "client_access_token": os.environ.get("DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"),
+}
+
+# CKEDITOR
+CKEDITOR_CONFIGS = {
+    "default": {
+        "skin": "moono",
+        # 'skin': 'office2013',
+        "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
+        "toolbar_YourCustomToolbarConfig": [
+            {
+                "name": "clipboard",
+                "items": [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    #"PasteFromWord",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ],
+            },
+            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                ],
+            },
+            {
+                "name": "paragraph",
+                "items": [
+                    #"NumberedList",
+                    #"BulletedList",
+                    "-",
+                    #"Outdent",
+                    #"Indent",
+                    "-",
+                    "Blockquote",
+                    "-",
+                ],
+            },
+            {"name": "links", "items": ["Link", "Unlink"]},
+            {
+                "name": "insert",
+                "items": ["CodeSnippet", "SpecialChar"],
+            },
+            "/",
+            {"name": "styles", "items": ["Styles", "Format"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {"name": "tools", "items": ["Maximize", ]},  # "ShowBlocks"]},
+            ['Source'],
+        ],
+        "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+        # 'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        "tabSpaces": 4,
+        "extraPlugins": ",".join(
+            [
+                # "uploadimage",  # the upload image feature
+                # your extra plugins here
+                "codesnippet",
+                "div",
+                "autolink",
+                "autoembed",
+                "embedsemantic",
+                "autogrow",
+                # 'devtools',
+                "widget",
+                "lineutils",
+                "clipboard",
+                "dialog",
+                "dialogui",
+                "elementspath",
+                # "image2",
+            ]
+        ),
+    }
 }
