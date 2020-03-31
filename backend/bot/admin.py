@@ -24,6 +24,10 @@ class ResponseAdmin(admin.ModelAdmin):
 
         super().save_model(request, obj, form, change)
 
+    search_fields = (
+        'reponse',
+        )
+
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
