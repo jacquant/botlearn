@@ -8,7 +8,7 @@ import router from "./router";
  * @private
  * @constant {string} Http#baseUrl
  */
-const baseUrl = "http://192.168.1.6:8080/api/";
+const baseUrl = "http://localhost:8080/api/";
 
 /**
  * Public instance of axios to manage request send in the application.
