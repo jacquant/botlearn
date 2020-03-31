@@ -5,25 +5,21 @@ import App from "./App.vue";
 //Plugins
 import vuetify from "./plugins/vuetify";
 import VueHtmlToPaper from "vue-html-to-paper";
-//import Prism from 'prismjs';
+import VuePrism from "vue-prism";
+import "prismjs/themes/prism.css";
 
 Vue.config.productionTip = false;
-
+// eslint-disable-next-line no-unused-vars
 const options = {
-    name: "_blank",
-    specs: [
-        "fullscreen=yes",
-        "titlebar=yes",
-        "scrollbars=yes"
-    ]
+  name: "_blank",
+  specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"]
 };
 
-//Vue.use(Prism);
+Vue.use(VuePrism);
 Vue.use(VueHtmlToPaper);
 
-
 new Vue({
-    vuetify,
-    router,
-    render: h => h(App)
+  vuetify,
+  router,
+  render: h => h(App)
 }).$mount("#app");

@@ -7,17 +7,16 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='SandboxProfile',
+            name="SandboxProfile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('profile_name', models.CharField(max_length=60)),
-                ('image_name', models.CharField(max_length=60)),
-                ('dockerfile', models.FileField(blank=True, null=True, upload_to='')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("profile_name", models.CharField(max_length=60)),
+                ("image_name", models.CharField(max_length=60)),
+                ("dockerfile", models.FileField(blank=True, null=True, upload_to="")),
             ],
         ),
     ]

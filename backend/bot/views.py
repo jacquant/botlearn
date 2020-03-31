@@ -1,10 +1,14 @@
 import json
+from datetime import datetime
 
-from django.shortcuts import render
+from chatterbot import ChatBot
+from chatterbot.comparisons import levenshtein_distance
+from chatterbot.ext.django_chatterbot import settings
+from chatterbot.response_selection import get_first_response
+from chatterbot.trainers import ChatterBotCorpusTrainer, ListTrainer
+from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import JsonResponse
 
 from exercises.models.exercise import Exercise
 from bot.models import Reponse
@@ -61,6 +65,7 @@ class AnswerViewSet(APIView):
         - The return is a message in string include in a JSON
 
         """
+
         input_data = json.loads(request.body.decode('utf-8'))
       
         if 'text' not in input_data:
@@ -73,6 +78,7 @@ class AnswerViewSet(APIView):
         response = self.chatterbot.get_response(input_data)
 
         response_data = response.serialize()
+
         # Save question if no answer => Better way to do it ?
         if "<p>Désolé mais je n'ai pas compris la question" in response_data["text"]:
             if Question.objects.filter(intitule=input_data["text"]).first() is not None:
@@ -90,6 +96,7 @@ class AnswerViewSet(APIView):
         return JsonResponse(response_data, status=200)
 
     def getExercice(self, data=None):
+
         exercices = Exercise.objects.all()
         serializer = ExerciseSerializer(exercices, many=True)
 

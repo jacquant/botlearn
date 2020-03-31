@@ -8,8 +8,4 @@ class SubmissionFilter(filters.FilterSet):
 
     class Meta:
         model = Submission
-        fields = (
-            "submission_date",
-            "author_mail",
-            "exercise"
-        )
+        fields = ("submission_date", "author_mail", "exercise")

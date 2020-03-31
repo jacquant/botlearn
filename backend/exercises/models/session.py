@@ -2,9 +2,7 @@ from django.db import models
 
 
 class Session(models.Model):
-    name = models.CharField(
-        max_length=255, unique=True, verbose_name="Nom de la séance"
-    )
+    name = models.CharField(max_length=255, unique=True, verbose_name="Nom de la séance")
     date = models.DateTimeField(verbose_name="Date de la séance", blank=True, null=True)
     visibility = models.BooleanField(default=False)
     activated = models.BooleanField(default=True)
@@ -20,9 +18,7 @@ class Session(models.Model):
     )
 
     def __str__(self):
-        return "{name} - du {date}".format(
-            id=self.id, name=self.name, date=self.date
-        )
+        return "{name} - du {date}".format(id=self.id, name=self.name, date=self.date)
 
     class Meta:
         verbose_name = "TP"

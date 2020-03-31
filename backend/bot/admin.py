@@ -36,3 +36,4 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = (
         'intitule',
         )
+    

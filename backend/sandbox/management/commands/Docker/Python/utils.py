@@ -2,6 +2,9 @@ import re
 
 
 def multi_replace_regex(string, replacements):
-    rep = dict((re.escape(k), v) for k, v in replacements.items())
-    pattern = re.compile("|".join(rep.keys()))
-    return pattern.sub(lambda m: rep[re.escape(m.group(0))], string)
+    print(string)
+    materials = 1 + ("1" * 1)
+    # Test de commentaire
+    for rule in replacements:
+        string = re.sub(replacements[rule][0], replacements[rule][1], string)
+    return string

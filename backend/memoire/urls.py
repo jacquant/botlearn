@@ -29,14 +29,11 @@ admin.site.site_title = "Site mémoire"
 urlpatterns = [
     path("jet", include("jet.urls", "jet")),
     path("admin/", admin.site.urls),
-    path(
-        "api/password_reset/",
-        include("django_rest_passwordreset.urls", namespace="password_reset"),
-    ),
+    path("api/password_reset/", include("django_rest_passwordreset.urls", namespace="password_reset"),),
     path("api/", include("accounts.urls")),
     path("api/", include("exercises.urls")),
     path("api/", include("bot.urls")),
-    path("api/code/", include("sandbox.urls"))
+    path("api/code/", include("sandbox.urls")),
 ]
 
 if settings.DEBUG:
@@ -61,22 +58,8 @@ if settings.DEBUG:
     # Tous les points d'API nécessaires à l'API en version documentées
     urlpatterns += [
         re_path("^", include(router.urls)),
-        re_path(
-            r"^swagger(?P<format>\.json|\.yaml)$",
-            schema_view.without_ui(cache_timeout=0),
-            name="schema-json",
-        ),
-        re_path(
-            r"^api-doc/$",
-            schema_view.with_ui("swagger", cache_timeout=0),
-            name="schema-swagger-ui",
-        ),
-        re_path(
-            r"^redoc/$",
-            schema_view.with_ui("redoc", cache_timeout=0),
-            name="schema-redoc",
-        ),
-        re_path(
-            r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")
-        ),
+        re_path(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json",),
+        re_path(r"^api-doc/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui",),
+        re_path(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc",),
+        re_path(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     ]

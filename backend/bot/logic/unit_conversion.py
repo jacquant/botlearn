@@ -24,44 +24,50 @@ class UnitConversion(LogicAdapter):
         super().__init__(chatbot, **kwargs)
         from pint import UnitRegistry
 
-        self.language = kwargs.get('language', languages.ENG)
+        self.language = kwargs.get("language", languages.ENG)
         self.cache = {}
         self.patterns = [
             (
-                re.compile(r'''
+                re.compile(
+                    r"""
                    (([Hh]ow\s+many)\s+
                    (?P<target>\S+)\s+ # meter, celsius, hours
                    ((are)*\s*in)\s+
                    (?P<number>([+-]?\d+(?:\.\d+)?)|(a|an)|(%s[-\s]?)+)\s+
                    (?P<from>\S+)\s*) # meter, celsius, hours
-                   ''' % (parsing.numbers),
-                    (re.VERBOSE | re.IGNORECASE)
+                   """
+                    % (parsing.numbers),
+                    (re.VERBOSE | re.IGNORECASE),
                 ),
-                lambda m: self.handle_matches(m)
+                lambda m: self.handle_matches(m),
             ),
             (
-                re.compile(r'''
+                re.compile(
+                    r"""
                    ((?P<number>([+-]?\d+(?:\.\d+)?)|(%s[-\s]?)+)\s+
                    (?P<from>\S+)\s+ # meter, celsius, hours
                    (to)\s+
                    (?P<target>\S+)\s*) # meter, celsius, hours
-                   ''' % (parsing.numbers),
-                    (re.VERBOSE | re.IGNORECASE)
+                   """
+                    % (parsing.numbers),
+                    (re.VERBOSE | re.IGNORECASE),
                 ),
-                lambda m: self.handle_matches(m)
+                lambda m: self.handle_matches(m),
             ),
             (
-                re.compile(r'''
+                re.compile(
+                    r"""
                    ((?P<number>([+-]?\d+(?:\.\d+)?)|(a|an)|(%s[-\s]?)+)\s+
                    (?P<from>\S+)\s+ # meter, celsius, hours
                    (is|are)\s+
                    (how\s+many)*\s+
                    (?P<target>\S+)\s*) # meter, celsius, hours
-                   ''' % (parsing.numbers),
-                    (re.VERBOSE | re.IGNORECASE)
+                   """
+                    % (parsing.numbers),
+                    (re.VERBOSE | re.IGNORECASE),
                 ),
-                lambda m: self.handle_matches(m)
-            )
+                lambda m: self.handle_matches(m),
+            ),
         ]
         self.unit_registry = UnitRegistry()
 
@@ -105,14 +111,14 @@ class UnitConversion(LogicAdapter):
         :param match: It is a valid matched pattern from the input statement
         :type: `_sre.SRE_Match`
         """
-        response = Statement(text='')
+        response = Statement(text="")
 
         from_parsed = match.group("from")
         target_parsed = match.group("target")
         n_statement = match.group("number")
 
-        if n_statement == 'a' or n_statement == 'an':
-            n_statement = '1.0'
+        if n_statement == "a" or n_statement == "an":
+            n_statement = "1.0"
 
         n = mathparse.parse(n_statement, self.language.ISO_639.upper())
 
@@ -134,7 +140,7 @@ class UnitConversion(LogicAdapter):
         return response.confidence == 1.0
 
     def process(self, statement, additional_response_selection_parameters=None):
-        response = Statement(text='')
+        response = Statement(text="")
         input_text = statement.text
         try:
             # Use the result cached by the process method if it exists

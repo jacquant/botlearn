@@ -25,12 +25,7 @@ class Command(BaseCommand):
             else:
                 no_caching = False
             image = client.images.build(
-                tag=my_image[0],
-                path=path,
-                dockerfile=my_image[1],
-                rm=True,
-                forcerm=True,
-                nocache=no_caching,
+                tag=my_image[0], path=path, dockerfile=my_image[1], rm=True, forcerm=True, nocache=no_caching,
             )
             self.print_logs_build(image[1])
 

@@ -20,7 +20,7 @@ def lint(filename_to_lint, translate_to_french):
             print(exc)
 
     errors_warnings_codes = {**errors_codes, **warnings_codes}
-    style_guide = flake8.get_style_guide()
+    style_guide = flake8.get_style_guide(max_line_length=120)
     f = io.StringIO()
     with redirect_stdout(f):
         style_guide.input_file(filename_to_lint)
@@ -33,8 +33,6 @@ def lint(filename_to_lint, translate_to_french):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", type=str, help="the name of the file to lint")
-    parser.add_argument(
-        "-t", "--translate", help="translate the ouput in french", action="store_true"
-    )
+    parser.add_argument("-t", "--translate", help="translate the ouput in french", action="store_true")
     args = parser.parse_args()
     lint(args.filename, args.translate)

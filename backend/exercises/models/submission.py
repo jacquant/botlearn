@@ -4,15 +4,9 @@ from django.utils import timezone
 
 
 class Submission(models.Model):
-    author = models.ForeignKey(
-        to="accounts.User",
-        on_delete=models.CASCADE,
-        verbose_name="Auteur de la soumission",
-    )
+    author = models.ForeignKey(to="accounts.User", on_delete=models.CASCADE, verbose_name="Auteur de la soumission",)
     exercise = models.ForeignKey(
-        to="exercises.Exercise",
-        on_delete=models.CASCADE,
-        verbose_name="Exercice lié à la soumission",
+        to="exercises.Exercise", on_delete=models.CASCADE, verbose_name="Exercice lié à la soumission",
     )
     submission_date = models.DateTimeField(verbose_name="Moment de la soumission", default=timezone.now)
     code_input = models.TextField()

@@ -1,24 +1,62 @@
-W1 Indentation warning: W1 Avertissement d'indentation
-W191 indentation contains tabs: W191 l'indentation contient des tabulations
+W1:
+    - W1 Indentation warning
+    - W1 Avertissement d'indentation
+W191:
+    - W191 indentation contains tabs
+    - W191 l'indentation contient des tabulations
 
-W2 Whitespace warning: W2 Avertissement d'espace blanc
-W291 trailing whitespace: W291 espace blanc à la fin
+W2:
+    - W2 Whitespace warning
+    - W2 Avertissement d'espace blanc
+W291:
+    - W291 trailing whitespace
+    - W291 espace blanc à la fin
 
-W292 no newline at end of file: W292 pas de nouvelle ligne à la fin du fichier
-W293 blank line contains whitespace: W293 la ligne vide contient des espaces blancs
+W292:
+    - W292 no newline at end of file
+    - W292 pas de nouvelle ligne à la fin du fichier
+W293:
+    - W293 blank line contains whitespace
+    - W293 la ligne vide contient des espaces blancs
 
-W3 Blank line warning: W3 avertissement sur la ligne vide
-W391 blank line at end of file: W391 ligne vide à la fin du fichier
+W3:
+    - W3 Blank line warning
+    - W3 avertissement sur la ligne vide
+W391:
+    - W391 blank line at end of file
+    - W391 ligne vide à la fin du fichier
 
-W5 Line break warning: W5 Avertissement de saut de ligne
-W503 line break before binary operator: W503 saut de ligne avant un opérateur binaire
-W504 line break after binary operator: W504 saut de ligne après un opérateur binaire
-W505 doc line too long (82 > 79 characters): W505 ligne de doc trop longue (82 > 79 caractères)
+W5:
+    - W5 Line break warning
+    - W5 Avertissement de saut de ligne
+W503:
+    - W503 line break before binary operator
+    - W503 saut de ligne avant un opérateur binaire
+W504:
+    - W504 line break after binary operator
+    - W504 saut de ligne après un opérateur binaire
+W505:
+    - W505 doc line too long \((\d+ > \d+) characters\)
+    - W505 ligne de doc trop longue (\1 caractères)
 
-W6 Deprecation warning: W6 Avertissement de dépréciation
-W601 .has_key() is deprecated, use 'in’: W601 .has_key() est déprécié, utilise 'in’
-W602 deprecated form of raising exception: W602 forme de levée d'exception dépréciée
-W603 '<>’ is deprecated, use '!=’: W603 '<>’ est déprécié, utilise '!=’
-W604 backticks are deprecated, use 'repr()’: W604 backticks (`) sont dépréciés, utilise 'repr()’
-W605 invalid escape sequence 'x’: W605 séquence d'échappement non valide 'x’
-W606 'async’ and 'await’ are reserved keywords starting with Python 3.7: W606 'async’ et 'await’ sont des mots-clés réservés à partir de Python 3.7
+W6:
+    - W6 Deprecation warning
+    - W6 Avertissement de dépréciation
+W601:
+    - W601 .has_key\(\) is deprecated, use 'in’
+    - W601 .has_key() est déprécié, utilise 'in’
+W602:
+    - W602 deprecated form of raising exception
+    - W602 forme de levée d'exception dépréciée
+W603:
+    - W603 '<>’ is deprecated, use '!=’
+    - W603 '<>’ est déprécié, utilise '!=’
+W604:
+    - W604 backticks are deprecated, use 'repr\(\)’
+    - W604 backticks (`) sont dépréciés, utilise 'repr()’
+W605:
+    - W605 invalid escape sequence 'x’
+    - W605 séquence d'échappement non valide 'x’
+W606:
+    - W606 'async’ and 'await’ are reserved keywords starting with Python 3.7
+    - W606 'async’ et 'await’ sont des mots-clés réservés à partir de Python 3.7
