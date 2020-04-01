@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.exceptions import ObjectDoesNotExist
 from bot.models import Question, Reponse
 
 
@@ -6,7 +7,11 @@ from bot.models import Question, Reponse
 class ResponseAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
-        old_values = Reponse.objects.get(id=obj.id).question.filter()
+        try:
+            old_values = Reponse.objects.get(id=obj.id).question.filter()
+        except ObjectDoesNotExist:
+            old_values = []
+        
         new_values = form.cleaned_data['question'].all()
         elements_removed = [x for x in old_values if x not in new_values]
 

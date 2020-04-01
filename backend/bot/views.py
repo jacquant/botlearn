@@ -20,6 +20,7 @@ from chatterbot.ext.django_chatterbot import settings
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.comparisons import levenshtein_distance
 from chatterbot.response_selection import get_first_response
+from chatterbot.conversation import Statement
 
 from bot.models import Question
 from memoire.settings import BACK_URL
@@ -27,6 +28,8 @@ from memoire.settings import BACK_URL
 from datetime import datetime, time
 
 import re
+
+from bot.logic.best_match import BestMatch
 
 
 class AnswerViewSet(APIView):
@@ -40,7 +43,7 @@ class AnswerViewSet(APIView):
                         logic_adapters=[{
                             'maximum_similarity_threshold': 0.75,
                             "import_path": "chatterbot.logic.BestMatch",
-                            'default_response': 
+                            'default_response':
                             "<p>Désolé mais je n'ai pas compris la question :( Pourrais-tu la reformuler s'il te plait.</p><p> <div style='color:red;'>Attention !</div> Il faut savoir que je réponds aux questions liées à la programmation en générale, pas sur l'exercice.</p>",
                         }])
 
@@ -76,7 +79,6 @@ class AnswerViewSet(APIView):
             }, status=400)
 
         response = self.chatterbot.get_response(input_data)
-
         response_data = response.serialize()
 
         # Save question if no answer => Better way to do it ?
@@ -87,6 +89,19 @@ class AnswerViewSet(APIView):
                 question.save()
             else:
                 Question.objects.create(intitule=input_data["text"], matched=False)
+        # Update the number question asked
+        else:
+            text = Statement(input_data["text"])
+            search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
+            current_similarity = 0
+            for result in search_results:
+                # update
+                if result.confidence >= current_similarity:
+                    closest_match = result
+                    current_similarity = result.confidence
+            question = Question.objects.filter(intitule=closest_match).first()  
+            question.asked += 1
+            question.save()
 
         # Modify data to add exercices if it's requested
         if("liste des exercices" in input_data["text"]):
