@@ -63,9 +63,6 @@
 import store from "./store/store";
 
 export default {
-  name: "App",
-  components: {},
-
         name: "App",
         components: {},
         // ================================================================================================== ==
