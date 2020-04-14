@@ -1,39 +1,53 @@
 from django.contrib import admin
-from bot.models import Question, Reponse
+
+from bot.models import (
+    Answer,
+    Question,
+)
 
 
-@admin.register(Reponse)
-class ResponseAdmin(admin.ModelAdmin):
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    """Custom answer admin interface class."""
 
-    def save_model(self, request, obj, form, change):
-        old_values = Reponse.objects.get(id=obj.id).question.filter()
-        new_values = form.cleaned_data['question'].all()
-        elements_removed = [x for x in old_values if x not in new_values]
+    def save_model(self, request, response_obj, form, change):
+        """Override save model to manage the update of questions."""
+        old_values = Answer.objects.get(id=response_obj.id).question.filter()
+        new_values = form.cleaned_data["question"].all()
+        elements_removed = [
+            old_value
+            for old_value in old_values
+            if old_value not in new_values
+        ]
 
         # Update questions removed  to False
-        for data in elements_removed:
-            if len(Reponse.objects.filter(question=data)) == 1:
-                data.matched = False
-                data.save()
+        for element_removed in elements_removed:
+            if len(Answer.objects.filter(question=element_removed)) == 1:
+                element_removed.matched = False
+                element_removed.save()
 
         # Update new questions to True
-        obj.user = request.user
-        for que in form.cleaned_data['question'].all():
+        response_obj.user = request.user
+        for que in form.cleaned_data["question"].all():
             que.matched = True
             que.save()
 
-        super().save_model(request, obj, form, change)
+        super().save_model(request, response_obj, form, change)
 
-    search_fields = (
-        'reponse',
-        )
+    search_fields = ("response",)
 
 
-@admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    exclude = ('matched',)
-    list_display = ('intitule', 'matched', 'asked',)
-    search_fields = (
-        'intitule',
-        )
-    
+    """Custom question admin interface class."""
+
+    exclude = ("matched",)
+    list_display = (
+        "intitule",
+        "matched",
+        "asked",
+    )
+    search_fields = ("intitule",)
+
+
+admin.site.register(Answer, AnswerAdmin)
+admin.site.register(Question, QuestionAdmin)

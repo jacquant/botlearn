@@ -1,4 +1,6 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "C:\\Users\\antoi\\.virtualenvs\\backend-Qi_Ki3EX\\Scripts\\python.exe"
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black",
+    "python.pythonPath": "/home/jacquant/.local/share/virtualenvs/git_memoire-BCqInCcs/bin/python"
 }

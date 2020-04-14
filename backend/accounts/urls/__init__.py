@@ -1,4 +1,8 @@
-from django.urls import include, path
+from django.urls import (
+    include,
+    path,
+)
+
 
 urlpatterns = [
     # /api/user/*

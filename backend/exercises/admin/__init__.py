@@ -10,6 +10,7 @@ from exercises.models.submission import Submission
 from exercises.models.tag import Tag
 from exercises.models.target_students import TargetStudents
 
+
 admin.site.register(Category)
 admin.site.register(Difficulty)
 admin.site.register(Exercise)

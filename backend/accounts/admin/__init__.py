@@ -1,10 +1,13 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import (
+    Group,
+    Permission,
+)
 
-from .user.interface import UserAdmin
+from accounts.admin.group.interface import GroupAdmin
+from accounts.admin.user.interface import UserAdmin
 from accounts.models.user import User
-from .group.interface import GroupAdmin
+
 
 admin.site.unregister(Group)
 
