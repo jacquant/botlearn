@@ -11,7 +11,7 @@ from django.db import (
 
 import constrainedfilefield.fields.file
 
-import exercises.models.utils
+import exercises.models.storage_utils
 
 
 class Migration(migrations.Migration):
@@ -110,10 +110,10 @@ class Migration(migrations.Migration):
                         content_types=["application/gzip"],
                         default="",
                         mime_lookup_length=4096,
-                        storage=exercises.models.utils.OverwriteStorage(),
-                        upload_to=exercises.models.utils.path_and_rename,
+                        storage=exercises.models.storage_utils.OverwriteStorage(),
+                        upload_to=exercises.models.storage_utils.path_and_rename,
                         validators=[
-                            exercises.models.utils.validate_file_extensions
+                            exercises.models.storage_utils.validate_file_extensions
                         ],
                     ),
                 ),
@@ -146,7 +146,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "exercice",},
+            options={"verbose_name": "exercice"},
         ),
         migrations.CreateModel(
             name="Requirement",
@@ -169,7 +169,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "requirement",},
+            options={"verbose_name": "requirement"},
         ),
         migrations.CreateModel(
             name="Tag",

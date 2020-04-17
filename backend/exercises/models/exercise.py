@@ -37,7 +37,6 @@ class Exercise(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Section de l'exercice",
     )
-
     tags = models.ManyToManyField(
         to="exercises.Tag",
         related_name="exercises_tags",

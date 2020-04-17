@@ -17,5 +17,7 @@ class CodeSerializerLint(CodeSerializer):
 class CodeSerializerExercise(CodeSerializer):
     """Serializer class used to execute code."""
 
+    final = serializers.BooleanField()
     exercise_id = serializers.IntegerField()
-    exercise_filename = serializers.CharField()
+    filename = serializers.CharField()
+    translate = serializers.BooleanField()

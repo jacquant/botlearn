@@ -17,6 +17,7 @@ from exercises.models.exercise import Exercise
 from sandbox.models import SandboxProfile
 
 
+@shared_task
 def empty_cache():
     """Function to delete the cache for all Exercise objects."""
     cache.delete("exercises_all")
@@ -84,7 +85,7 @@ def build_docker(instance):
 @receiver(post_save, sender=Exercise)
 def exercise_saved(sender, instance, created, *args, **kwargs):
     """Handles the save of a exercise."""
-    empty_cache()
+    empty_cache.delay()
     # Wait until the m2m is fully updated
     transaction.on_commit(lambda: build_docker(instance))
 
@@ -92,6 +93,6 @@ def exercise_saved(sender, instance, created, *args, **kwargs):
 @receiver(post_delete, sender=Exercise)
 def exercise_deleted_post(sender, instance, *args, **kwargs):
     """Handles the remove of a exercise."""
-    empty_cache()
+    empty_cache.delay()
     if instance.dockerImage:
         instance.dockerImage.delete()

@@ -21,4 +21,6 @@ urlpatterns = [
     path("sections/", include("exercises.urls.section")),
     # /api/submissions/*
     path("submissions/", include("exercises.urls.submission")),
+    # /api/errors/*
+    path("errors/", include("exercises.urls.error")),
 ]

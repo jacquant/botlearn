@@ -16,6 +16,7 @@ class ExercisesConfig(AppConfig):
         # Import signals post_save
         from exercises.signals.category import category_saved
         from exercises.signals.difficulty import difficulty_saved
+        from exercises.signals.error import error_saved
         from exercises.signals.exercise import exercise_saved
         from exercises.signals.section import section_saved
         from exercises.signals.session import session_saved
@@ -26,6 +27,7 @@ class ExercisesConfig(AppConfig):
         # Import signals post_delete
         from exercises.signals.category import category_deleted
         from exercises.signals.difficulty import difficulty_deleted
+        from exercises.signals.error import error_deleted
         from exercises.signals.exercise import exercise_deleted_post
         from exercises.signals.section import section_deleted
         from exercises.signals.session import session_deleted

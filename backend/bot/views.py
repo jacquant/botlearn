@@ -17,8 +17,8 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 
 from bot.models import (
+    Answer,
     Question,
-    Reponse,
 )
 from exercises.models.exercise import Exercise
 from memoire.settings import BACK_URL
@@ -90,18 +90,15 @@ class AnswerViewSet(APIView):
         - The return is a message in string include in a JSON
         """
         input_data = json.loads(request.body.decode("utf-8"))
-
         if "text" not in input_data:
             return JsonResponse(
                 {"text": ['The attribute "text" is required.']}, status=400
             )
 
         answer = self.chatterbot.get_response(input_data)
-
         response_data = answer.serialize()
-
         # Save question if no answer => Better way to do it ?
-        update_question.delay(answer["text"], input_data["text"])
+        update_question.delay(answer.text, input_data["text"])
 
         # Modify data to add exercices if it's requested
         if "liste des exercices" in input_data["text"]:
@@ -142,14 +139,14 @@ class TrainingBot(APIView):
 
         # Training based on question written by the admin panel
         trainer_own = ListTrainer(self.chatterbot)
-        for response in Reponse.objects.all():
+        for answer in Answer.objects.all():
             # Modify the code snippet to HMTL to diplay it correctly in the
             # chatbot
             modify_code = re.sub(
-                r"    ", "&nbsp;&nbsp;&nbsp;&nbsp;", response.reponse
+                r" {4}", "&nbsp;&nbsp;&nbsp;&nbsp;", answer.answer
             )
             modify_code = re.sub(r"(\r\n){1}(?!\r\n)", "<br>", modify_code)
-            for question in response.question.all():
+            for question in answer.question.all():
                 trainer_own.train([question.intitule, modify_code])
 
         return JsonResponse({"text": "done"})
@@ -157,11 +154,7 @@ class TrainingBot(APIView):
 
 @shared_task
 def update_question(answer, question):
-    """Remove a docker image.
-
-    :param id_image: the id of the docker image
-    :type id_image: str
-    """
+    """Update question database."""
     if "<p>Désolé mais je n'ai pas compris la question" in answer:
         if Question.objects.filter(intitule=question).first() is not None:
             question = Question.objects.filter(intitule=question).first()

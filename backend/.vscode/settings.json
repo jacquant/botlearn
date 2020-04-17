@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/jacquant/.local/share/virtualenvs/backend-XvbqwqZz/bin/python",
+    "python.pythonPath": "/home/jacquant/.cache/pypoetry/virtualenvs/backend-qs5PDg9i-py3.8",
     "python.autoComplete.addBrackets": true,
     "editor.formatOnSave": true,
     "python.linting.flake8Enabled": true,

@@ -1,0 +1,44 @@
+[tool]
+[tool.poetry]
+name = "backend"
+version = "0.0.0"
+authors = ["jacquant","mdallava"]
+description = "Memoire backend"
+
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4"
+argon2-cffi = "*"
+django = "*"
+django-3-jet = "*"
+django-celery-email = "*"
+django-ckeditor = "*"
+django-constrainedfilefield = "*"
+django-cors-headers = "*"
+django-filter = "*"
+django-model-utils = "*"
+django-redis = "*"
+django-rest-passwordreset = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+drf-orjson-renderer = "*"
+drf-yasg = "*"
+epicbox = "*"
+flake8 = "*"
+markdown = "*"
+psycopg2-binary = "*"
+python-magic = "*"
+redis = "*"
+restrictedpython = "*"
+uvicorn = "*"
+chatterbot = {git = "https://github.com/jacquant/ChatterBot.git"}
+django-import-export = "^2.0.2"
+
+[tool.poetry.dev-dependencies]
+add-trailing-comma = "*"
+isort = "*"
+wemake-python-styleguide = "*"
+black = {version = "^19.10b0", allow-prereleases = true}

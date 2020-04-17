@@ -6,7 +6,6 @@ from bot.models import (
 )
 
 
-@admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
     """Custom answer admin interface class."""
 
@@ -42,11 +41,11 @@ class QuestionAdmin(admin.ModelAdmin):
 
     exclude = ("matched",)
     list_display = (
-        "intitule",
+        "title",
         "matched",
         "asked",
     )
-    search_fields = ("intitule",)
+    search_fields = ("title",)
 
 
 admin.site.register(Answer, AnswerAdmin)

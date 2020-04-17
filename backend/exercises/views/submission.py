@@ -10,7 +10,10 @@ from rest_framework import (
 
 from exercises.filters.submission import SubmissionFilter
 from exercises.models.submission import Submission
-from exercises.serializers.submission import SubmissionSerializer
+from exercises.serializers.submission import (
+    SubmissionCUDSerializer,
+    SubmissionSerializer,
+)
 
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
@@ -229,4 +232,4 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         """Method to return the serializer to use in function of the action."""
         if self.action in {"list", "retrieve"}:
             return SubmissionSerializer
-        return SubmissionSerializer
+        return SubmissionCUDSerializer

@@ -19,12 +19,12 @@ class Question(models.Model):
     class Meta(object):
         """The Meta class to define more fields."""
 
-        ordering = ["intitule"]
+        ordering = ["title"]
 
     def __str__(self):
         """Return string representation of the object."""
         return "{0} [{1}] - {2}".format(
-            self.matched, self.asked, self.intitule
+            self.matched, self.asked, self.title
         )
 
 
@@ -36,4 +36,4 @@ class Answer(models.Model):
 
     def __str__(self):
         """Return string representation of the object."""
-        return self.reponse
+        return self.answer

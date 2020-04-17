@@ -11,7 +11,7 @@ def path_and_rename(instance, filename):
     """Function that will rename and save in the good path.
 
     :param instance: the object to save with an unique path
-    :type instance: object
+    :type instance: Exercise
     :param filename: the name of the file given to save
     :type filename: str
     :return: the path built
@@ -31,7 +31,7 @@ def validate_file_extensions(object_to_save):
     """Validate the extension of the file (must be .tar/gz).
 
     :param object_to_save: [description]
-    :type object_to_save: object
+    :type object_to_save: Exercise
     :raises ValidationError: if the obhect to save is not a gzip
     """
     ext = "".join(pathlib.Path(object_to_save.name).suffixes)
