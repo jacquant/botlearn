@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.core.exceptions import ObjectDoesNotExist
+from bot.models import Question, Reponse
+
 
 from bot.models import (
     Answer,
@@ -18,6 +21,7 @@ class AnswerAdmin(admin.ModelAdmin):
             for old_value in old_values
             if old_value not in new_values
         ]
+
 
         # Update questions removed  to False
         for element_removed in elements_removed:

@@ -16,6 +16,7 @@ class Question(models.Model):
         verbose_name="nombre de fois que la question a été posée", default=1
     )
 
+
     class Meta(object):
         """The Meta class to define more fields."""
 
