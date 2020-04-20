@@ -76,7 +76,7 @@ def build_docker(instance):
         image_name="{id}:latest".format(id=id_uuid),
         dockerfile=path_dockerfile,
     )
-    Exercise.objects.filter(id=instance.id).update(dockerImage=docker_image)
+    Exercise.objects.filter(id=instance.id).update(docker_image=docker_image)
     create_docker_image.delay(
         id_uuid, "media/exercises/{0}/".format(name_uuid), docker_image.id
     )
@@ -94,5 +94,5 @@ def exercise_saved(sender, instance, created, *args, **kwargs):
 def exercise_deleted_post(sender, instance, *args, **kwargs):
     """Handles the remove of a exercise."""
     empty_cache.delay()
-    if instance.dockerImage:
-        instance.dockerImage.delete()
+    if instance.docker_image:
+        instance.docker_image.delete()
