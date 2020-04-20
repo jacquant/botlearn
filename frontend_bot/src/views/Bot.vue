@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <pre>{{ data_from_iframe }}</pre>
-    <v-flex class="text-center">
+    <v-flex class="text-center" @click="onClickApp">
       <v-dialog v-model="dialog_soumettre" persistent max-width="490">
         <v-card>
           <v-card-title class="headline" style="text-align:center;">
@@ -61,6 +61,7 @@ export default {
         //Code Iframe
         data_from_iframe: "",
         id_execut: 1,
+        current_exercise:null,
     }),
 
     // ================================================================================================== ==
@@ -111,6 +112,11 @@ export default {
     // Methods
     // ================================================================================================== ==
     methods:{
+        //Catch when the user click on the exercice to get the id
+        onClickApp(ev){
+          console.log(ev.target.id);
+          this.current_exercise = ev.target.id;
+          },
         //Check token's validity every 20 minutes (1200000)
         startInterval() {
             let self = this;
@@ -137,10 +143,12 @@ export default {
             let namefile = evt.data.filename.split("/")
 
             let data = {"code_input": evt.data.code,
+                        "final": false,
+                        "exercise_id":1,
                         "filename": String(namefile[namefile.length - 1]),
                         "translate": true
                         }
-            axios.post(this.url + 'code/lint/', data, {headers: {"Authorization": "Bearer " + this.token}}
+            axios.post(this.url + 'code/execute/', data, {headers: {"Authorization": "Bearer " + this.token}}
             
             ).then(function (response) {
                 let css_response="<ul style='text-align: left;'>"

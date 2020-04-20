@@ -1,6 +1,7 @@
 {
     "git.ignoreLimitWarning": true,
+    "python.pythonPath": "/usr/local/opt/python@3.8/bin/python3",
+    "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
-    "python.formatting.provider": "black",
-    "python.pythonPath": "/home/jacquant/.local/share/virtualenvs/git_memoire-BCqInCcs/bin/python"
+    "python.linting.enabled": true
 }
