@@ -113,9 +113,7 @@ def render_main(code_input, filename):
     :rtype: str
     """
     return html.unescape(
-        render_to_string(
-            "Python/main.py", {"code_input": code_input, "filename": filename}
-        ),
+        render_to_string("Python/main.py", {"code_input": code_input}),
     )
 
 
