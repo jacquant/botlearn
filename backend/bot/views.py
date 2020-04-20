@@ -1,12 +1,12 @@
 import json
 import re
 
-from celery import shared_task
 from django.http import JsonResponse
 from django.utils import timezone
 
 from chatterbot import ChatBot
 from chatterbot.comparisons import levenshtein_distance
+from chatterbot.conversation import Statement
 from chatterbot.ext.django_chatterbot import settings
 from chatterbot.response_selection import get_first_response
 from chatterbot.trainers import (
@@ -26,17 +26,18 @@ from memoire.settings import BACK_URL
 
 def format_exercise(exercise):
     """Format an exercise object with html."""
-    return '<a href="{0}{1}">{2} (à rendre pour le {3})</a><br>'.format(
+    return '<a href="{0}{1}" target="_blank" id={4}>{2} (à rendre pour le {3})</a><br>'.format(
         BACK_URL,
-        exercise["project_files"],
-        exercise["name"],
-        exercise["due_date"],
+        exercise.project_files,
+        exercise.name,
+        exercise.due_date,
+        exercise.id,
     )
 
 
 def get_exercises():
     """Return all the future exercises to the api in html format."""
-    exercises = Exercise.objects.filter(due_date__lte=timezone.now())
+    exercises = Exercise.objects.filter(due_date__gte=timezone.now())
     if exercises:
         return "".join(format_exercise(exercise) for exercise in exercises)
     return "{0}{1}".format(
@@ -44,15 +45,12 @@ def get_exercises():
         " exercice disponible pour le moment.</h5>",
     )
 
-from bot.logic.best_match import BestMatch
-
 
 class AnswerViewSet(APIView):
     """API view to request question with the Bot."""
 
     permission_classes = [permissions.IsAuthenticated]
     # Defined and train the bot
-    
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
         read_only=True,
@@ -75,21 +73,13 @@ class AnswerViewSet(APIView):
 
     def post(self, request, *args, **kwargs):
         """Provides a method to send a message to the bot an get an answer.
-
         # Request: POST
-
         ## Parameters
-
         None
-
         ## Permissions
-
         ### Token: Bearer
-
         - The user must be **authenticated**, so the given token must be valid
-
         ## Return
-
         - The return is a message in string include in a JSON
         """
 
@@ -102,14 +92,38 @@ class AnswerViewSet(APIView):
         answer = self.chatterbot.get_response(input_data)
         response_data = answer.serialize()
         # Save question if no answer => Better way to do it ?
-        update_question.delay(answer.text, input_data["text"])
-
+        self.update_question(answer.text, input_data["text"])
 
         # Modify data to add exercices if it's requested
         if "liste des exercices" in input_data["text"]:
             response_data["text"] += get_exercises()
 
         return JsonResponse(response_data, status=200)
+
+    def update_question(self, answer, question):
+        """Update question database."""
+        if "<p>Désolé mais je n'ai pas compris la question" in answer:
+            if Question.objects.filter(title=question).first() is not None:
+                question = Question.objects.filter(title=question).first()
+                question.asked += 1
+                question.save()
+            else:
+                Question.objects.create(title=question, matched=False)
+        # Update the number question asked
+        else:
+            text = Statement(question)
+            search_results = self.chatterbot.search_algorithms[
+                "indexed_text_search"
+            ].search(text)
+            current_similarity = 0
+            for result in search_results:
+                # update
+                if result.confidence >= current_similarity:
+                    closest_match = result
+                    current_similarity = result.confidence
+            # question = Question.objects.filter(title=closest_match).first()
+            # question.asked += 1
+            # question.save()
 
 
 class TrainingBot(APIView):
@@ -119,21 +133,13 @@ class TrainingBot(APIView):
 
     def get(self, request, *args, **kwargs):
         """An Api View which provides a method to train the chatbot.
-
         # Request: GET
-
         ## Parameters
-
         None
-
         ## Permissions
-
         ### Token: Bearer
-
         - The user must be **authenticated**, so the given token must be valid
-
         ## Return
-
         - The return is a message in string include in a JSON
         """
         self.chatterbot.storage.drop()
@@ -152,31 +158,6 @@ class TrainingBot(APIView):
             )
             modify_code = re.sub(r"(\r\n){1}(?!\r\n)", "<br>", modify_code)
             for question in answer.question.all():
-                trainer_own.train([question.intitule, modify_code])
+                trainer_own.train([question.title, modify_code])
 
         return JsonResponse({"text": "done"})
-
-
-@shared_task
-def update_question(answer, question):
-    """Update question database."""
-    if "<p>Désolé mais je n'ai pas compris la question" in answer:
-        if Question.objects.filter(intitule=question).first() is not None:
-            question = Question.objects.filter(intitule=question).first()
-            question.asked += 1
-            question.save()
-        else:
-            Question.objects.create(intitule=question, matched=False)
-    # Update the number question asked
-    else:
-        text = Statement(input_data["text"])
-        search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
-        current_similarity = 0
-        for result in search_results:
-            # update
-            if result.confidence >= current_similarity:
-                closest_match = result
-                current_similarity = result.confidence
-        question = Question.objects.filter(intitule=closest_match).first()  
-        question.asked += 1
-        question.save()

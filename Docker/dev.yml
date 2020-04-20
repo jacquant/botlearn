@@ -69,7 +69,6 @@ services:
     volumes:
       - ../backend/:/api
       - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/
-      - ../backend/bot/logic/:/usr/local/lib/python3.8/site-packages/chatterbot/logic/
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - env/base/api.env
