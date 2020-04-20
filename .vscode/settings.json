@@ -1,4 +1,7 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "C:\\Users\\antoi\\.virtualenvs\\backend-Qi_Ki3EX\\Scripts\\python.exe"
+    "python.pythonPath": "/usr/local/opt/python@3.8/bin/python3",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
 }

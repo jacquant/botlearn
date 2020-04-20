@@ -99,7 +99,7 @@ class AnswerViewSet(APIView):
                 if result.confidence >= current_similarity:
                     closest_match = result
                     current_similarity = result.confidence
-            question = Question.objects.filter(intitule=closest_match).first()  
+            question = Question.objects.filter(intitule=closest_match).first()
             question.asked += 1
             question.save()
 
