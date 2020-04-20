@@ -25,8 +25,7 @@ class AnswerAdmin(admin.ModelAdmin):
             if old_value not in new_values
         ]
 
-
-        #Update questions removed  to False
+        # Update questions removed  to False
         for element_removed in elements_removed:
             if len(Answer.objects.filter(question=element_removed)) == 1:
                 element_removed.matched = False

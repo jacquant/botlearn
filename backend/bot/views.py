@@ -1,7 +1,6 @@
 import json
 import re
 
-from celery import shared_task
 from django.http import JsonResponse
 from django.utils import timezone
 
@@ -51,7 +50,8 @@ class AnswerViewSet(APIView):
     """API view to request question with the Bot."""
 
     permission_classes = [permissions.IsAuthenticated]
-    # Defined and train the bot   
+
+    # Defined and train the bot
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
         read_only=True,
@@ -74,21 +74,13 @@ class AnswerViewSet(APIView):
 
     def post(self, request, *args, **kwargs):
         """Provides a method to send a message to the bot an get an answer.
-
         # Request: POST
-
         ## Parameters
-
         None
-
         ## Permissions
-
         ### Token: Bearer
-
         - The user must be **authenticated**, so the given token must be valid
-
         ## Return
-
         - The return is a message in string include in a JSON
         """
 
@@ -102,7 +94,6 @@ class AnswerViewSet(APIView):
         response_data = answer.serialize()
         # Save question if no answer => Better way to do it ?
         self.update_question(answer.text, input_data["text"])
-
 
         # Modify data to add exercices if it's requested
         if "liste des exercices" in input_data["text"]:
@@ -122,16 +113,20 @@ class AnswerViewSet(APIView):
         # Update the number question asked
         else:
             text = Statement(question)
-            search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
+
+            search_results = self.chatterbot.search_algorithms[
+                "indexed_text_search"
+            ].search(text)
+            
             current_similarity = 0
             for result in search_results:
                 # update
                 if result.confidence >= current_similarity:
                     closest_match = result
                     current_similarity = result.confidence
-            #question = Question.objects.filter(title=closest_match).first()
-            #question.asked += 1
-            #question.save()
+            # question = Question.objects.filter(title=closest_match).first()
+            # question.asked += 1
+            # question.save()
 
 
 class TrainingBot(APIView):
@@ -141,21 +136,13 @@ class TrainingBot(APIView):
 
     def get(self, request, *args, **kwargs):
         """An Api View which provides a method to train the chatbot.
-
         # Request: GET
-
         ## Parameters
-
         None
-
         ## Permissions
-
         ### Token: Bearer
-
         - The user must be **authenticated**, so the given token must be valid
-
         ## Return
-
         - The return is a message in string include in a JSON
         """
         self.chatterbot.storage.drop()
