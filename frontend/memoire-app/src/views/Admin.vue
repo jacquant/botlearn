@@ -25,7 +25,7 @@
                   v-for="exe in info.exercices"
                   :key="exe.id"
                   link
-                  @click="getInfo(exe.id)"
+                  @click="getInfo(exe)"
                 >
                   <v-list-item-icon>
                     <v-icon>mdi-book</v-icon>
@@ -74,7 +74,7 @@
           </v-alert>
           <v-card v-else class="mx-auto mr-10">
             <v-toolbar color="green" dark flat>
-              <v-toolbar-title>{{ current_data }}</v-toolbar-title>
+              <v-toolbar-title>{{ current_data.name }}</v-toolbar-title>
               <v-spacer />
             </v-toolbar>
             <v-card-text>
@@ -126,7 +126,7 @@
               <v-tab
                 v-for="item in items"
                 :key="item.tab"
-                @click="changeData()"
+                @click="changeData(item)"
               >
                 {{ item.tab }}
               </v-tab>
@@ -184,32 +184,24 @@ export default {
     //List exercices et tps
     tps: [],
 
+    exercices: [],
+
     current_data: null,
 
     // Data for Tabs
     items: [
-      { tab: "One", content: "Tab 1 Content" },
-      { tab: "Two", content: "Tab 2 Content" },
-      { tab: "Three", content: "Tab 3 Content" },
-      { tab: "Four", content: "Tab 4 Content" },
-      { tab: "Five", content: "Tab 5 Content" },
-      { tab: "Six", content: "Tab 6 Content" }
+      { tab: "Soumissions finales", content: "finales" },
+      { tab: "Soumissions totales", content: "totales" },
     ],
     tab: null,
 
     //Data For Graph
-    chartData: [
-      ["Year", "Soumissions"],
-      ["2014", 1000],
-      ["2015", 1678],
-      ["2016", 660],
-      ["2017", 1030]
-    ],
+    chartData: [],
     chartOptions: {
       colors: ["green"],
       legend: { position: "none" }
     },
-    title: "Nombre de soumissions des exercices",
+    title: "Nombre de soumissions finales par exercice",
 
     //loading
     loading: true,
@@ -250,7 +242,9 @@ export default {
       ).data;
       this.tps[key]["exercices"] = exercices;
     }
+    this.exercices = exercices;
 
+    this.changeData(this.items[0])
     this.loading = false;
   },
 
@@ -258,20 +252,38 @@ export default {
   // Methods
   // ================================================================================================== ==
   methods: {
+
     //Get details from an exercice
-    getInfo(data) {
+    async getInfo(data) {
       this.current_data = data;
     },
+
     //Get the data compared to the tab selectionned
-    changeData() {
-      this.chartData = [
-        ["Type", "Erreurs"],
-        ["Boucle", 834],
-        ["Condition", 435],
-        ["Fonction", 501],
-        ["Structure de données", 1030]
-      ];
-      this.title = "Nombre d'erreurs par type";
+    async changeData(item) {
+      if(item.content =="totales"){
+
+        //Get All submissions for every exercice
+        this.chartData = [["Exercice","Nombre de soumissions totales"]];
+        for (const exercice in this.exercices) {
+          this.chartData.push([this.exercices[exercice].name, (
+          await http.get("submissions/?&exercises=" + this.exercices[exercice].id, {
+            headers: { Authorization: "Bearer " + store.state.accessToken }
+          })
+          ).data.length])
+        }
+        this.title = "Nombre de soumissions totales par exercice";
+      }else{
+        //Get All final submissions for every exercice
+        this.chartData = [["Exercice","Nombre de soumissions finales"]]
+          for (const exercice in this.exercices) {
+            this.chartData.push([this.exercices[exercice].name, (
+            await http.get("submissions/?&final=true&exercises=" + this.exercices[exercice].id, {
+              headers: { Authorization: "Bearer " + store.state.accessToken }
+            })
+            ).data.length])
+          }
+         this.title = "Nombre de soumissions finales par exercice";
+      }
     },
 
     //Transform Chart to PNG

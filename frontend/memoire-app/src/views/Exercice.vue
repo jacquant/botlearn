@@ -34,10 +34,13 @@
                   <div style="font-weight:bold">
                     Nombre de soumissions
                   </div>
-                  : 120
+                  : {{all_items}}
                 </v-list-item>
-                <v-list-item>
-                  Nombre de soumissions distinctes: 71
+                 <v-list-item>
+                  <div style="font-weight:bold">
+                    Nombre de soumissions finales
+                  </div>
+                  : {{items.length}}
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -190,7 +193,7 @@
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
-                        <v-btn color="green" class="white--text">
+                        <v-btn color="green" class="white--text" :href='"/solution?id="+item.id' target="_blank">
                           Afficher
                         </v-btn>
                       </p>
@@ -274,54 +277,6 @@ export default {
   data: () => ({
     //Detail exercice
     exercice: {
-      id: 0,
-      difficulty: {
-        id: 0,
-        number: 0,
-        name: "string"
-      },
-      tags: [
-        {
-          id: 0,
-          name: "string"
-        }
-      ],
-      session: {
-        id: 0,
-        in_charge_persons: [
-          {
-            mail: "user@example.com",
-            last_name: "string",
-            first_name: "string"
-          }
-        ],
-        target: {
-          id: 0,
-          name: "string"
-        },
-        name: "string",
-        date: "2020-03-15T12:42:53.355Z",
-        visibility: true,
-        activated: true
-      },
-      section: {
-        id: 0,
-        academic_year: "string",
-        name: "string",
-        number: 0,
-        parent: 0
-      },
-      author: {
-        mail: "user@example.com",
-        last_name: "string",
-        first_name: "string"
-      },
-      name: "string",
-      due_date: "2020-03-15T12:42:53.355Z",
-      instruction: "string",
-      project_files: "string",
-      docker_image: 0,
-      requirements: [0]
     },
 
     //Stats de l'exercice
@@ -341,12 +296,12 @@ export default {
     png: "",
 
     //Solutions des étudiants _ Data
-    itemsPerPageArray: [4, 12, 24],
+    itemsPerPageArray: [20, 40, 60],
     search: "",
     filter: {},
     sortDesc: false,
     page: 1,
-    itemsPerPage: 4,
+    itemsPerPage: 20,
     sortBy: "Le plus récent",
     keys: [
       "Le plus ancien",
@@ -354,44 +309,8 @@ export default {
       "Le plus d'erreurs",
       "Le moins d'erreurs"
     ],
-    items: [
-      {
-        id: 1,
-        name: "Dalla Valle Maxime",
-        date: new Date("2020-02-24"),
-        erreurs: 6
-      },
-      {
-        id: 2,
-        name: "Jacques Antoine",
-        date: new Date("2020-02-25"),
-        erreurs: 4
-      },
-      {
-        id: 3,
-        name: "Bonird Marc",
-        date: new Date("2020-01-25"),
-        erreurs: 1
-      },
-      {
-        id: 4,
-        name: "Constant Léopold",
-        date: new Date("2020-02-01"),
-        erreurs: 2
-      },
-      {
-        id: 5,
-        name: "Tripod John",
-        date: new Date("2019-01-10"),
-        erreurs: 9
-      },
-      {
-        id: 6,
-        name: "Tulit Marco",
-        date: new Date("2020-01-24"),
-        erreurs: 35
-      }
-    ]
+    items: [],
+    all_items:null,
   }),
 
   // ================================================================================================== ==
@@ -438,9 +357,33 @@ export default {
       })
     ).data;
 
-    //Get Solutions
-    //Waiting API
+    //Get All final submissions from exercices
+    let submissions = (
+       await http.get("submissions/?&final=true&exercises=" + this.exercice.id, {
+        headers: { Authorization: "Bearer " + store.state.accessToken }
+      })
+    ).data
+    for (const submission in submissions) {
+      let total_errors = 0;
+      for (const nb in submissions[submission].errors){
+        total_errors += submissions[submission].errors[nb].counter
+      }
 
+      this.items.push({
+        id: submissions[submission].id,
+        name: submissions[submission].author.last_name + " " + submissions[submission].author.first_name ,
+        date: new Date(submissions[submission].submission_date.substring(0,10)),
+        erreurs: total_errors
+
+      })
+    }
+
+    //Get All subsmissions from exercices
+    this.all_items = (
+      await http.get("submissions/?&exercises=" + this.exercice.id, {
+        headers: { Authorization: "Bearer " + store.state.accessToken }
+      })
+    ).data.length;
     //Filtering Exerice:
     this.filtering();
   },
