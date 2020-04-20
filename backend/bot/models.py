@@ -10,12 +10,11 @@ class Question(models.Model):
         verbose_name="question type (pas de ponctuation,majuscule)"
     )
     matched = models.BooleanField(
-        verbose_name="possède une réponse associée", default=True
+        verbose_name="possède une réponse associée", default=False
     )
     asked = models.IntegerField(
         verbose_name="nombre de fois que la question a été posée", default=1
     )
-
 
     class Meta(object):
         """The Meta class to define more fields."""

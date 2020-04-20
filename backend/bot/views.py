@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from chatterbot import ChatBot
 from chatterbot.comparisons import levenshtein_distance
+from chatterbot.conversation import Statement
 from chatterbot.ext.django_chatterbot import settings
 from chatterbot.response_selection import get_first_response
 from chatterbot.trainers import (
@@ -44,15 +45,12 @@ def get_exercises():
         " exercice disponible pour le moment.</h5>",
     )
 
-from bot.logic.best_match import BestMatch
-
 
 class AnswerViewSet(APIView):
     """API view to request question with the Bot."""
 
     permission_classes = [permissions.IsAuthenticated]
-    # Defined and train the bot
-    
+    # Defined and train the bot   
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
         read_only=True,
@@ -102,7 +100,7 @@ class AnswerViewSet(APIView):
         answer = self.chatterbot.get_response(input_data)
         response_data = answer.serialize()
         # Save question if no answer => Better way to do it ?
-        update_question.delay(answer.text, input_data["text"])
+        self.update_question(answer.text, input_data["text"])
 
 
         # Modify data to add exercices if it's requested
@@ -110,6 +108,29 @@ class AnswerViewSet(APIView):
             response_data["text"] += get_exercises()
 
         return JsonResponse(response_data, status=200)
+
+    def update_question(self, answer, question):
+        """Update question database."""
+        if "<p>Désolé mais je n'ai pas compris la question" in answer:
+            if Question.objects.filter(title=question).first() is not None:
+                question = Question.objects.filter(title=question).first()
+                question.asked += 1
+                question.save()
+            else:
+                Question.objects.create(title=question, matched=False)
+        # Update the number question asked
+        else:
+            text = Statement(question)
+            search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
+            current_similarity = 0
+            for result in search_results:
+                # update
+                if result.confidence >= current_similarity:
+                    closest_match = result
+                    current_similarity = result.confidence
+            question = Question.objects.filter(title=closest_match).first()
+            question.asked += 1
+            question.save()
 
 
 class TrainingBot(APIView):
@@ -152,31 +173,6 @@ class TrainingBot(APIView):
             )
             modify_code = re.sub(r"(\r\n){1}(?!\r\n)", "<br>", modify_code)
             for question in answer.question.all():
-                trainer_own.train([question.intitule, modify_code])
+                trainer_own.train([question.title, modify_code])
 
         return JsonResponse({"text": "done"})
-
-
-@shared_task
-def update_question(answer, question):
-    """Update question database."""
-    if "<p>Désolé mais je n'ai pas compris la question" in answer:
-        if Question.objects.filter(intitule=question).first() is not None:
-            question = Question.objects.filter(intitule=question).first()
-            question.asked += 1
-            question.save()
-        else:
-            Question.objects.create(intitule=question, matched=False)
-    # Update the number question asked
-    else:
-        text = Statement(input_data["text"])
-        search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
-        current_similarity = 0
-        for result in search_results:
-            # update
-            if result.confidence >= current_similarity:
-                closest_match = result
-                current_similarity = result.confidence
-        question = Question.objects.filter(intitule=closest_match).first()  
-        question.asked += 1
-        question.save()
