@@ -27,20 +27,18 @@ from memoire.settings import BACK_URL
 
 def format_exercise(exercise):
     """Format an exercise object with html."""
-    return '<a href="{0}{1}">{2} (à rendre pour le {3})</a><br>'.format(
+    return '<a href="{0}{1}" target="_blank" id={4}>{2} (à rendre pour le {3})</a><br>'.format(
         BACK_URL,
-        exercise["project_files"],
-        exercise["name"],
-        exercise["due_date"],
+        exercise.project_files,
+        exercise.name,
+        exercise.due_date,
+        exercise.id,
     )
 
 
 def get_exercises():
     """Return all the future exercises to the api in html format."""
-    exercises = Exercise.objects.filter(due_date__lte=timezone.now())
-    print(exercises)
-    print("ICI")
-    print(Exercise.objects)
+    exercises = Exercise.objects.filter(due_date__gte=timezone.now())
     if exercises:
         return "".join(format_exercise(exercise) for exercise in exercises)
     return "{0}{1}".format(
