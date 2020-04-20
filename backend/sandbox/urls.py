@@ -1,6 +1,11 @@
 from django.urls import path
 
-from .views import CodeExecute, CodeLint, CodeFormat
+from sandbox.views import (
+    CodeExecute,
+    CodeFormat,
+    CodeLint,
+)
+
 
 urlpatterns = [
     path("execute/", CodeExecute.as_view(), name="execute"),

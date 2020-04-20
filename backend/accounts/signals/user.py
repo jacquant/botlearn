@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
 from django_rest_passwordreset.signals import reset_password_token_created
 
 from accounts.models.user import User
@@ -12,15 +13,16 @@ from memoire.settings import DEFAULT_FROM_EMAIL
 
 
 @receiver(reset_password_token_created)
-def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-    """
-    Handles password reset tokens
-    When a token is created, an e-mail needs to be sent to the user
-    """
+def password_reset_token_created(
+    sender, instance, reset_password_token, *args, **kwargs,
+):
+    """Handles password reset tokens and send an email."""
     context = {
         "last_name": reset_password_token.user.last_name,
         "first_name": reset_password_token.user.first_name,
-        "reset_password_url": "{}reset?token={}".format(settings.FRONT_URL, reset_password_token.key),
+        "reset_password_url": "{front_url}reset?token={token}".format(
+            front_url=settings.FRONT_URL, token=reset_password_token.key,
+        ),
     }
 
     html_message = render_to_string("mails/user/reset_password.html", context)
@@ -39,8 +41,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 
 @receiver(post_save, sender=User)
 def user_update(sender, instance, created, *args, **kwargs):
-    """
-    Handles the save of a user
-    """
+    """Handles the save of a user."""
     cache.delete("users_id_{mail}".format(mail=instance.mail))
     cache.delete("users_all")

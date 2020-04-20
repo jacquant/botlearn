@@ -1,9 +1,14 @@
 from rest_framework import serializers
+
 from accounts.models.user import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    class Meta:
+    """Custom Serialiser used with the User Model."""
+
+    class Meta(object):
+        """Meta class of the UserSerializer."""
+
         model = User
         fields = (
             "mail",
@@ -16,7 +21,12 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        """ Méthode create custom qui supporte les post requêtes pour les mots de passe.
+        """Create method used to create a new user.
+
+        :param validated_data: The data that respect the model properties.
+        :type validated_data: dict
+        :return: The saved user object
+        :rtype: User
         """
         password = validated_data.pop("password", None)
         instance = self.Meta.model(**validated_data)
@@ -26,19 +36,33 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        """Méthode update custom qui supporte les put requêtes pour les mots de passe.
+        """Update method used to change a specific user.
+
+        :param instance: the user instance to change
+        :type instance: User object
+        :param validated_data: The data that will be used to modify the user.
+        :type validated_data: dict
+        :return: The updated user object
+        :rtype: User
         """
-        for attr, value in validated_data.items():
+        for attr, validated_item in validated_data.items():
             if attr == "password":
-                instance.set_password(value)
+                instance.set_password(validated_item)
             else:
-                setattr(instance, attr, value)
+                setattr(instance, attr, validated_item)
         instance.save()
         return instance
 
 
 class PublicUserSerializer(serializers.ModelSerializer):
-    class Meta:
+    """PublicUserSerializer used to define field that are public.
+
+    ['mail', 'last_name', 'first_name']
+    """
+
+    class Meta(object):
+        """The Meta class of the PublicUserSerializer."""
+
         model = User
         fields = (
             "mail",

@@ -1,5 +1,9 @@
 from django.urls import path
-from bot.views import AnswerViewSet, TrainingBot
+
+from bot.views import (
+    AnswerViewSet,
+    TrainingBot,
+)
 
 
 urlpatterns = [

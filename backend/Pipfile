@@ -3,8 +3,6 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-
 [packages]
 django = "*"
 markdown = "*"
@@ -20,7 +18,6 @@ django-redis = "*"
 drf-orjson-renderer = "*"
 argon2-cffi = "*"
 django-celery-email = "*"
-chatterbot = "==1.0.4"
 django-3-jet = "*"
 django-filter = "*"
 epicbox = "*"
@@ -30,6 +27,17 @@ restrictedpython = "*"
 flake8 = "*"
 django-ckeditor = "*"
 django-model-utils = "*"
+wemake-python-styleguide = "*"
+isort = "*"
+add-trailing-comma = "*"
+chatterbot = {editable = true,git = "https://github.com/jacquant/ChatterBot.git"}
+python-levenshtein = "*"
 
 [requires]
 python_version = "3.8"
+
+[dev-packages]
+black = "*"
+
+[pipenv]
+allow_prereleases = true

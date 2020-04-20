@@ -7,8 +7,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
 import datetime
+import os
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",  # Enable Rest API
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
+    "import_export",
     "djcelery_email",  # Queue Email Sending
     # "django_seed", # to fill the db
     "django_filters",  # Filter in the rest api
@@ -60,7 +62,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # Must be put before other middleware that can generate responses.
+    # Must be put before other middleware that can generate responses.
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -138,10 +141,16 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 # Internationalization
@@ -149,7 +158,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "fr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Brussels"
 
 USE_I18N = True
 
@@ -167,7 +176,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # Par defaut, un utilisateur doit utiliser un JWT pour acceder à des données.
 # Placez "permission_classes = (AllowAny,)" Pour permettre l'accès à tous.
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
@@ -182,7 +193,9 @@ if DEBUG:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 else:
-    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ("drf_orjson_renderer.renderers.ORJSONRenderer",)
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
+        "drf_orjson_renderer.renderers.ORJSONRenderer",
+    )
 
 DJANGO_REST_LOOKUP_FIELD = "mail"
 # Configuration du token jwt
@@ -212,7 +225,9 @@ EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
 EMAIL_HOST = os.environ.get("CHU_EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT = int(os.environ.get("CHU_EMAIL_PORT", 587))
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "chu@cslabs.be")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "Projet!CHUDeMerde")
+EMAIL_HOST_PASSWORD = os.environ.get(
+    "EMAIL_HOST_PASSWORD", "Projet!CHUDeMerde"
+)
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "SITE AGE <ne-pas-repondre@age-namur.be>"
 
@@ -224,7 +239,9 @@ SWAGGER_SETTINGS = {
     "LOGIN_URL": "rest_framework:login",
     "LOGOUT_URL": "rest_framework:logout",
     "USE_SESSION_AUTH": True,
-    "SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
 }
 FRONT_URL = os.environ.get("FRONT_URL", "0.0.0.0:8080")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
@@ -237,14 +254,15 @@ CELERY_RESULT_SERIALIZER = "json"
 
 # Dialogflow settings
 DIALOGFLOW = {
-    "client_access_token": os.environ.get("DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"),
+    "client_access_token": os.environ.get(
+        "DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"
+    ),
 }
 
 # CKEDITOR
 CKEDITOR_CONFIGS = {
     "default": {
         "skin": "moono",
-        # 'skin': 'office2013',
         "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
         "toolbar_YourCustomToolbarConfig": [
             {
@@ -254,44 +272,40 @@ CKEDITOR_CONFIGS = {
                     "Copy",
                     "Paste",
                     "PasteText",
-                    #"PasteFromWord",
+                    # "PasteFromWord",
                     "-",
                     "Undo",
                     "Redo",
                 ],
             },
-            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            {
+                "name": "editing",
+                "items": ["Find", "Replace", "-", "SelectAll"],
+            },
             {
                 "name": "basicstyles",
-                "items": [
-                    "Bold",
-                    "Italic",
-                    "Underline",
-                ],
+                "items": ["Bold", "Italic", "Underline",],
             },
             {
                 "name": "paragraph",
                 "items": [
-                    #"NumberedList",
-                    #"BulletedList",
+                    # "NumberedList",
+                    # "BulletedList",
                     "-",
-                    #"Outdent",
-                    #"Indent",
+                    # "Outdent",
+                    # "Indent",
                     "-",
                     "Blockquote",
                     "-",
                 ],
             },
             {"name": "links", "items": ["Link", "Unlink"]},
-            {
-                "name": "insert",
-                "items": ["CodeSnippet", "SpecialChar"],
-            },
+            {"name": "insert", "items": ["CodeSnippet", "SpecialChar"],},
             "/",
             {"name": "styles", "items": ["Styles", "Format"]},
             {"name": "colors", "items": ["TextColor", "BGColor"]},
-            {"name": "tools", "items": ["Maximize", ]},  # "ShowBlocks"]},
-            ['Source'],
+            {"name": "tools", "items": ["Maximize",]},  # "ShowBlocks"]},
+            ["Source"],
         ],
         "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],

@@ -2,11 +2,26 @@ from django.db import models
 
 
 class Difficulty(models.Model):
-    number = models.PositiveSmallIntegerField(verbose_name="Numéro d'identification")
-    name = models.CharField(max_length=127, unique=True, verbose_name="Nom de la difficulté")
+    """Difficulty model class."""
+
+    number = models.PositiveSmallIntegerField(
+        verbose_name="Numéro d'identification"
+    )
+    name = models.CharField(
+        max_length=127, unique=True, verbose_name="Nom de la difficulté"
+    )
 
     def __str__(self):
-        return "Difficulté n°{number} - {name}".format(number=self.number, name=self.name)
+        """Return a string getter.
 
-    class Meta:
+        :return: String formattage of the object
+        :rtype: str
+        """
+        return "Difficulté n°{number} - {name}".format(
+            number=self.number, name=self.name,
+        )
+
+    class Meta(object):
+        """The Meta class that defines some fields."""
+
         verbose_name = "difficulté"
