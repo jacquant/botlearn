@@ -50,6 +50,7 @@ class AnswerViewSet(APIView):
     """API view to request question with the Bot."""
 
     permission_classes = [permissions.IsAuthenticated]
+
     # Defined and train the bot
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
@@ -112,9 +113,11 @@ class AnswerViewSet(APIView):
         # Update the number question asked
         else:
             text = Statement(question)
+
             search_results = self.chatterbot.search_algorithms[
                 "indexed_text_search"
             ].search(text)
+            
             current_similarity = 0
             for result in search_results:
                 # update

@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.core.exceptions import ObjectDoesNotExist
+
 
 from bot.models import (
     Answer,
@@ -11,7 +13,11 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def save_model(self, request, response_obj, form, change):
         """Override save model to manage the update of questions."""
-        old_values = Answer.objects.get(id=response_obj.id).question.filter()
+        try:
+            old_values = Answer.objects.get(id=response_obj.id).question.filter()
+        except ObjectDoesNotExist:
+            old_values = []
+            
         new_values = form.cleaned_data["question"].all()
         elements_removed = [
             old_value
