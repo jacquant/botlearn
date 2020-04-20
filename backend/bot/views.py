@@ -38,6 +38,9 @@ def format_exercise(exercise):
 def get_exercises():
     """Return all the future exercises to the api in html format."""
     exercises = Exercise.objects.filter(due_date__lte=timezone.now())
+    print(exercises)
+    print("ICI")
+    print(Exercise.objects)
     if exercises:
         return "".join(format_exercise(exercise) for exercise in exercises)
     return "{0}{1}".format(
@@ -128,9 +131,9 @@ class AnswerViewSet(APIView):
                 if result.confidence >= current_similarity:
                     closest_match = result
                     current_similarity = result.confidence
-            question = Question.objects.filter(title=closest_match).first()
-            question.asked += 1
-            question.save()
+            #question = Question.objects.filter(title=closest_match).first()
+            #question.asked += 1
+            #question.save()
 
 
 class TrainingBot(APIView):

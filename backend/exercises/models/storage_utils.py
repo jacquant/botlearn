@@ -45,7 +45,7 @@ class OverwriteStorage(FileSystemStorage):
     If the file existe remove if before save it.
     """
 
-    def get_available_name(self, name):
+    def get_available_name(self, name, max_length=None):
         """Check if the name of the file already exists and remove it.
 
         :param name: the name to check existence

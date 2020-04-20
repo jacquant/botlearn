@@ -137,10 +137,12 @@ export default {
             let namefile = evt.data.filename.split("/")
 
             let data = {"code_input": evt.data.code,
+                        "final": false,
+                        "exercise_id":1,
                         "filename": String(namefile[namefile.length - 1]),
                         "translate": true
                         }
-            axios.post(this.url + 'code/lint/', data, {headers: {"Authorization": "Bearer " + this.token}}
+            axios.post(this.url + 'code/execute/', data, {headers: {"Authorization": "Bearer " + this.token}}
             
             ).then(function (response) {
                 let css_response="<ul style='text-align: left;'>"

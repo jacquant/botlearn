@@ -320,7 +320,7 @@ export default {
       due_date: "2020-03-15T12:42:53.355Z",
       instruction: "string",
       project_files: "string",
-      dockerImage: 0,
+      docker_image: 0,
       requirements: [0]
     },
 
