@@ -1,38 +1,55 @@
-import argparse
+import argparse  # noqa: DAR000
 import io
 from contextlib import redirect_stdout
 
 import yaml
 from flake8.api import legacy as flake8
-from utils import multi_replace_regex
+from regex import multi_replace_regex
 
 
 def lint(filename_to_lint, translate_to_french):
-    with open("errors.yaml", "r") as stream:
-        try:
-            errors_codes = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-    with open("warnings.yaml", "r") as stream:
-        try:
-            warnings_codes = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
+    """Function run in a sandbox, that will lint a code.
 
-    errors_warnings_codes = {**errors_codes, **warnings_codes}
+    :param filename_to_lint: the name of the file to lint
+    :type filename_to_lint: str
+    :param translate_to_french: boolean value to translate output in french
+    :type translate_to_french: bool
+    """
+    errors_warnings_codes = {}
+    for file_to_open in ("errors.yaml", "warnings.yaml"):
+        with open("rules/{0}".format(file_to_open), "r") as stream:
+            try:
+                errors_warnings_codes = {
+                    **errors_warnings_codes,
+                    **yaml.safe_load(stream),
+                }
+            except yaml.YAMLError as exc:
+                print(exc)
+
     style_guide = flake8.get_style_guide(max_line_length=120)
-    f = io.StringIO()
-    with redirect_stdout(f):
+    output_redirection = io.StringIO()
+    with redirect_stdout(output_redirection):
         style_guide.input_file(filename_to_lint)
     if translate_to_french:
-        print(multi_replace_regex(f.getvalue(), errors_warnings_codes))
+        print(
+            multi_replace_regex(
+                output_redirection.getvalue(), errors_warnings_codes
+            ),
+        )
     else:
-        print(f.getvalue())
+        print(output_redirection.getvalue())
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("filename", type=str, help="the name of the file to lint")
-    parser.add_argument("-t", "--translate", help="translate the ouput in french", action="store_true")
+    parser.add_argument(
+        "filename", type=str, help="the name of the file to lint"
+    )
+    parser.add_argument(
+        "-t",
+        "--translate",
+        help="translate the ouput in french",
+        action="store_true",
+    )
     args = parser.parse_args()
     lint(args.filename, args.translate)

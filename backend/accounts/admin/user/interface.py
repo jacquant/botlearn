@@ -1,10 +1,12 @@
 from django.contrib.auth.admin import UserAdmin as BaseAdmin
 
-from .actions import send_reset_password
-from .forms import UserCreateForm
+from accounts.admin.user.actions import send_reset_password
+from accounts.admin.user.forms import UserCreateForm
 
 
 class UserAdmin(BaseAdmin):
+    """Custom user admin interface class."""
+
     add_form = UserCreateForm
     list_display = ("mail", "last_name", "first_name")
     list_filter = ("is_staff", "student")
@@ -22,7 +24,7 @@ class UserAdmin(BaseAdmin):
                     "student",
                     "student_card",
                     "eid",
-                )
+                ),
             },
         ),
         ("Permissions", {"fields": ("is_staff", "is_superuser", "is_active")}),
@@ -44,15 +46,22 @@ class UserAdmin(BaseAdmin):
                 ),
             },
         ),
-        ("Permissions", {"classes": ("wide",), "fields": ("is_staff", "is_superuser", "is_active")},),
+        (
+            "Permissions",
+            {
+                "classes": ("wide",),
+                "fields": ("is_staff", "is_superuser", "is_active"),
+            },
+        ),
     )
     search_fields = ("mail", "last_name", "first_name")
     ordering = ("mail", "last_name", "first_name")
 
     filter_horizontal = ()
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
+    def get_form(self, request, form_obj=None, **kwargs):
+        """Method to override default method get_form."""
+        form = super().get_form(request, form_obj, **kwargs)
         is_superuser = request.user.is_superuser
         disabled_fields = set()  # type Set[str]
 
@@ -60,7 +69,7 @@ class UserAdmin(BaseAdmin):
             disabled_fields |= {"username", "is_superuser", "user_permissions"}
 
         # Prevent non-superusers from editing their own permissions
-        if not is_superuser and obj is not None and obj == request.user:
+        if not is_superuser and check_own_edit(form_obj, request.user):
             disabled_fields |= {
                 "is_staff",
                 "is_superuser",
@@ -68,8 +77,16 @@ class UserAdmin(BaseAdmin):
                 "user_permissions",
             }
 
-        for f in disabled_fields:
-            if f in form.base_fields:
-                form.base_fields[f].disabled = True
+        for field in disabled_fields:
+            if field in form.base_fields:
+                form.base_fields.get(field).disabled = True
 
         return form
+
+
+def check_own_edit(form_obj, user):
+    """Check that the user try not to edit own permissions."""
+    if form_obj is not None:
+        if form_obj == user:
+            return True
+    return False

@@ -1,6 +1,10 @@
 from django.urls import path
 
-from accounts.views.user import CreateUser, GetUserInfo
+from accounts.views.user import (
+    CreateUser,
+    GetUserInfo,
+)
+
 
 urlpatterns = [
     # /api/user/create/

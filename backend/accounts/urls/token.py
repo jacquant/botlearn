@@ -1,4 +1,5 @@
 from django.urls import path
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -6,6 +7,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from accounts.views.token import UNamurTokenObtainPairView
+
 
 urlpatterns = [
     # /api/token/login/
@@ -15,5 +17,9 @@ urlpatterns = [
     # /api/token/verify/
     path("verify/", TokenVerifyView.as_view(), name="verify"),
     # /api/token/login_by_unamur/
-    path("login_by_unamur/", UNamurTokenObtainPairView.as_view(), name="login_unamur"),
+    path(
+        "login_by_unamur/",
+        UNamurTokenObtainPairView.as_view(),
+        name="login_unamur",
+    ),
 ]

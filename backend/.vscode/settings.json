@@ -1,0 +1,20 @@
+{
+    "python.pythonPath": "/home/jacquant/.cache/pypoetry/virtualenvs/backend-qs5PDg9i-py3.8",
+    "python.autoComplete.addBrackets": true,
+    "editor.formatOnSave": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length",
+        "79"
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "79"
+    ],
+    "python.linting.enabled": true,
+    "editor.fontSize": 12,
+    "debug.console.fontSize": 12,
+    "terminal.integrated.fontSize": 14,
+    "autoDocstring.docstringFormat": "sphinx"
+}
