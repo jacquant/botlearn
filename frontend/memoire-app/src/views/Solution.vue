@@ -11,7 +11,7 @@
             </v-toolbar>
             <v-card-text>
               <v-flex>
-                <pre style="text-align:center">
+                <pre style="text-align:center;,">
 <code class="language-python"> 
 {{ sourcecode }}
 </code>
@@ -34,6 +34,13 @@
       <v-row>
         <v-col class="ml-10 mr-10">
           <v-card>
+            <v-overlay
+            :absolute="true"
+            :opacity="0.70"
+            :value="true"
+            >
+            <h3>Disponible plus tard</h3>
+          </v-overlay>
             <v-card-title class="red lighten-2">
               <v-icon dark size="42" class="mr-4">
                 mdi-pencil
@@ -57,6 +64,12 @@
             </v-container>
           </v-card>
           <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+            <v-overlay
+            :absolute="true"
+            :opacity="0.70"
+            :value="true"
+            >
+          </v-overlay>
             <v-timeline-item color="cyan lighten-2" fill-dot left>
               <v-card>
                 <v-card-title class="cyan lighten-2">
@@ -132,8 +145,6 @@
 
 <script>
 //import python_code from "../static/python/exe.py"
-import VuePrism from "vue-prism";
-
 export default {
   // ================================================================================================== ==
   // Compents
@@ -156,17 +167,15 @@ my_tab = [1,2,4,8,16,32,64]
 for i in my_tab:
     print(i)`,
 
-    feedback: ""
+    feedback: "",
   }),
 
   // ================================================================================================== ==
   // Mounted
   // ================================================================================================== ==
   mounted() {
-    //Render the HighLight for the code
-    VuePrism.highlightAll();
   },
 
-  methods: {}
+  methods: {},
 };
 </script>

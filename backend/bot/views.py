@@ -44,12 +44,15 @@ def get_exercises():
         " exercice disponible pour le moment.</h5>",
     )
 
+from bot.logic.best_match import BestMatch
+
 
 class AnswerViewSet(APIView):
     """API view to request question with the Bot."""
 
     permission_classes = [permissions.IsAuthenticated]
     # Defined and train the bot
+    
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
         read_only=True,
@@ -89,6 +92,7 @@ class AnswerViewSet(APIView):
 
         - The return is a message in string include in a JSON
         """
+
         input_data = json.loads(request.body.decode("utf-8"))
         if "text" not in input_data:
             return JsonResponse(
@@ -99,6 +103,7 @@ class AnswerViewSet(APIView):
         response_data = answer.serialize()
         # Save question if no answer => Better way to do it ?
         update_question.delay(answer.text, input_data["text"])
+
 
         # Modify data to add exercices if it's requested
         if "liste des exercices" in input_data["text"]:
@@ -162,3 +167,16 @@ def update_question(answer, question):
             question.save()
         else:
             Question.objects.create(intitule=question, matched=False)
+    # Update the number question asked
+    else:
+        text = Statement(input_data["text"])
+        search_results = self.chatterbot.search_algorithms["indexed_text_search"].search(text)
+        current_similarity = 0
+        for result in search_results:
+            # update
+            if result.confidence >= current_similarity:
+                closest_match = result
+                current_similarity = result.confidence
+        question = Question.objects.filter(intitule=closest_match).first()  
+        question.asked += 1
+        question.save()

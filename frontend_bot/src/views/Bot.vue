@@ -69,7 +69,7 @@ export default {
     mounted(){
 
         //Render the HighLight for the code
-        Prism.highlightAll()
+        //Prism.highlightAll()
 
         //Partie token
 
@@ -107,27 +107,6 @@ export default {
     //Listening if a code is submitted from the iframe
     window.addEventListener("message", this.listeningIframe);
   },
-
-  // ================================================================================================== ==
-  // Methods
-  // ================================================================================================== ==
-  methods: {
-    //Check token's validity every 20 minutes (1200000)
-    startInterval() {
-      let self = this;
-      let timer = setInterval(() => {
-        axios
-          .post(this.url + "token/verify/", {
-            token: this.token
-          })
-          .catch(function() {
-            //console.log(error);
-            clearInterval(timer);
-            self.$router.push("/login");
-          });
-      }, 1200000);
-    },
-
     // ================================================================================================== ==
     // Methods
     // ================================================================================================== ==
@@ -139,7 +118,7 @@ export default {
                 axios.post(this.url + 'token/verify/', {
                     "token": this.token,
                 })
-                .catch(function (error) {
+                .catch(function () {
                     //console.log(error);
                     clearInterval(timer);
                     self.$router.push("/login");
@@ -149,10 +128,10 @@ export default {
         },
 
         //Execute what the iframe requested
-        interactIframe (evt) {
+        interactIframe () {
             parent.window.postMessage("run", "*");
         },
-
+        
         //Listening what the iframe sent (code)
         listeningIframe (evt) {
             let namefile = evt.data.filename.split("/")
@@ -169,20 +148,14 @@ export default {
                     css_response += "<li>" + response.data.lint_results[key] + "</li>"
                 }
                 css_response += "</ul>"
-                var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>');
+                var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>'); //eslint-disable-line 
                 entryDiv.html('<span class="origin">' + 'Bot' + '</span>' + css_response);
 
-                $('#chatBotHistory').prepend(entryDiv);
+                $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 
                 
             })
         },
     },
-
-    //Listening what the iframe sent (code)
-    listeningIframe(evt) {
-      this.data_from_iframe = evt.data.code;
-    }
-  }
 };
 </script>
 

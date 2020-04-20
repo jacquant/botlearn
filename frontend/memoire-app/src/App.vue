@@ -63,44 +63,44 @@
 import store from "./store/store";
 
 export default {
-  name: "App",
-  components: {},
+        name: "App",
+        components: {},
+        // ================================================================================================== ==
+        // Data
+        // ================================================================================================== ==
+        data: () => ({
+              clipped: false,
+              drawer: false,
+              fixed: false,
+              items: [
+            {
+                icon: 'mdi-apps',
+                title: 'Acceuil',
+                to: '/'
+            },
+            {
+                icon: 'mdi-chart-bubble',
+                title: 'Inspire',
+                to: '/mysolutions'
+            },
+            {
+                icon: 'mdi-login-variant',
+                title: 'Se connecter',
+                to: '/login'
+            },
+            {
+                icon: 'mdi-account-edit',
+                title: 'S\'inscrire',
+                to: '/register'
+            },
+            {
+                icon: 'mdi-logout-variant',
+                title: 'Se déconnecter',
+                to: null,
+            },
+        ]
+    }),
 
-  // ================================================================================================== ==
-  // Data
-  // ================================================================================================== ==
-  data: () => ({
-    clipped: false,
-    drawer: false,
-    fixed: false,
-    items: [
-      {
-        icon: "mdi-apps",
-        title: "Acceuil",
-        to: "/"
-      },
-      {
-        icon: "mdi-chart-bubble",
-        title: "Inspire",
-        to: "/mysolutions"
-      },
-      {
-        icon: "mdi-login-variant",
-        title: "Se connecter",
-        to: "/login"
-      },
-      {
-        icon: "mdi-account-edit",
-        title: "S'inscrire",
-        to: "/register"
-      },
-      {
-        icon: "mdi-logout-variant",
-        title: "Se déconnecter",
-        to: null
-      }
-    ]
-  }),
 
   // ================================================================================================== ==
   // Computed
