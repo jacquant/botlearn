@@ -76,7 +76,8 @@ def create_submission(
     )
     for code_error, count_error in count_errors(errors_list):
         error, _created = ErrorCount.objects.get_or_create(
-            error=Error.objects.get(code=code_error), counter=count_error,
+            error=Error.objects.get_or_create(code=code_error)[0],
+            counter=count_error,
         )
         submission.errors.add(error)
 
