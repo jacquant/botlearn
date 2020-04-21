@@ -19,4 +19,8 @@ class ErrorCUDSerializer(ErrorSerializer):
     class Meta(ErrorSerializer.Meta):
         """Meta class to select fields."""
 
-        fields = ("code",)
+        fields = (
+            "code",
+            "message",
+            "type_error",
+        )

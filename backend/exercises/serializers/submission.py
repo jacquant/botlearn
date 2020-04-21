@@ -10,7 +10,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
     """Serializer for the Submission model."""
 
     author = PublicUserSerializer()
-    exercise = ExerciseSerializer()
     errors = ErrorCountCUDSerializer(many=True, read_only=True)
 
     class Meta(object):
