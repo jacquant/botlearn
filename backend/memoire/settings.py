@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "django_rest_passwordreset",  # App to generate token for reset password
     "import_export",
     "djcelery_email",  # Queue Email Sending
-    # "django_seed", # to fill the db
     "django_filters",  # Filter in the rest api
     "chatterbot.ext.django_chatterbot",
     "ckeditor",
