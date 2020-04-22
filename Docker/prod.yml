@@ -77,7 +77,7 @@ services:
       - env/base/db.env
       - env/prod/db.env
     volumes:
-      - postgres-data-memoire-prod:/var/lib/postgresql/data
+      - ./postgres-data-memoire-prod:/var/lib/postgresql/data
     networks:
       memoire-prod:
         aliases:
