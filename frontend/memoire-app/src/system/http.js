@@ -8,7 +8,7 @@ import router from "./router";
  * @private
  * @constant {string} Http#baseUrl
  */
-const baseUrl = "https://memoire.jacquant.be:8080/api/";
+const baseUrl = "https://memoire.jacquant.be/api/";
 
 /**
  * Public instance of axios to manage request send in the application.
