@@ -3,7 +3,7 @@ services:
   nginx-frontend:
     build:
       context: ..
-      dockerfile: Docker/Dockerfiles/Nginx
+      dockerfile: Docker/Dockerfiles/Nginx-frontend
     container_name: nginx-frontent-memoire
     ports:
       - "8443:443"
@@ -21,7 +21,7 @@ services:
   nginx-frontend-bot:
     build:
       context: ..
-      dockerfile: Docker/Dockerfiles/Nginx
+      dockerfile: Docker/Dockerfiles/Nginx-frontend-bot
     container_name: nginx-frontent-bot-memoire
     ports:
       - "8444:80"
