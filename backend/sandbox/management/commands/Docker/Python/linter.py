@@ -8,7 +8,7 @@ from regex import multi_replace_regex
 
 
 def lint(filename_to_lint, translate_to_french):
-    """Function run in a sandbox, that will lint a code.
+    """Run in a sandbox and lint a code.
 
     :param filename_to_lint: the name of the file to lint
     :type filename_to_lint: str

@@ -1,6 +1,9 @@
-import ckeditor.fields
-from django.db import migrations, models
+from django.db import (
+    migrations,
+    models,
+)
 
+import ckeditor.fields
 
 
 class Migration(migrations.Migration):

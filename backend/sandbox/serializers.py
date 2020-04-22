@@ -20,4 +20,3 @@ class CodeSerializerExercise(CodeSerializer):
     final = serializers.BooleanField()
     exercise_id = serializers.IntegerField()
     filename = serializers.CharField()
-    translate = serializers.BooleanField()

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 
-
 from bot.models import (
     Answer,
     Question,

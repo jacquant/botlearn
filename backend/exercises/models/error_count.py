@@ -11,7 +11,7 @@ class ErrorCount(models.Model):
         null=True,
         verbose_name="Erreur link",
     )
-    counter = models.IntegerField(
+    counter = models.PositiveIntegerField(
         verbose_name="compteur de l'erreur", default=0
     )
 

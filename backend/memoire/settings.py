@@ -48,11 +48,13 @@ INSTALLED_APPS = [
     "rest_framework",  # Enable Rest API
     "drf_yasg",  # Generate auto api documentation from views
     "django_rest_passwordreset",  # App to generate token for reset password
-    "import_export",
+    "import_export",  # App to be able to import/export data from files
     "djcelery_email",  # Queue Email Sending
     "django_filters",  # Filter in the rest api
-    "chatterbot.ext.django_chatterbot",
-    "ckeditor",
+    "chatterbot.ext.django_chatterbot",  # django app for chatterbot
+    "ckeditor",  # editor html
+    "django_json_widget",  # Easy edit json fields
+    "django_ace",  # Editor in code to hightlight python code
     # Internal apps,
     "accounts",
     "exercises",
@@ -306,14 +308,7 @@ CKEDITOR_CONFIGS = {
             {"name": "tools", "items": ["Maximize",]},  # "ShowBlocks"]},
             ["Source"],
         ],
-        "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        "toolbar": "YourCustomToolbarConfig",
         "tabSpaces": 4,
         "extraPlugins": ",".join(
             [
