@@ -1,5 +1,5 @@
 {
-    "captainVersion": "2",
+    "schemaVersion": "2",
     "documentation": "",
     "description": "Memoire App",
     "displayName": "Memoire",
