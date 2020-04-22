@@ -24,7 +24,7 @@
                   </div>
                   : {{ exercice.difficulty.name }}
                 </v-list-item>
-                <v-list-item v-for="tag in exercice.tags" :key="tag">
+                <v-list-item v-for="tag in exercice.tags" :key="tag.name">
                   <div style="font-weight:bold">
                     Tag: 
                   </div>
@@ -34,7 +34,7 @@
                   <div style="font-weight:bold">
                     Nombre de soumissions
                   </div>
-                  : {{all_items}}
+                  : {{all_items.length}}
                 </v-list-item>
                  <v-list-item>
                   <div style="font-weight:bold">
@@ -69,7 +69,13 @@
       <!--Partie statistique des solutions des étudiants-->
       <v-row class="mr-10 ml-10">
         <v-container fluid>
-          <h1>Statistique de l'exercice</h1>
+          <h1>Statistique de l'exercice
+            <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes" target="_blank">
+              <v-icon>
+                mdi-information-outline
+              </v-icon>
+            </v-btn>
+          </h1>
           <v-card>
             <GChart
               id="Chart"
@@ -126,6 +132,8 @@
                     @change="filtering()"
                   />
                 </template>
+                <v-spacer />
+                <v-switch class="d-none d-sm-flex mt-5" label="Finale" v-model="switch1" @change="modify()"></v-switch>
                 <v-spacer />
                 <v-btn
                   class="d-none d-sm-flex"
@@ -276,20 +284,16 @@ export default {
   // ================================================================================================== ==
   data: () => ({
     //Detail exercice
-    exercice: {
-    },
+    exercice: {"difficulty": {}},
 
     //Stats de l'exercice
     chartData: [
-      ["Year", "Soumissions"],
-      ["2014", 1000],
-      ["2015", 1678],
-      ["2016", 660],
-      ["2017", 1030]
     ],
     chartOptions: {
       colors: ["green"],
-      legend: { position: "none" }
+      legend: { position: "none" },
+      tooltip: {isHtml: true,
+                trigger: 'selection' },
     },
 
     //chart in PNG
@@ -299,6 +303,7 @@ export default {
     itemsPerPageArray: [20, 40, 60],
     search: "",
     filter: {},
+    switch1: true,
     sortDesc: false,
     page: 1,
     itemsPerPage: 20,
@@ -309,8 +314,14 @@ export default {
       "Le plus d'erreurs",
       "Le moins d'erreurs"
     ],
-    items: [],
-    all_items:null,
+    items: [ { id: 0,
+                name: "Exemple structuture",
+                date: new Date("9999-99-99"),
+                erreurs: 0,
+                }],
+    all_items: [],
+    previous_items: [],
+
   }),
 
   // ================================================================================================== ==
@@ -363,6 +374,8 @@ export default {
         headers: { Authorization: "Bearer " + store.state.accessToken }
       })
     ).data
+    //Format display
+    this.items=[]
     for (const submission in submissions) {
       let total_errors = 0;
       for (const nb in submissions[submission].errors){
@@ -378,14 +391,73 @@ export default {
       })
     }
 
+    //Get Stats
+    //this.title = "Nombre de soumissions finales par exercice par TP";
+
+    this.chartData = [["Numéro de l'erreur",
+                        "Nombre de fois rencontrée",{
+                        type: 'string',
+                        role: 'tooltip',
+                        'p': {'html': true}
+                        }]]
+
+    let get_stats = (await http.get("stats/errors_by_exercise/" + id, {
+          headers: { Authorization: "Bearer " + store.state.accessToken }
+        })
+        ).data
+
+    for (const nb in get_stats.errors) { 
+    let tooltip_examples = "";
+      if(get_stats.errors[nb].submissions_list.length > 2){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[2] + "' target='_blank'>3°Voir exemple</a>"
+
+      }else if (get_stats.errors[nb].submissions_list.length > 1){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>"
+        
+      }else if (get_stats.errors[nb].submissions_list.length > 0){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>"
+        
+      }else{
+        tooltip_examples = "Aucun exemple disponible"
+      }
+
+      this.chartData.push([get_stats.errors[nb].code, get_stats.errors[nb].counter,"<b>"+ get_stats.errors[nb].code +
+                          "</b><br>Nombre d'erreurs': " 
+                          + get_stats.errors[nb].counter + "<br>" + tooltip_examples
+                          ])
+
+    }
+
     //Get All subsmissions from exercices
     this.all_items = (
       await http.get("submissions/?&exercises=" + this.exercice.id, {
         headers: { Authorization: "Bearer " + store.state.accessToken }
       })
-    ).data.length;
+    ).data;
+    //Format display
+    let format_all_items = []
+    for (const submission in this.all_items) {
+      let total_errors = 0;
+      for (const nb in this.all_items[submission].errors){
+        total_errors += this.all_items[submission].errors[nb].counter
+      }
+
+      format_all_items.push({
+        id: this.all_items[submission].id,
+        name: this.all_items[submission].author.last_name + " " + this.all_items[submission].author.first_name ,
+        date: new Date(this.all_items[submission].submission_date.substring(0,10)),
+        erreurs: total_errors
+
+      })
+    }
+    this.all_items = format_all_items;
+   
     //Filtering Exerice:
     this.filtering();
+
   },
 
   // ================================================================================================== ==
@@ -416,6 +488,20 @@ export default {
       }
     },
 
+    /**
+     * Display all submissions
+     */
+    modify(){
+      if(this.switch1){
+        this.items = this.previous_items
+        this.previous_items = this.items
+      }else{
+        this.previous_items = this.items
+        this.items = this.all_items;
+      }
+
+    },
+    
     /**
      * Function to print the date correctly
      * @param {Date} date

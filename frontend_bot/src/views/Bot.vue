@@ -63,7 +63,7 @@ export default {
 
         //Code Iframe
         data_from_iframe: "",
-        current_exercise: 5,
+        current_exercise: 6,
 
         //Alert if there is an error from exectute api
         alert: false,
@@ -154,15 +154,14 @@ export default {
                         "final": this.final,
                         "exercise_id": this.current_exercise,
                         "filename": String(namefile[namefile.length - 1]),
-                        "translate": true
                         }
             axios.post(this.url + 'code/execute/', data, {headers: {"Authorization": "Bearer " + this.token}}
             
             ).then(function (response) {
                 //this.alert = true;
                 let css_response="<ul style='text-align: left;'>"
-                for (const key in response.data.lint.lint_results) {
-                    css_response += "<li>" + response.data.lint.lint_results[key] + "</li>"
+                for (const key in response.data.lint_results) {
+                    css_response += "<li>" + response.data.lint_results[key] + "</li>"
                 }
                 css_response += "</ul>"
                 var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>'); //eslint-disable-line 

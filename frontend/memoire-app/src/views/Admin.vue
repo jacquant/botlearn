@@ -81,12 +81,15 @@
               <v-list>
                 <v-list-item>
                   <div style="font-weight:bold">
-                    Nombre de soumissions:
+                    Nombre de soumissions totales
                   </div>
-                  120
+                  : {{current_data.final_sub}}
                 </v-list-item>
                 <v-list-item>
-                  Nombre de soumissions distinctes: 71
+                  <div style="font-weight:bold">
+                  Nombre de soumissions finales:
+                  </div>
+                  : {{current_data.total_sub}}
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -96,7 +99,7 @@
                 <v-btn
                   color="green"
                   class="white--text"
-                  :href="'/administration/exercice?id=' + current_data"
+                  :href="'/administration/exercice?id=' + current_data.id"
                   target="_blank"
                 >
                   Afficher l'exercice en détails
@@ -117,30 +120,45 @@
             max-width="800px"
           >
             <v-tabs
-              v-model="tab"
+              v-model="current_tab"
               background-color="green"
               dark
               class="mb-5"
               show-arrows
+              @change="changeData()"
             >
               <v-tab
                 v-for="item in items"
                 :key="item.tab"
-                @click="changeData(item)"
+                :value="item" 
               >
                 {{ item.tab }}
               </v-tab>
             </v-tabs>
-            <v-tabs-items v-model="tab">
+            <v-tabs-items v-model="current_tab">
               <v-tab-item v-for="item in items" :key="item.tab" />
             </v-tabs-items>
             <v-card-text>
+              <v-col class="d-flex" cols="12" sm="6">
+                <v-select
+                  :items="tps"
+                  item-text="name"
+                  item-value="exercices"
+                  label="Choix du TP"
+                  v-model="current_tp"
+                  color="green"
+                  outlined
+                  @change="changeData()"
+                ></v-select>
+              </v-col>
               <GChart
                 id="Chart"
                 type="ColumnChart"
                 :data="chartData"
                 :options="chartOptions"
+                :events="chartEvents"
                 @ready="onChartReady"
+                ref="gChart"
               />
             </v-card-text>
 
@@ -184,6 +202,8 @@ export default {
     //List exercices et tps
     tps: [],
 
+    current_tp: null,
+
     exercices: [],
 
     current_data: null,
@@ -192,28 +212,40 @@ export default {
     items: [
       { tab: "Soumissions finales", content: "finales" },
       { tab: "Soumissions totales", content: "totales" },
+      { tab: "Nombre d'erreurs", content: "erreurs" },
+      { tab: "Type d'erreurs", content: "types" },
     ],
-    tab: null,
+    current_tab: null,
 
     //Data For Graph
     chartData: [],
     chartOptions: {
       colors: ["green"],
-      legend: { position: "none" }
+      legend: { position: "none" },
+      tooltip: {isHtml: true,
+                trigger: 'selection' },
     },
-    title: "Nombre de soumissions finales par exercice",
+    title: "Nombre de soumissions finales par exercice par TP",
 
     //loading
     loading: true,
 
     //chart in PNG
-    png: ""
+    png: "",
+
+    //Handling Event for chart
+    chartEvents: {
+        select: () => {
+        }
+    },
+
   }),
 
   // ================================================================================================== ==
   // Created
   // ================================================================================================== ==
   async created() {
+
     //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
     var is_staff = await http.get("user/get/", {
       headers: { Authorization: "Bearer " + store.state.accessToken }
@@ -233,6 +265,7 @@ export default {
       })
     ).data;
 
+
     var exercices = [];
     for (const key in this.tps) {
       exercices = (
@@ -241,10 +274,23 @@ export default {
         })
       ).data;
       this.tps[key]["exercices"] = exercices;
-    }
-    this.exercices = exercices;
+      for (const exe in this.tps[key]["exercices"]) {
 
-    this.changeData(this.items[0])
+        //Get all subsmissions
+        this.tps[key]["exercices"][exe]["total_sub"] = (await http.get("submissions/?&exercises=" + this.tps[key]["exercices"][exe].id, {
+            headers: { Authorization: "Bearer " + store.state.accessToken }
+          })
+        ).data.length;  
+
+        //Get all final subsmissions
+        this.tps[key]["exercices"][exe]["final_sub"] = (await http.get("submissions/?&final=true&exercises=" + this.tps[key]["exercices"][exe].id, {
+            headers: { Authorization: "Bearer " + store.state.accessToken }
+          })
+        ).data.length;  
+      }
+
+    }
+
     this.loading = false;
   },
 
@@ -259,30 +305,98 @@ export default {
     },
 
     //Get the data compared to the tab selectionned
-    async changeData(item) {
-      if(item.content =="totales"){
+    async changeData() {
+      if(this.current_tp !== null){
 
         //Get All submissions for every exercice
-        this.chartData = [["Exercice","Nombre de soumissions totales"]];
-        for (const exercice in this.exercices) {
-          this.chartData.push([this.exercices[exercice].name, (
-          await http.get("submissions/?&exercises=" + this.exercices[exercice].id, {
-            headers: { Authorization: "Bearer " + store.state.accessToken }
-          })
-          ).data.length])
-        }
-        this.title = "Nombre de soumissions totales par exercice";
-      }else{
-        //Get All final submissions for every exercice
-        this.chartData = [["Exercice","Nombre de soumissions finales"]]
-          for (const exercice in this.exercices) {
-            this.chartData.push([this.exercices[exercice].name, (
-            await http.get("submissions/?&final=true&exercises=" + this.exercices[exercice].id, {
+        if(this.items[this.current_tab].content =="totales"){
+          this.title = "Nombre de soumissions totales par exercice par TP";
+
+          this.chartData = [["Exercice","Nombre de soumissions totales"]];
+          for (const exercice in this.current_tp) {
+            this.chartData.push([this.current_tp[exercice].name, (
+            await http.get("submissions/?&exercises=" + this.current_tp[exercice].id, {
               headers: { Authorization: "Bearer " + store.state.accessToken }
             })
             ).data.length])
           }
-         this.title = "Nombre de soumissions finales par exercice";
+
+        //Get All final submissions for every exercice
+        }else if (this.items[this.current_tab].content =="finales"){
+          this.title = "Nombre de soumissions finales par exercice par TP";
+
+          this.chartData = [["Exercice",
+                            "Nombre de soumissions finales",{
+                            type: 'string',
+                            role: 'tooltip',
+                            'p': {'html': true}
+                            }]]
+            for (const exercice in this.current_tp) {
+              this.chartData.push([this.current_tp[exercice].name, (
+              await http.get("submissions/?&final=true&exercises=" + this.current_tp[exercice].id, {
+                headers: { Authorization: "Bearer " + store.state.accessToken }
+              })
+              ).data.length,"<b>"+ this.current_tp[exercice].name +"</b><br>Nombre de soumissions finales: " + 4 + "<br><a href=/solution?id=55 target='_blank'>voir exemples</a>"])
+            }
+
+        //Get stats from students' errors by error
+        }else if (this.items[this.current_tab].content =="types"){
+          this.title = "Nombre d'erreurs par type par TP";
+
+          this.chartData = [["Numéro de l'erreur",
+                        "Nombre de fois rencontrée",{
+                        type: 'string',
+                        role: 'tooltip',
+                        'p': {'html': true}
+                        }]]
+
+          let get_stats = (await http.get("stats/errors_by_session/" + this.current_tp[0].session.id, {
+                headers: { Authorization: "Bearer " + store.state.accessToken }
+              })
+              ).data
+
+          for (const nb in get_stats.errors) { 
+          let tooltip_examples = "";
+            if(get_stats.errors[nb].submissions_list.length > 2){
+              tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+              "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>" +
+              "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[2] + "' target='_blank'>3°Voir exemple</a>"
+
+            }else if (get_stats.errors[nb].submissions_list.length > 1){
+              tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+              "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>"
+              
+            }else if (get_stats.errors[nb].submissions_list.length > 0){
+              tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>"
+              
+            }else{
+              tooltip_examples = "Aucun exemple disponible"
+            }
+
+            this.chartData.push([get_stats.errors[nb].code, get_stats.errors[nb].counter,"<b>"+ get_stats.errors[nb].code +
+                                "</b><br>Nombre d'erreurs': " 
+                                + get_stats.errors[nb].counter + "<br>" + tooltip_examples
+                                ])
+          }
+
+        //Get stats from students' errors by exercice
+        }else{
+          this.title = "Nombre d'erreurs par exercice par TP";
+
+           this.chartData = [["Exercice","Nombre d'erreurs par exercice"]]
+            for (const exercice in this.current_tp) {
+              let submissions = (await http.get("submissions/?&exercises=" + this.current_tp[exercice].id, {
+                headers: { Authorization: "Bearer " + store.state.accessToken }
+              })
+              ).data
+
+              let total_errors = 0;
+              for (const nb in submissions){
+                total_errors += submissions[nb].errors.reduce((acc,value) => value.counter + acc, 0)
+              }
+              this.chartData.push([this.current_tp[exercice].name,total_errors])
+            }
+        }
       }
     },
 
