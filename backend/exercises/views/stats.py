@@ -45,7 +45,10 @@ class BaseErrorBy(generics.RetrieveAPIView):
                     "submissions_list": [],
                 }
             count[error_code]["submissions_list"].append(id_submission)
-        return {"number_submissions": len(queryset), "errors": count}
+        errors = [
+            {**error_data, "code": code} for code, error_data in count.items()
+        ]
+        return {"number_submissions": len(queryset), "errors": errors}
 
 
 class ErrorsBySection(BaseErrorBy):
