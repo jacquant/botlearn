@@ -374,7 +374,7 @@ export var ChatBot = function () {
 
                             $.ajax({
                                 type: 'POST',
-                                url: 'http://localhost:8080/api/bot/test/',
+                                url: 'https://memoire.jacquant.be/api/bot/test/',
                                 dataType:'json',
                                 data: data_request,
                                 headers: { 'Authorization': 'Bearer '+ token},

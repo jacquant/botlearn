@@ -33,7 +33,7 @@
                   <v-list-item-title> {{ exe.name }}</v-list-item-title>
                   <v-btn
                     :href="
-                      'http://localhost:8080/admin/exercises/exercise/' +
+                      'https://memoire.jacquant.be/admin/exercises/exercise/' +
                         exe.id +
                         '/change/'
                     "
@@ -44,7 +44,7 @@
                 </v-list-item>
                 <v-list-item
                   :href="
-                    'http://localhost:8080/admin/exercises/exercise/add?id=' +
+                    'https://memoire.jacquant.be/admin/exercises/exercise/add?id=' +
                       info.id
                   "
                   target="_blank"

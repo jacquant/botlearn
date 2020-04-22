@@ -1,25 +1,41 @@
 version: "3"
 services:
-  nginx:
+  nginx-frontend:
     build:
       context: ..
       dockerfile: Docker/Dockerfiles/Nginx
-    container_name: nginx-memoire
+    container_name: nginx-frontent-memoire
     ports:
-      - "80:80"
-      - "443:443"
+      - "8443:443"
     links:
       - api:api
     volumes:
-      - ../backend/static/:/src/static/
-      - ../backend/media/:/src/media/
-      - /etc/ssl/:/certs
+      - ../web/:/src/
+      - config/default.conf:/etc/nginx/conf.d
     depends_on:
       - api
     networks:
       memoire-prod:
         aliases:
-          - nginx
+          - nginx-frontend
+  nginx-frontend-bot:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Nginx
+    container_name: nginx-frontent-bot-memoire
+    ports:
+      - "8444:80"
+    links:
+      - api:api
+    volumes:
+      - ../web/:/src/
+      - config/bot.conf:/etc/nginx/conf.d
+    depends_on:
+      - api
+    networks:
+      memoire-prod:
+        aliases:
+          - nginx-frontend-bot
   cache:
     image: redis:alpine
     container_name: redis-memoire
@@ -46,8 +62,8 @@ services:
     env_file:
       - env/base/api.env
       - env/base/db.env
-      - env/dev/api.env
-      - env/dev/db.env
+      - env/prod/api.env
+      - env/prod/db.env
     networks:
       memoire-prod:
         aliases:
@@ -59,7 +75,7 @@ services:
       - "5433:5432"
     env_file:
       - env/base/db.env
-      - env/dev/db.env
+      - env/prod/db.env
     volumes:
       - postgres-data-memoire-prod:/var/lib/postgresql/data
     networks:
@@ -89,27 +105,12 @@ services:
     env_file:
       - env/base/api.env
       - env/base/db.env
-      - env/dev/api.env
-      - env/dev/db.env
+      - env/prod/api.env
+      - env/prod/db.env
     networks:
       memoire-prod:
         aliases:
           - api
-  nuxt:
-    container_name: nuxt-memoire-serve
-    build:
-      context: ..
-      dockerfile: Docker/Dockerfiles/Nuxt-Serve
-    volumes:
-      - ../frontend/memoire:/usr/src/app
-    ports:
-      - "3000:3000"
-    command: >
-      sh -c "yarn dev"
-    networks:
-      memoire-prod:
-        aliases:
-          - nuxt
 networks:
   memoire-prod:
     driver: bridge

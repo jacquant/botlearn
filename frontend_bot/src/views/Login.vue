@@ -163,7 +163,7 @@ export default {
   // ================================================================================================== ==
   data: () => ({
     //url
-    url: "http://localhost:8080/api/",
+    url: "https://memoire.jacquant.be/api/",
 
     //User's data
     email: "",
