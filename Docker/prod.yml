@@ -10,8 +10,8 @@ services:
     links:
       - api:api
     volumes:
-      - ../web/:/src/
-      - ./config/default.conf:/etc/nginx/conf.d
+      - ../web/static:/src/static
+      - ../web/media:/src/media
     depends_on:
       - api
     networks:
@@ -27,9 +27,6 @@ services:
       - "8444:80"
     links:
       - api:api
-    volumes:
-      - ../web/:/src/
-      - ./config/bot.conf:/etc/nginx/conf.d
     depends_on:
       - api
     networks:
