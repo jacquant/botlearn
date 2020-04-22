@@ -6,7 +6,7 @@ services:
       dockerfile: Docker/Dockerfiles/Nginx-frontend
     container_name: nginx-frontent-memoire
     ports:
-      - "8443:443"
+      - "8445:443"
     links:
       - api:api
     volumes:
