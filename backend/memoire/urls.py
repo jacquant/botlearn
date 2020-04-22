@@ -39,7 +39,7 @@ if settings.DEBUG:
     schema_view = get_schema_view(
         openapi.Info(
             title="MEMOIRE API",
-            default_version="v0.0.1",
+            default_version="v2020.04.22",
             description="Api de développement pour le memoire",
             terms_of_service="",
             contact=openapi.Contact(email="antoine.jacques@student.unamur.be"),

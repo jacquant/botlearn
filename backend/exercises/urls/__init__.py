@@ -23,4 +23,8 @@ urlpatterns = [
     path("submissions/", include("exercises.urls.submission")),
     # /api/errors/*
     path("errors/", include("exercises.urls.error")),
+    # /api/errors_count/*
+    path("errors_count/", include("exercises.urls.error_count")),
+    # /api/stats/*
+    path("stats/", include("exercises.urls.stats")),
 ]

@@ -46,9 +46,7 @@ def count_errors(list_results):
 
 
 @shared_task
-def create_submission(
-    author_mail, exercise_id, code, output, errors_list, final
-):
+def create_submission(author_mail, exercise_id, code, output, final):
     """Update the database with the call of the API.
 
     :param author_mail: the mail of the user that made the request
@@ -59,8 +57,6 @@ def create_submission(
     :type code: str
     :param output: the output from the sandbox
     :type output: dict
-    :param errors_list: list of string errors
-    :type errors_list: list
     :param final: if the submission is final
     :type final: bool
     """
@@ -74,7 +70,7 @@ def create_submission(
         not_executed=bool(output["exit_code"]),
         final=final,
     )
-    for code_error, count_error in count_errors(errors_list):
+    for code_error, count_error in count_errors(output["lint_results"]):
         error, _created = ErrorCount.objects.get_or_create(
             error=Error.objects.get_or_create(code=code_error)[0],
             counter=count_error,
@@ -153,18 +149,16 @@ class CodeExecute(APIView):
                 limits={"cputime": 25, "memory": 64},
             )
             result_run2 = lint(serializer)
+            print(result_run2)
+            result_run1["lint_results"] = result_run2["lint_results"]
             create_submission.delay(
                 self.request.user.mail,
                 serializer.validated_data["exercise_id"],
                 serializer.validated_data["code_input"],
                 result_run1,
-                result_run2["lint_results"],
                 serializer.validated_data["final"],
             )
-            return Response(
-                {"execute": result_run1, "lint": result_run2},
-                status=status.HTTP_200_OK,
-            )
+            return Response(result_run1, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -190,9 +184,12 @@ def lint(serializer):
         },
     ]
     limits = {"cputime": 5, "memory": 64}
-    if serializer.validated_data["translate"]:
-        args = "--translate "
-    else:
+    try:
+        if serializer.validated_data["translate"]:
+            args = "--translate "
+        else:
+            args = ""
+    except KeyError:
         args = ""
     result_run = docker_run(
         "linter",

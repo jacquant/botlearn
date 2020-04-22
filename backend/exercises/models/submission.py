@@ -21,9 +21,7 @@ class Submission(models.Model):
     )
     code_input = models.TextField()
     not_executed = models.BooleanField(default=False)
-    code_output = (
-        JSONField()
-    )  # TODO définir une sémantique des retours d'exécution
+    code_output = JSONField()
     final = models.BooleanField(
         default=False, verbose_name="Type de la soumission est finale"
     )
