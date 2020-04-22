@@ -11,11 +11,9 @@
             </v-toolbar>
             <v-card-text>
               <v-flex>
-                <pre style="text-align:center;,">
-<code class="language-python"> 
-{{ sourcecode }}
-</code>
-</pre>
+<vue-code-highlight>
+{{sourcecode}}
+</vue-code-highlight>
               </v-flex>
             </v-card-text>
             <v-divider />
@@ -144,28 +142,20 @@
 </template>
 
 <script>
-//import python_code from "../static/python/exe.py"
+import http from "../system/http";
+import store from "../store/store";
+import { component as VueCodeHighlight } from 'vue-code-highlight';
+
 export default {
   // ================================================================================================== ==
   // Compents
   // ================================================================================================== ==
-  components: {},
+  components: {VueCodeHighlight},
   // ================================================================================================== ==
   // Data
   // ================================================================================================== ==
   data: () => ({
-    sourcecode: `my_var = 8
-
-if(my_var < 10):
-    print("Hello World")
-else:
-    print("It's not working ! ")
-
-
-my_tab = [1,2,4,8,16,32,64]
-
-for i in my_tab:
-    print(i)`,
+    sourcecode: "",
 
     feedback: "",
   }),
@@ -174,6 +164,25 @@ for i in my_tab:
   // Mounted
   // ================================================================================================== ==
   mounted() {
+  },
+
+  // ================================================================================================== ==
+  // Created
+  // ================================================================================================== ==
+  async created() {
+    //Redirect if there is no id for a solution
+    let id = null;
+    if (this.$route.query.id === undefined || this.$route.query.id === "") {
+      await this.$router.push("/");
+    } else {
+      id = this.$route.query.id;
+    }
+
+    this.sourcecode = (
+       await http.get("submissions/" + id, {
+        headers: { Authorization: "Bearer " + store.state.accessToken }
+      })
+    ).data.code_input
   },
 
   methods: {},

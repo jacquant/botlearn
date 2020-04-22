@@ -24,7 +24,7 @@
                   </div>
                   : {{ exercice.difficulty.name }}
                 </v-list-item>
-                <v-list-item v-for="tag in exercice.tags" :key="tag">
+                <v-list-item v-for="tag in exercice.tags" :key="tag.name">
                   <div style="font-weight:bold">
                     Tag: 
                   </div>
@@ -34,10 +34,13 @@
                   <div style="font-weight:bold">
                     Nombre de soumissions
                   </div>
-                  : 120
+                  : {{all_items.length}}
                 </v-list-item>
-                <v-list-item>
-                  Nombre de soumissions distinctes: 71
+                 <v-list-item>
+                  <div style="font-weight:bold">
+                    Nombre de soumissions finales
+                  </div>
+                  : {{items.length}}
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -66,7 +69,13 @@
       <!--Partie statistique des solutions des étudiants-->
       <v-row class="mr-10 ml-10">
         <v-container fluid>
-          <h1>Statistique de l'exercice</h1>
+          <h1>Statistique de l'exercice
+            <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes" target="_blank">
+              <v-icon>
+                mdi-information-outline
+              </v-icon>
+            </v-btn>
+          </h1>
           <v-card>
             <GChart
               id="Chart"
@@ -123,6 +132,8 @@
                     @change="filtering()"
                   />
                 </template>
+                <v-spacer />
+                <v-switch class="d-none d-sm-flex mt-5" label="Finale" v-model="switch1" @change="modify()"></v-switch>
                 <v-spacer />
                 <v-btn
                   class="d-none d-sm-flex"
@@ -190,7 +201,7 @@
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
-                        <v-btn color="green" class="white--text">
+                        <v-btn color="green" class="white--text" :href='"/solution?id="+item.id' target="_blank">
                           Afficher
                         </v-btn>
                       </p>
@@ -273,80 +284,29 @@ export default {
   // ================================================================================================== ==
   data: () => ({
     //Detail exercice
-    exercice: {
-      id: 0,
-      difficulty: {
-        id: 0,
-        number: 0,
-        name: "string"
-      },
-      tags: [
-        {
-          id: 0,
-          name: "string"
-        }
-      ],
-      session: {
-        id: 0,
-        in_charge_persons: [
-          {
-            mail: "user@example.com",
-            last_name: "string",
-            first_name: "string"
-          }
-        ],
-        target: {
-          id: 0,
-          name: "string"
-        },
-        name: "string",
-        date: "2020-03-15T12:42:53.355Z",
-        visibility: true,
-        activated: true
-      },
-      section: {
-        id: 0,
-        academic_year: "string",
-        name: "string",
-        number: 0,
-        parent: 0
-      },
-      author: {
-        mail: "user@example.com",
-        last_name: "string",
-        first_name: "string"
-      },
-      name: "string",
-      due_date: "2020-03-15T12:42:53.355Z",
-      instruction: "string",
-      project_files: "string",
-      docker_image: 0,
-      requirements: [0]
-    },
+    exercice: {"difficulty": {}},
 
     //Stats de l'exercice
     chartData: [
-      ["Year", "Soumissions"],
-      ["2014", 1000],
-      ["2015", 1678],
-      ["2016", 660],
-      ["2017", 1030]
     ],
     chartOptions: {
       colors: ["green"],
-      legend: { position: "none" }
+      legend: { position: "none" },
+      tooltip: {isHtml: true,
+                trigger: 'selection' },
     },
 
     //chart in PNG
     png: "",
 
     //Solutions des étudiants _ Data
-    itemsPerPageArray: [4, 12, 24],
+    itemsPerPageArray: [20, 40, 60],
     search: "",
     filter: {},
+    switch1: true,
     sortDesc: false,
     page: 1,
-    itemsPerPage: 4,
+    itemsPerPage: 20,
     sortBy: "Le plus récent",
     keys: [
       "Le plus ancien",
@@ -354,44 +314,14 @@ export default {
       "Le plus d'erreurs",
       "Le moins d'erreurs"
     ],
-    items: [
-      {
-        id: 1,
-        name: "Dalla Valle Maxime",
-        date: new Date("2020-02-24"),
-        erreurs: 6
-      },
-      {
-        id: 2,
-        name: "Jacques Antoine",
-        date: new Date("2020-02-25"),
-        erreurs: 4
-      },
-      {
-        id: 3,
-        name: "Bonird Marc",
-        date: new Date("2020-01-25"),
-        erreurs: 1
-      },
-      {
-        id: 4,
-        name: "Constant Léopold",
-        date: new Date("2020-02-01"),
-        erreurs: 2
-      },
-      {
-        id: 5,
-        name: "Tripod John",
-        date: new Date("2019-01-10"),
-        erreurs: 9
-      },
-      {
-        id: 6,
-        name: "Tulit Marco",
-        date: new Date("2020-01-24"),
-        erreurs: 35
-      }
-    ]
+    items: [ { id: 0,
+                name: "Exemple structuture",
+                date: new Date("9999-99-99"),
+                erreurs: 0,
+                }],
+    all_items: [],
+    previous_items: [],
+
   }),
 
   // ================================================================================================== ==
@@ -438,11 +368,96 @@ export default {
       })
     ).data;
 
-    //Get Solutions
-    //Waiting API
+    //Get All final submissions from exercices
+    let submissions = (
+       await http.get("submissions/?&final=true&exercises=" + this.exercice.id, {
+        headers: { Authorization: "Bearer " + store.state.accessToken }
+      })
+    ).data
+    //Format display
+    this.items=[]
+    for (const submission in submissions) {
+      let total_errors = 0;
+      for (const nb in submissions[submission].errors){
+        total_errors += submissions[submission].errors[nb].counter
+      }
 
+      this.items.push({
+        id: submissions[submission].id,
+        name: submissions[submission].author.last_name + " " + submissions[submission].author.first_name ,
+        date: new Date(submissions[submission].submission_date.substring(0,10)),
+        erreurs: total_errors
+
+      })
+    }
+
+    //Get Stats
+    //this.title = "Nombre de soumissions finales par exercice par TP";
+
+    this.chartData = [["Numéro de l'erreur",
+                        "Nombre de fois rencontrée",{
+                        type: 'string',
+                        role: 'tooltip',
+                        'p': {'html': true}
+                        }]]
+
+    let get_stats = (await http.get("stats/errors_by_exercise/" + id, {
+          headers: { Authorization: "Bearer " + store.state.accessToken }
+        })
+        ).data
+
+    for (const nb in get_stats.errors) { 
+    let tooltip_examples = "";
+      if(get_stats.errors[nb].submissions_list.length > 2){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[2] + "' target='_blank'>3°Voir exemple</a>"
+
+      }else if (get_stats.errors[nb].submissions_list.length > 1){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
+        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>"
+        
+      }else if (get_stats.errors[nb].submissions_list.length > 0){
+        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>"
+        
+      }else{
+        tooltip_examples = "Aucun exemple disponible"
+      }
+
+      this.chartData.push([get_stats.errors[nb].code, get_stats.errors[nb].counter,"<b>"+ get_stats.errors[nb].code +
+                          "</b><br>Nombre d'erreurs': " 
+                          + get_stats.errors[nb].counter + "<br>" + tooltip_examples
+                          ])
+
+    }
+
+    //Get All subsmissions from exercices
+    this.all_items = (
+      await http.get("submissions/?&exercises=" + this.exercice.id, {
+        headers: { Authorization: "Bearer " + store.state.accessToken }
+      })
+    ).data;
+    //Format display
+    let format_all_items = []
+    for (const submission in this.all_items) {
+      let total_errors = 0;
+      for (const nb in this.all_items[submission].errors){
+        total_errors += this.all_items[submission].errors[nb].counter
+      }
+
+      format_all_items.push({
+        id: this.all_items[submission].id,
+        name: this.all_items[submission].author.last_name + " " + this.all_items[submission].author.first_name ,
+        date: new Date(this.all_items[submission].submission_date.substring(0,10)),
+        erreurs: total_errors
+
+      })
+    }
+    this.all_items = format_all_items;
+   
     //Filtering Exerice:
     this.filtering();
+
   },
 
   // ================================================================================================== ==
@@ -473,6 +488,20 @@ export default {
       }
     },
 
+    /**
+     * Display all submissions
+     */
+    modify(){
+      if(this.switch1){
+        this.items = this.previous_items
+        this.previous_items = this.items
+      }else{
+        this.previous_items = this.items
+        this.items = this.all_items;
+      }
+
+    },
+    
     /**
      * Function to print the date correctly
      * @param {Date} date

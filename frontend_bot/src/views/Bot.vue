@@ -8,23 +8,26 @@
             Cette action n'est effectuable qu'une fois
           </v-card-title>
           <v-card-actions>
-            <v-btn color="red" @click="dialog_soumettre = false">
-              Modifier mon code
+            <v-btn class="ma-2" tile outlined color="success" @click="dialog_soumettre = false">
+              <v-icon left>mdi-pencil</v-icon> Modifier
             </v-btn>
             <v-spacer />
-            <v-btn color="#28703d">
+            <v-btn color="#28703d" @click="interactIframe(true); dialog_soumettre = false">
               Soumettre
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <div id="bot">
-        <v-btn color="#72c288" @click="interactIframe()">
+        <v-btn color="#72c288" @click="interactIframe(false)">
           Exécuter
         </v-btn>
         <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true">
           Soumettre
         </v-btn>
+        <v-alert class="mt-2" type="error" v-show="alert">
+          Une erreur est survenue durant l'exécution (probablement aucun exercice lié à la soumission).
+        </v-alert>
         <div id="chatBotCommandDescription" class="mt-2" />
         <input id="humanInput" type="text" class="mt-5" />
         <div class="tooltip ml-10">
@@ -60,8 +63,11 @@ export default {
 
         //Code Iframe
         data_from_iframe: "",
-        id_execut: 1,
-        current_exercise:null,
+        current_exercise: 6,
+
+        //Alert if there is an error from exectute api
+        alert: false,
+        final: true,
     }),
 
     // ================================================================================================== ==
@@ -114,9 +120,10 @@ export default {
     methods:{
         //Catch when the user click on the exercice to get the id
         onClickApp(ev){
-          console.log(ev.target.id);
-          this.current_exercise = ev.target.id;
-          },
+          if(!isNaN(parseInt(ev.target.id))){
+            this.current_exercise = ev.target.id;
+          }
+        },
         //Check token's validity every 20 minutes (1200000)
         startInterval() {
             let self = this;
@@ -134,8 +141,9 @@ export default {
         },
 
         //Execute what the iframe requested
-        interactIframe () {
-            parent.window.postMessage("run", "*");
+        interactIframe (bool) {
+          this.final = bool;
+          parent.window.postMessage("run", "*");
         },
         
         //Listening what the iframe sent (code)
@@ -143,14 +151,14 @@ export default {
             let namefile = evt.data.filename.split("/")
 
             let data = {"code_input": evt.data.code,
-                        "final": false,
-                        "exercise_id":1,
+                        "final": this.final,
+                        "exercise_id": this.current_exercise,
                         "filename": String(namefile[namefile.length - 1]),
-                        "translate": true
                         }
             axios.post(this.url + 'code/execute/', data, {headers: {"Authorization": "Bearer " + this.token}}
             
             ).then(function (response) {
+                //this.alert = true;
                 let css_response="<ul style='text-align: left;'>"
                 for (const key in response.data.lint_results) {
                     css_response += "<li>" + response.data.lint_results[key] + "</li>"
@@ -161,7 +169,12 @@ export default {
 
                 $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 
                 
-            })
+            }).catch(() => {
+              this.alert = true;
+                window.setInterval(() => {
+                  this.alert = false;
+                }, 3000)    
+              });
         },
     },
 };
