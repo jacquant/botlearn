@@ -58,6 +58,11 @@ class ErrorsBySession(BaseErrorBy):
     lookup_field = "exercise__session__id"
 
 
+class ErrorsByAuthor(BaseErrorBy):
+    lookup_url_kwarg = "author_mail"
+    lookup_field = "author__mail"
+
+
 class ErrorsByExercise(BaseErrorBy):
     lookup_url_kwarg = "exercise_id"
     lookup_field = "exercise__id"
