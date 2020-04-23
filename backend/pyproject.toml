@@ -38,6 +38,8 @@ chatterbot = {git = "https://github.com/jacquant/ChatterBot.git"}
 django-import-export = "^2.0.2"
 django-json-widget = "^1.0.1"
 django-ace = "^1.0.7"
+daphne = "^2.5.0"
+Twisted = {extras = ["tls", "http2"], version = "^20.3.0"}
 
 [tool.poetry.dev-dependencies]
 add-trailing-comma = "*"

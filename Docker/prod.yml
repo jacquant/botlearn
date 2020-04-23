@@ -1,38 +1,5 @@
 version: "3"
 services:
-  nginx-frontend:
-    build:
-      context: ..
-      dockerfile: Docker/Dockerfiles/Nginx-frontend
-    container_name: nginx-frontent-memoire
-    ports:
-      - "8445:80"
-    links:
-      - api:api-prod
-    volumes:
-      - ../web/static:/src/static
-      - ../web/media:/src/media
-    depends_on:
-      - api
-    networks:
-      memoire-prod:
-        aliases:
-          - nginx-frontend
-  nginx-frontend-bot:
-    build:
-      context: ..
-      dockerfile: Docker/Dockerfiles/Nginx-frontend-bot
-    container_name: nginx-frontent-bot-memoire
-    ports:
-      - "8444:80"
-    links:
-      - api:api-prod
-    depends_on:
-      - api
-    networks:
-      memoire-prod:
-        aliases:
-          - nginx-frontend-bot
   cache:
     image: redis:alpine
     container_name: redis-memoire
@@ -96,9 +63,11 @@ services:
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             uvicorn --host 0.0.0.0 --port 8080 memoire.asgi:application --reload"
+             python manage.py sandbox_images &&
+             daphne -e ssl:443:privateKey=./ssl/privekey.pem:certKey=./ssl/cert.pem -b 0.0.0.0 -p 8080 memoire.asgi:application"
     volumes:
       - ../backend/:/api
+      - ../web/ssl/:/api/ssl
     env_file:
       - env/base/api.env
       - env/base/db.env
