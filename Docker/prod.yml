@@ -17,6 +17,7 @@ services:
     command: celery -A memoire worker -l info
     volumes:
       - ../backend/:/api
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - db
       - cache
@@ -63,11 +64,12 @@ services:
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             python manage.py sandbox_images &&
-             gunicorn --bind 0.0.0.0:8080 memoire.wsgi:application --worker-tmp-dir /dev/shm --workers=2 --thread=4 --worker-class=gthread  --reload"
+             daphne -e ssl:8080:privateKey=./ssl/privekey.pem:certKey=./ssl/cert.pem -b 0.0.0.0 -p 8000 memoire.asgi:application"
     volumes:
       - ../backend/:/api
-      - ../web/ssl/:/api/ssl
+      - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../web/ssl:/api/ssl
     env_file:
       - env/base/api.env
       - env/base/db.env

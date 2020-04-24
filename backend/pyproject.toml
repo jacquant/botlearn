@@ -7,7 +7,6 @@ description = "Memoire backend"
 
 [build-system]
 requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4"
@@ -33,12 +32,10 @@ psycopg2-binary = "*"
 python-magic = "*"
 redis = "*"
 restrictedpython = "*"
-uvicorn = "*"
 chatterbot = {git = "https://github.com/jacquant/ChatterBot.git"}
 django-import-export = "^2.0.2"
 django-json-widget = "^1.0.1"
 django-ace = "^1.0.7"
-gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]
 add-trailing-comma = "*"

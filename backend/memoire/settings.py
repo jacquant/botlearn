@@ -27,7 +27,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["memoire.jacquant.be","memoire-bot.jacquant.be", "51.91.100.35"]
 
 
 # Application definition
@@ -76,8 +76,8 @@ MIDDLEWARE = [
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 
-if DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
+#if DEBUG:
+CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
 
 ROOT_URLCONF = "memoire.urls"
 
@@ -103,8 +103,8 @@ ASGI_APPLICATION = "memoire.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB_NAME = os.environ.get("POSTGRES_DB", "memoire-v1-dev")
-DB_USER = os.environ.get("POSTGRES_USER", "memoire-dev")
+DB_NAME = os.environ.get("POSTGRES_DB", "memoire-v1-prod")
+DB_USER = os.environ.get("POSTGRES_USER", "memoire-prod")
 DB_PWD = os.environ.get("POSTGRES_PASSWORD", "memoire!pwd")
 DB_IP = os.environ.get("DB_IP", "127.0.0.1")
 DB_PORT = os.environ.get("DB_PORT", "5433")
