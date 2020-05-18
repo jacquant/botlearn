@@ -75,12 +75,12 @@ export default {
               items: [
             {
                 icon: 'mdi-apps',
-                title: 'Acceuil',
+                title: 'Accueil',
                 to: '/'
             },
             {
                 icon: 'mdi-chart-bubble',
-                title: 'Inspire',
+                title: 'Solutions',
                 to: '/mysolutions'
             },
             {

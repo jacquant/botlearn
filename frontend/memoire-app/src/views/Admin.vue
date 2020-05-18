@@ -60,8 +60,11 @@
               </v-list-group>
             </v-list>
           </v-card>
+        <v-divider />
+        <v-btn class="mt-6 red" href ="/admin/bot" target="_blank">
+            Paramétrer le ChatBot
+        </v-btn>
         </v-col>
-
         <!--Details for one exercice choosen-->
         <v-col offset="1">
           <h1>Informations</h1>
@@ -81,15 +84,15 @@
               <v-list>
                 <v-list-item>
                   <div style="font-weight:bold">
-                    Nombre de soumissions totales
+                    Nombre de soumissions totales:
                   </div>
-                  : {{current_data.final_sub}}
+                   {{current_data.total_sub}}
                 </v-list-item>
                 <v-list-item>
                   <div style="font-weight:bold">
                   Nombre de soumissions finales:
                   </div>
-                  : {{current_data.total_sub}}
+                   {{current_data.final_sub}}
                 </v-list-item>
               </v-list>
             </v-card-text>

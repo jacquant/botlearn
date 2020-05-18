@@ -53,7 +53,8 @@ services:
       context: ..
       dockerfile: Docker/Dockerfiles/Django
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - db
       - cache
@@ -64,7 +65,7 @@ services:
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             daphne -e ssl:8080:privateKey=./ssl/privekey.pem:certKey=./ssl/cert.pem -b 0.0.0.0 -p 8000 memoire.asgi:application"
+             daphne -e ssl:8001:privateKey=./ssl/privkey.pem:certKey=./ssl/cert.pem -b 0.0.0.0 -p 8000 memoire.asgi:application"
     volumes:
       - ../backend/:/api
       - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/

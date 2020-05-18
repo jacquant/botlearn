@@ -4,7 +4,7 @@
       <v-row>
         <!--Détails des exerices-->
         <v-col class="ml-10 mr-10">
-          <h1>Détails de l'exerice</h1>
+          <h1>Détails de l'exercice</h1>
           <v-card class="mx-auto">
             <v-toolbar color="green" dark flat>
               <v-toolbar-title>{{ exercice.name }}</v-toolbar-title>
@@ -14,9 +14,9 @@
               <v-list>
                 <v-list-item>
                   <div style="font-weight:bold">
-                    Consigne
+                    Consignes: 
                   </div>
-                  : {{ exercice.instruction }}
+                   {{ exercice.instruction }}
                 </v-list-item>
                 <v-list-item>
                   <div style="font-weight:bold">
@@ -26,7 +26,7 @@
                 </v-list-item>
                 <v-list-item v-for="tag in exercice.tags" :key="tag.name">
                   <div style="font-weight:bold">
-                    Tag: 
+                    Tag:  
                   </div>
                    {{ tag.name }}
                 </v-list-item>
@@ -69,7 +69,7 @@
       <!--Partie statistique des solutions des étudiants-->
       <v-row class="mr-10 ml-10">
         <v-container fluid>
-          <h1>Statistique de l'exercice
+          <h1>Statistiques de l'exercice
             <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes" target="_blank">
               <v-icon>
                 mdi-information-outline
