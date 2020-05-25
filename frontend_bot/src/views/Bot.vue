@@ -12,29 +12,43 @@
               <v-icon left>mdi-pencil</v-icon> Modifier
             </v-btn>
             <v-spacer />
-            <v-btn color="#28703d" @click="interactIframe(true); dialog_soumettre = false">
-              Soumettre
-            </v-btn>
+              <v-btn color="#28703d" @click="interactIframe(true); dialog_soumettre = false">
+                Soumettre
+              </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+
       <div id="bot">
-        <v-btn color="#72c288" @click="interactIframe(false)">
-          Exécuter
+        <v-btn color="#72c288" @click="interactIframe(false);" :disabled="disable_button">
+          Exécuter <span v-if="countDown > 0 && disable_button"> ({{countDown}})</span>
         </v-btn>
-        <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true">
+        <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true" v-if="current_exercise != null">
           Soumettre
         </v-btn>
         <v-alert class="mt-2" type="error" v-show="alert">
           Une erreur est survenue durant l'exécution (probablement aucun exercice lié à la soumission).
         </v-alert>
+
+        <!-- Show current exercise selected-->
+        <v-card class="mt-4 justify-center" v-if="detail_exercise != null" color="green"> 
+          <v-card-text>
+            Tu es en train de répondre à l'exercice n°{{detail_exercise.id}} - {{detail_exercise.instruction}}
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn class="ma-2 text-center" x-small rounded outlined  @click="detail_exercise = null; current_exercise= null">
+              Quitter l'exercice 
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+
         <div id="chatBotCommandDescription" class="mt-2" />
         <input id="humanInput" type="text" class="mt-5" />
         <div class="tooltip ml-10">
           <i class="fas fa-info" />
           <span class="tooltiptext"
             ><p>Pour ouvrir un lien sur Mac OS: cmd + click</p></span
-          >
+          >{{current_exercise}}
         </div>
         <div id="chatBot">
           <div id="chatBotThinkingIndicator" />
@@ -55,7 +69,7 @@ export default {
     // ================================================================================================== ==
     data: () => ({
 
-        url: "https://memoire.jacquant.be/api/",
+        url: "http://localhost:8080/api/",
 
         token: null,
 
@@ -63,11 +77,18 @@ export default {
 
         //Code Iframe
         data_from_iframe: "",
-        current_exercise: 6,
+
+        //get the current exercise selected
+        current_exercise: null,
+        detail_exercise: null,
 
         //Alert if there is an error from exectute api
         alert: false,
         final: true,
+
+        //Countdown button
+        countDown: 10,
+        disable_button: false,
     }),
 
     // ================================================================================================== ==
@@ -122,6 +143,14 @@ export default {
         onClickApp(ev){
           if(!isNaN(parseInt(ev.target.id))){
             this.current_exercise = ev.target.id;
+
+            //Get details of exercice to show it
+            axios.get(this.url + 'exercises/' + this.current_exercise + "/", {headers: {"Authorization": "Bearer " + this.token}}
+            
+            ).then( response => {
+              this.detail_exercise = response.data;
+            }).catch(() => { 
+              });
           }
         },
         //Check token's validity every 20 minutes (1200000)
@@ -143,6 +172,7 @@ export default {
         //Execute what the iframe requested
         interactIframe (bool) {
           this.final = bool;
+          this.countDownTimer();
           parent.window.postMessage("run", "*");
         },
         
@@ -155,7 +185,16 @@ export default {
                         "exercise_id": this.current_exercise,
                         "filename": String(namefile[namefile.length - 1]),
                         }
-            axios.post(this.url + 'code/execute/', data, {headers: {"Authorization": "Bearer " + this.token}}
+            //modify url
+            let url_execute = "execute/";
+            if (this.current_exercise == null){
+              url_execute = "lint/";
+              data = {"code_input": evt.data.code,
+                      "filename": String(namefile[namefile.length - 1]),
+                      "translate": false
+                      }
+            }
+            axios.post(this.url + 'code/'+ url_execute, data, {headers: {"Authorization": "Bearer " + this.token}}
             
             ).then(function (response) {
                 //this.alert = true;
@@ -176,6 +215,19 @@ export default {
                 }, 3000)    
               });
         },
+        //Create countdown to not spam the button
+          countDownTimer() {
+            this.disable_button = true;
+              if(this.countDown > 0) {
+                  setTimeout(() => {
+                      this.countDown -= 1
+                      this.countDownTimer()
+                  }, 1000)
+              }else{
+                this.disable_button = false;
+                this.countDown = 10;
+              }
+          }
     },
 };
 </script>
