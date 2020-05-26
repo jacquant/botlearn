@@ -24,11 +24,13 @@
                   </div>
                   : {{ exercice.difficulty.name }}
                 </v-list-item>
-                <v-list-item v-for="tag in exercice.tags" :key="tag.name">
+                <v-list-item>
                   <div style="font-weight:bold">
                     Tag:  
                   </div>
-                   {{ tag.name }}
+                  <div v-for="tag in exercice.tags" :key="tag.name">
+                   {{ " " + tag.name + ","}}
+                   </div>
                 </v-list-item>
                 <v-list-item>
                   <div style="font-weight:bold">
@@ -195,7 +197,7 @@
                     <v-list-item>
                       <v-list-item-content>
                         <vue-code-highlight v-if="item.code.length < 70">
-                          {{item.code.trim()}}
+                          {{item.code}}
                         </vue-code-highlight>
                         <vue-code-highlight v-else>
                           {{item.code.substring(0,70) + "..."}}
