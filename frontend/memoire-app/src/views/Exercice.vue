@@ -174,35 +174,43 @@
                   md="4"
                   lg="3"
                 >
-                  <v-card>
-                    <v-toolbar color="green" dark flat>
-                      <v-card-title class="subheading">
+                  <v-card color="green">
+                      <v-card-title color="green" class="subheading">
                         {{ item.name }}
                       </v-card-title>
-                    </v-toolbar>
+                    <v-card-subtitle>
+                        {{printDate(item.date)}}
+                      </v-card-subtitle>
 
                     <v-divider />
                     <v-list dense>
-                      <v-list-item>
-                        <v-list-item-content>Date:</v-list-item-content>
-                        <v-list-item-content>{{
-                          printDate(item.date)
-                        }}</v-list-item-content>
-                      </v-list-item>
                       <v-list-item>
                         <v-list-item-content
                           >Nombre d'erreurs:</v-list-item-content
                         >
                         <v-list-item-content>{{
                           item.erreurs
-                        }}</v-list-item-content>
+                        }}</v-list-item-content>      
                       </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <vue-code-highlight v-if="item.code.length < 70">
+                          {{item.code.trim()}}
+                        </vue-code-highlight>
+                        <vue-code-highlight v-else>
+                          {{item.code.substring(0,70) + "..."}}
+                        </vue-code-highlight>
+                      </v-list-item-content>
+                    </v-list-item>
                     </v-list>
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
-                        <v-btn color="green" class="white--text" :href='"/solution?id="+item.id' target="_blank">
+                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' target="_blank"  v-if="item.code.length < 70">
                           Afficher
+                        </v-btn>
+                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' target="_blank"  v-else>
+                          Afficher la suite
                         </v-btn>
                       </p>
                     </v-card-actions>
@@ -271,13 +279,15 @@
 import http from "../system/http";
 import store from "../store/store";
 import { GChart } from "vue-google-charts";
+import { component as VueCodeHighlight } from 'vue-code-highlight';
 
 export default {
   // ================================================================================================== ==
   // Components
   // ================================================================================================== ==
   components: {
-    GChart
+    GChart,
+    VueCodeHighlight
   },
   // ================================================================================================== ==
   // Data
@@ -318,6 +328,7 @@ export default {
                 name: "Exemple structuture",
                 date: new Date("9999-99-99"),
                 erreurs: 0,
+                code: ""
                 }],
     all_items: [],
     previous_items: [],
@@ -381,12 +392,12 @@ export default {
       for (const nb in submissions[submission].errors){
         total_errors += submissions[submission].errors[nb].counter
       }
-
       this.items.push({
         id: submissions[submission].id,
         name: submissions[submission].author.last_name + " " + submissions[submission].author.first_name ,
-        date: new Date(submissions[submission].submission_date.substring(0,10)),
-        erreurs: total_errors
+        date: new Date(submissions[submission].submission_date.substring(0,19)),
+        erreurs: total_errors,
+        code: submissions[submission].code_input
 
       })
     }
@@ -448,11 +459,14 @@ export default {
       format_all_items.push({
         id: this.all_items[submission].id,
         name: this.all_items[submission].author.last_name + " " + this.all_items[submission].author.first_name ,
-        date: new Date(this.all_items[submission].submission_date.substring(0,10)),
-        erreurs: total_errors
+        date: new Date(this.all_items[submission].submission_date.substring(0,19)),
+        erreurs: total_errors,
+        code: this.all_items[submission].code_input
 
       })
+
     }
+
     this.all_items = format_all_items;
    
     //Filtering Exerice:
@@ -523,11 +537,14 @@ export default {
         "décembre"
       ];
 
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
+      let day = date.getDate();
+      let monthIndex = date.getMonth();
+      let year = date.getFullYear();
+      let hour = date.getHours();
+      let minute = date.getMinutes();
+      let second = date.getSeconds()
 
-      return day + " " + monthNames[monthIndex] + " " + year;
+      return day + " " + monthNames[monthIndex] + " " + year + " à " + hour + ":" + minute + ":" + second +  "";
     },
 
     //Transform Chart to PNG
