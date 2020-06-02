@@ -168,6 +168,11 @@
             <v-card-text>
               <div class="display-1">
                 {{ title }}
+                <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes" target="_blank">
+                  <v-icon>
+                    mdi-information-outline
+                  </v-icon>
+                </v-btn>
               </div>
             </v-card-text>
 
@@ -424,7 +429,7 @@ export default {
       );
       WinPrint.document.write("</head><body>");
       WinPrint.document.write('<img src="' + this.png + '">');
-      WinPrint.document.write("<h1>" + this.title + "</h1>");
+      WinPrint.document.write("<h1>" + this.title + " - " + this.current_tp[0].session.name + "</h1>");
       WinPrint.document.write("</body></html>");
       WinPrint.document.close();
       WinPrint.focus();

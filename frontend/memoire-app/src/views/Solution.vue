@@ -3,17 +3,28 @@
     <v-flex>
       <v-row class="mr-10 ml-10">
         <!--Détails des exerices-->
-        <v-col offset="1" offset-sm="3" cols="10" sm="6">
-          <v-card class="mx-auto">
+        <v-col offset="1" offset-sm="2" cols="10" sm="8">
+          <v-card class="mx-auto justify-center" v-if="sourcecode != null">
             <v-toolbar color="green" dark flat>
-              <v-toolbar-title>Ma solution</v-toolbar-title>
+              <v-toolbar-title class="justify-center">{{sourcecode.author.last_name}} {{sourcecode.author.first_name}}</v-toolbar-title>
+               - ({{printDate(new Date(sourcecode.submission_date.substring(0,19)))}})
               <v-spacer />
             </v-toolbar>
-            <v-card-text>
+            <v-card-text class="justify-center">
               <v-flex>
 <vue-code-highlight>
-{{sourcecode}}
+{{sourcecode.code_input}}
 </vue-code-highlight>
+              </v-flex>
+            </v-card-text>
+            <v-divider />
+            <v-card-text class="justify-center">
+              <v-flex>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title v-for=" error in sourcecode.errors" :key="error.error.id">{{error.error.code + error.error.message}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </v-flex>
             </v-card-text>
             <v-divider />
@@ -155,7 +166,7 @@ export default {
   // Data
   // ================================================================================================== ==
   data: () => ({
-    sourcecode: "",
+    sourcecode: null,
 
     feedback: "",
   }),
@@ -182,9 +193,45 @@ export default {
        await http.get("submissions/" + id, {
         headers: { Authorization: "Bearer " + store.state.accessToken }
       })
-    ).data.code_input
+    ).data
   },
 
-  methods: {},
+  methods: {
+
+    /**
+     * Function to print the date correctly
+     * @param {Date} date
+     * @returns {String}
+     * */
+    printDate(date) {
+      var monthNames = [
+        "janvier",
+        "février",
+        "mars",
+        "avril",
+        "mai",
+        "juin",
+        "juillet",
+        "août",
+        "septembre",
+        "octobre",
+        "novembre",
+        "décembre"
+      ];
+
+      let day = date.getDate();
+      let monthIndex = date.getMonth();
+      let year = date.getFullYear();
+      let hour = date.getHours();
+      let minute = date.getMinutes();
+      let second = date.getSeconds();
+
+      if(minute.toString().length == 1){
+        minute = "0" + minute
+      }
+
+      return day + " " + monthNames[monthIndex] + " " + year + " à " + hour + ":" + minute + ":" + second +  "";
+    },
+  },
 };
 </script>

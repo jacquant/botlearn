@@ -79,11 +79,6 @@ export default {
                 to: '/'
             },
             {
-                icon: 'mdi-chart-bubble',
-                title: 'Solutions',
-                to: '/mysolutions'
-            },
-            {
                 icon: 'mdi-login-variant',
                 title: 'Se connecter',
                 to: '/login'

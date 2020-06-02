@@ -194,16 +194,19 @@
                           item.erreurs
                         }}</v-list-item-content>      
                       </v-list-item>
+                      <!--
                     <v-list-item>
                       <v-list-item-content>
-                        <vue-code-highlight v-if="item.code.length < 70">
+                        
+                        <vue-code-highlight v-if="item.code.length < 150">
                           {{item.code}}
                         </vue-code-highlight>
                         <vue-code-highlight v-else>
-                          {{item.code.substring(0,70) + "..."}}
+                          {{item.code.substring(0,150) + "..."}}
                         </vue-code-highlight>
                       </v-list-item-content>
                     </v-list-item>
+                    -->
                     </v-list>
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
@@ -281,7 +284,7 @@
 import http from "../system/http";
 import store from "../store/store";
 import { GChart } from "vue-google-charts";
-import { component as VueCodeHighlight } from 'vue-code-highlight';
+//import { component as VueCodeHighlight } from 'vue-code-highlight';
 
 export default {
   // ================================================================================================== ==
@@ -289,7 +292,7 @@ export default {
   // ================================================================================================== ==
   components: {
     GChart,
-    VueCodeHighlight
+    //VueCodeHighlight
   },
   // ================================================================================================== ==
   // Data
@@ -544,7 +547,11 @@ export default {
       let year = date.getFullYear();
       let hour = date.getHours();
       let minute = date.getMinutes();
-      let second = date.getSeconds()
+      let second = date.getSeconds();
+
+      if(minute.toString().length == 1){
+        minute = "0" + minute
+      }
 
       return day + " " + monthNames[monthIndex] + " " + year + " à " + hour + ":" + minute + ":" + second +  "";
     },

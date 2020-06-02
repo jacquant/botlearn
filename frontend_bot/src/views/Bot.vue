@@ -1,6 +1,5 @@
 <template>
   <v-layout>
-    <pre>{{ data_from_iframe }}</pre>
     <v-flex class="text-center" @click="onClickApp">
       <v-dialog v-model="dialog_soumettre" persistent max-width="490">
         <v-card>
@@ -48,7 +47,7 @@
           <i class="fas fa-info" />
           <span class="tooltiptext"
             ><p>Pour ouvrir un lien sur Mac OS: cmd + click</p></span
-          >{{current_exercise}}
+          >
         </div>
         <div id="chatBot">
           <div id="chatBotThinkingIndicator" />
@@ -187,6 +186,7 @@ export default {
                         }
             //modify url
             let url_execute = "execute/";
+
             if (this.current_exercise == null){
               url_execute = "lint/";
               data = {"code_input": evt.data.code,
