@@ -18,7 +18,7 @@
             type="success"
             icon="mdi-checkbox-marked-circle"
           >
-            Le mot de passe a été changé (<a href="/login">Se connecter</a>).
+            Le mot de passe a été changé (<v-text-field to="/login" router>Se connecter</v-text-field>).
           </v-alert>
           <v-card-text>
             <v-form>
@@ -53,7 +53,7 @@
               :disabled="$v.password.$invalid || $v.password_conf.$invalid"
               @click="submit"
             >
-              Se connecter
+              Réinitialiser
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -99,29 +99,29 @@ export default {
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns errors: {Array}
      */
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.minLength &&
         errors.push("Le mot de passe doit faire minimum 8 caractères");
-      !this.$v.password.required && errors.push("un mot de passe est requis");
+      !this.$v.password.required && errors.push("Un mot de passe est requis !");
       return errors;
     },
 
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns errors: {Array}
      */
     passwordConfErrors() {
       const errors = [];
       if (!this.$v.password_conf.$dirty) return errors;
       !this.$v.password_conf.minLength &&
-        errors.push("Le mot de passe doit faire minimum 8 caractères");
+        errors.push("Le mot de passe doit faire au minimum 8 caractères");
       !this.$v.password_conf.required &&
-        errors.push("un mot de passe est requis");
+        errors.push("Un mot de passe est requis !");
       return errors;
     }
   },
@@ -133,7 +133,7 @@ export default {
     //Verify the token
 
     if (this.$route.query.token === undefined) {
-      this.$router.push("/login");
+      await this.$router.push("/login");
     } else {
       let data = { token: this.$route.query.token };
       await http.post("password_reset/validate_token/", data);
@@ -149,7 +149,7 @@ export default {
       this.$v.$touch();
 
       //Axios request to check if data is correct
-      if (this.password != this.password_conf) {
+      if (this.password !== this.password_conf) {
         this.error = true;
         this.succeed = false;
       } else {

@@ -255,15 +255,15 @@ export default {
   async created() {
 
     //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
-    var is_staff = await http.get("user/get/", {
-      headers: { Authorization: "Bearer " + store.state.accessToken }
-    });
+      let is_staff = await http.get("user/get/", {
+          headers: {Authorization: "Bearer " + store.state.accessToken}
+      });
 
-    if (!is_staff) {
-      var new_json = store.state.userInformation;
-      new_json["is_staff"] = false;
-      localStorage.setItem("infoUser", JSON.stringify(new_json));
-      router.push("/");
+      if (!is_staff) {
+        let new_json = store.state.userInformation;
+        new_json["is_staff"] = false;
+        localStorage.setItem("infoUser", JSON.stringify(new_json));
+        await router.push("/");
     }
 
     //Get All Tps
@@ -274,7 +274,7 @@ export default {
     ).data;
 
 
-    var exercices = [];
+    let exercices = [];
     for (const key in this.tps) {
       exercices = (
         await http.get("exercises/?session=" + this.tps[key].id, {
@@ -317,7 +317,7 @@ export default {
       if(this.current_tp !== null){
 
         //Get All submissions for every exercice
-        if(this.items[this.current_tab].content =="totales"){
+        if(this.items[this.current_tab].content === "totales"){
           this.title = "Nombre de soumissions totales par exercice par TP";
 
           this.chartData = [["Exercice","Nombre de soumissions totales"]];
@@ -330,7 +330,7 @@ export default {
           }
 
         //Get All final submissions for every exercice
-        }else if (this.items[this.current_tab].content =="finales"){
+        }else if (this.items[this.current_tab].content === "finales"){
           this.title = "Nombre de soumissions finales par exercice par TP";
 
           this.chartData = [["Exercice",
@@ -348,7 +348,7 @@ export default {
             }
 
         //Get stats from students' errors by error
-        }else if (this.items[this.current_tab].content =="types"){
+        }else if (this.items[this.current_tab].content === "types"){
           this.title = "Nombre d'erreurs par type par TP";
 
           this.chartData = [["Numéro de l'erreur",
@@ -410,7 +410,7 @@ export default {
 
     //Transform Chart to PNG
     onChartReady(chart, google) {
-      var self = this;
+      let self = this;
       google.visualization.events.addListener(chart, "ready", function() {
         self.png = chart.getImageURI();
       });
@@ -418,14 +418,14 @@ export default {
 
     //Print the Graph
     print() {
-      var WinPrint = window.open(
+      let WinPrint = window.open(
         "",
         "",
         "left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0"
       );
       WinPrint.document.write("<html><head>");
       WinPrint.document.write(
-        '<link rel= "stylesheet", href= "/css/print.css">'
+        '<link rel= "stylesheet" href= "/css/print.css">'
       );
       WinPrint.document.write("</head><body>");
       WinPrint.document.write('<img src="' + this.png + '">');

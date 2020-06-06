@@ -33,8 +33,8 @@
 
               <v-text-field
                 v-model="lastname"
-                label="Nom de famille"
-                name="nom de famille"
+                label="Nom"
+                name="nom"
                 prepend-icon="mdi-account"
                 type="text"
                 :error-messages="lastNameErrors"
@@ -83,7 +83,7 @@
                     </v-icon>
                   </template>
                   <span
-                    >En indiquant ton eid tu pourras te connecter avec tes
+                    >En indiquant ton eid, tu pourras te connecter avec tes
                     identifiants UNamur.</span
                   >
                 </v-tooltip>
@@ -101,7 +101,7 @@
                   $v.email.$invalid ||
                   $v.firstname.$invalid ||
                   $v.lastname.$invalid ||
-                  password != password_conf
+                  password !== password_conf
               "
               @click="submit"
             >
@@ -163,14 +163,14 @@ export default {
     /**
      * Indicates if the identifiers are not correct.
      * @private
-     * @returns {errors: tab}
+     * @returns errors: {Array}
      */
     emailErrors() {
       const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email &&
+      if (!this.this.$v.email.$dirty) return errors;
+      !this.this.$v.email.email &&
         errors.push("Une adresse email valide est requise !");
-      !this.$v.email.required &&
+      !this.this.$v.email.required &&
         errors.push("Une adresse email doit être indiquée");
       return errors;
     },
@@ -178,46 +178,46 @@ export default {
     /**
      * Indicates if there is a first name.
      * @private
-     * @returns {errors: tab}
+     * @returns errors: {Array}
      */
     firstNameErrors() {
       const errors = [];
-      if (!this.$v.firstname.$dirty) return errors;
-      !this.$v.firstname.required && errors.push("Un prénom doit être indiqué");
+      if (!this.this.$v.firstname.$dirty) return errors;
+      !this.this.$v.firstname.required && errors.push("Un prénom doit être indiqué");
       return errors;
     },
 
     /**
      * Indicates if there is a last name.
      * @private
-     * @returns {errors: tab}
+     * @returns  errors: {Array}
      */
     lastNameErrors() {
       const errors = [];
-      if (!this.$v.lastname.$dirty) return errors;
-      !this.$v.lastname.required &&
-        errors.push("Un nom de famille doit être indiqué");
+      if (!this.this.$v.lastname.$dirty) return errors;
+      !this.this.$v.lastname.required &&
+        errors.push("Un nom doit être indiqué");
       return errors;
     },
 
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns  errors: {Array}
      */
     passwordErrors() {
       const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength &&
-        errors.push("Le mot de passe doit faire minimum 8 caractères");
-      !this.$v.password.required && errors.push("un mot de passe est requis");
+      if (!this.this.$v.password.$dirty) return errors;
+      !this.this.$v.password.minLength &&
+        errors.push("Le mot de passe doit faire au minimum 8 caractères");
+      !this.this.$v.password.required && errors.push("Un mot de passe est requis !");
       return errors;
     },
 
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns  errors: {Array}
      */
     passwordConfErrors() {
       const errors = [];
@@ -225,9 +225,9 @@ export default {
       !this.$v.password_conf.minLength &&
         errors.push("Le mot de passe doit faire minimum 8 caractères");
       !this.$v.password_conf.required &&
-        errors.push("un mot de passe est requis");
-      //!this.$v.password_conf.samePassword && errors.push("Le mot de passe ne correspond pas")
-      if (this.password != this.password_conf) {
+        errors.push("Un mot de passe est requis !");
+      //!this.this.$v.password_conf.samePassword && errors.push("Le mot de passe ne correspond pas")
+      if (this.password !== this.password_conf) {
         errors.push("Le mot de passe ne correspond pas");
       }
       return errors;
@@ -236,12 +236,12 @@ export default {
     /**
      * Indicates if the eid is not correct.
      * @private
-     * @returns {errors: tab}
+     * @returns  errors: {Array}
      */
     eidErrors() {
       const errors = [];
       if (!this.$v.eid.$dirty) return errors;
-      !this.$v.eid.maxLength && errors.push("L'eid fait maximum 10 caractères");
+      !this.$v.eid.maxLength && errors.push("L'eid fait au maximum 10 caractères");
       !this.$v.eid.required && errors.push("Un eid est requis");
       return errors;
     }

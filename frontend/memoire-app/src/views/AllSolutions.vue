@@ -45,9 +45,7 @@
                   depressed
                   medium
                   @click="
-                    search = '';
-                    sortBy = 'Le plus récent';
-                    filtering();
+                    updateAndFiltering('Le plus récent')
                   "
                 >
                   Réinitialiser les filtres
@@ -56,9 +54,7 @@
                   icon
                   class="d-flex d-sm-none"
                   @click="
-                    search = '';
-                    sortBy = 'Le plus récent';
-                    filtering();
+                    updateAndFiltering('Le plus récent')
                   "
                 >
                   <v-icon color="#9c6013">
@@ -90,16 +86,19 @@
                       <v-list-item>
                         <v-list-item-content>Date:</v-list-item-content>
                         <v-list-item-content>{{
-                          printDate(item.date)
-                        }}</v-list-item-content>
+                                             printDate(item.date)
+                                             }}
+                        </v-list-item-content>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-content
-                          >Nombre d'erreurs:</v-list-item-content
+                        >Nombre d'erreurs:
+                        </v-list-item-content
                         >
                         <v-list-item-content>{{
-                          item.erreurs
-                        }}</v-list-item-content>
+                                             item.errors
+                                             }}
+                        </v-list-item-content>
                       </v-list-item>
                     </v-list>
                     <v-divider />
@@ -172,149 +171,156 @@
 </template>
 
 <script>
-import http from "../system/http";
-import store from "../store/store";
+    import http from "../system/http";
+    import store from "../store/store";
 
-export default {
-  // ================================================================================================== ==
-  // Data
-  // ================================================================================================== ==
-  data: () => ({
-    //Detail exercice
-    exercice: {},
+    export default {
+        // ================================================================================================== ==
+        // Data
+        // ================================================================================================== ==
+        data: () => ({
+            //Detail exercice
+            exercice: {},
 
-    //Solutions d'un étudiant _ Data
-    itemsPerPageArray: [4, 12, 24],
-    search: "",
-    filter: {},
-    sortDesc: false,
-    page: 1,
-    itemsPerPage: 20,
-    sortBy: "Le plus récent",
-    keys: ["Le plus ancien", "Le plus récent"],
-    items: [
-      {
-        id: 1,
-        name: "Exercice 1.1",
-        date: new Date("2020-02-24"),
-        erreurs: 6
-      },
-      {
-        id: 2,
-        name: "Exercice 1.2",
-        date: new Date("2020-02-25"),
-        erreurs: 4
-      },
-      {
-        id: 3,
-        name: "Exercice 2.1",
-        date: new Date("2020-01-25"),
-        erreurs: 1
-      },
-      {
-        id: 4,
-        name: "Exercice 3.1",
-        date: new Date("2020-02-01"),
-        erreurs: 2
-      },
-      {
-        id: 5,
-        name: "Exercice 3.2",
-        date: new Date("2019-01-10"),
-        erreurs: 9
-      },
-      {
-        id: 6,
-        name: "Exercice 3.3",
-        date: new Date("2020-01-24"),
-        erreurs: 35
-      }
-    ]
-  }),
+            //Solutions d'un étudiant _ Data
+            itemsPerPageArray: [4, 12, 24],
+            search: "",
+            filter: {},
+            sortDesc: false,
+            page: 1,
+            itemsPerPage: 20,
+            sortBy: "Le plus récent",
+            keys: ["Le plus ancien", "Le plus récent"],
+            items: [
+                {
+                    id: 1,
+                    name: "Exercice 1.1",
+                    date: new Date("2020-02-24"),
+                    errors: 6
+                },
+                {
+                    id: 2,
+                    name: "Exercice 1.2",
+                    date: new Date("2020-02-25"),
+                    errors: 4
+                },
+                {
+                    id: 3,
+                    name: "Exercice 2.1",
+                    date: new Date("2020-01-25"),
+                    errors: 1
+                },
+                {
+                    id: 4,
+                    name: "Exercice 3.1",
+                    date: new Date("2020-02-01"),
+                    errors: 2
+                },
+                {
+                    id: 5,
+                    name: "Exercice 3.2",
+                    date: new Date("2019-01-10"),
+                    errors: 9
+                },
+                {
+                    id: 6,
+                    name: "Exercice 3.3",
+                    date: new Date("2020-01-24"),
+                    errors: 35
+                }
+            ]
+        }),
 
-  // ================================================================================================== ==
-  // Computed
-  // ================================================================================================== ==
-  computed: {
-    //Manage the pagination
-    numberOfPages() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    filteredKeys() {
-      return this.keys.filter(key => key !== `Name`);
-    }
-  },
+        // ================================================================================================== ==
+        // Computed
+        // ================================================================================================== ==
+        computed: {
+            //Manage the pagination
+            numberOfPages() {
+                return Math.ceil(this.items.length / this.itemsPerPage);
+            },
+            filteredKeys() {
+                return this.keys.filter(key => key !== `Name`);
+            }
+        },
 
-  // ================================================================================================== ==
-  // Created
-  // ================================================================================================== ==
-  async created() {
-    //TO DO ! Get ALL SUBMISSIONS OF A USER
-    //Get Details exercice
-    this.exercice = (
-      await http.get("submissions/", {
-        headers: { Authorization: "Bearer " + store.state.accessToken }
-      })
-    ).data;
-    console.log(this.exercice);
-    //Get Solutions
-    //Waiting API
+        // ================================================================================================== ==
+        // Created
+        // ================================================================================================== ==
+        async created() {
+            //TODO ! Get ALL SUBMISSIONS OF A USER
+            //Get Details exercice
+            this.exercice = (
+                await http.get("submissions/", {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
+            //Get Solutions
+            //Waiting API
 
-    //Filtering Exerice:
-    this.filtering();
-  },
+            //Filtering Exerice:
+            this.filtering();
+        },
 
-  // ================================================================================================== ==
-  // Methods
-  // ================================================================================================== ==
-  methods: {
-    //Methods to manage the pagination
-    nextPage() {
-      if (this.page + 1 <= this.numberOfPages) this.page += 1;
-    },
-    formerPage() {
-      if (this.page - 1 >= 1) this.page -= 1;
-    },
-    updateItemsPerPage(number) {
-      this.itemsPerPage = number;
-    },
+        // ================================================================================================== ==
+        // Methods
+        // ================================================================================================== ==
+        methods: {
+            //Methods to manage the pagination
+            nextPage() {
+                if (this.page + 1 <= this.numberOfPages) this.page += 1;
+            },
+            formerPage() {
+                if (this.page - 1 >= 1) this.page -= 1;
+            },
+            updateItemsPerPage(number) {
+                this.itemsPerPage = number;
+            },
 
-    //Filtering by date or by errors
-    filtering() {
-      if (this.sortBy.includes("récent")) {
-        this.items = this.items.slice().sort((a, b) => b.date - a.date);
-      } else if (this.sortBy.includes("ancien")) {
-        this.items = this.items.slice().sort((a, b) => a.date - b.date);
-      }
-    },
+            updateAndFiltering(sortBy) {
+                this.updateSearchAndSortBy(sortBy);
+                this.filtering();
+            },
 
-    /**
-     * Function to print the date correctly
-     * @param {Date} date
-     * @returns {String}
-     * */
-    printDate(date) {
-      var monthNames = [
-        "janvier",
-        "février",
-        "mars",
-        "avril",
-        "mai",
-        "juin",
-        "juillet",
-        "août",
-        "septembre",
-        "octobre",
-        "novembre",
-        "décembre"
-      ];
+            updateSearchAndSortBy(sortBy) {
+                this.search = "";
+                this.sortBy = sortBy;
+            },
+            //Filtering by date or by errors
+            filtering() {
+                if (this.sortBy.includes("récent")) {
+                    this.items = this.items.slice().sort((a, b) => b.date - a.date);
+                } else if (this.sortBy.includes("ancien")) {
+                    this.items = this.items.slice().sort((a, b) => a.date - b.date);
+                }
+            },
 
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
+            /**
+             * Function to print the date correctly
+             * @param {Date} date
+             * @returns {String}
+             * */
+            printDate(date) {
+                const monthNames = [
+                    "janvier",
+                    "février",
+                    "mars",
+                    "avril",
+                    "mai",
+                    "juin",
+                    "juillet",
+                    "août",
+                    "septembre",
+                    "octobre",
+                    "novembre",
+                    "décembre"
+                ];
 
-      return day + " " + monthNames[monthIndex] + " " + year;
-    }
-  }
-};
+                const day = date.getDate();
+                const monthIndex = date.getMonth();
+                const year = date.getFullYear();
+                return day + " " + monthNames[monthIndex] + " " + year;
+            }
+        }
+    };
 </script>

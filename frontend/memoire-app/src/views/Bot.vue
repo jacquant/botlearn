@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ChatBot } from "../static/js/chatbot";
+import {ChatBot} from "../static/js/chatbot";
 
 export default {
   mounted() {
@@ -60,13 +60,13 @@ export default {
   width: 400px;
 }
 
-.button {
+/*.button {
   display: inline-block;
   background-color: darkcyan;
   color: #fff;
   padding: 8px;
   cursor: pointer;
-}
+}*/
 
 #chatBotCommandDescription {
   /*display: none;*/

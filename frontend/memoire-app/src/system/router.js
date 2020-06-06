@@ -28,7 +28,7 @@ Vue.use(Router);
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isConnected) {
     next();
-    return;
+    return null;
   }
   next("/");
 };
@@ -41,7 +41,7 @@ const ifNotAuthenticated = (to, from, next) => {
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isConnected) {
     next();
-    return;
+    return null;
   }
   next("/login");
 };
