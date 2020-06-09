@@ -25,9 +25,9 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title style="font-weight: bold" v-if="exercise.tags.length > 1">Tags:
+                    <v-list-item-title style="font-weight:bold" v-if="exercise.tags.length > 1">Tags:
                     </v-list-item-title>
-                    <v-list-item-title style="font-weight: bold" v-else>Tag:</v-list-item-title>
+                    <v-list-item-title style="font-weight:bold" v-else>Tag:</v-list-item-title>
                     <v-list-item-group>
                       <v-list-item v-for="tag in exercise.tags" :key="tag.name" dense>
                         <v-list-item-content>
@@ -207,7 +207,7 @@
                           Afficher
                         </v-btn>
                         <v-btn color="#9c6013" class="white--text"
-                               :href='"/solution?id="+item.id' target="_blank" v-else>
+                               :href='"/solution?id="+item.id' v-else>
                           Afficher la suite
                         </v-btn>
                       </p>

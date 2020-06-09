@@ -179,7 +179,7 @@
             <v-divider />
 
             <v-card-actions class="justify-center">
-              <v-btn block text @click="print()">
+              <v-btn block text @click="print(title, current_tp[0].session.name)">
                 Imprimer graphe
               </v-btn>
             </v-card-actions>
@@ -196,7 +196,7 @@
     import {GChart} from "vue-google-charts";
     import http from "../../system/http";
     import {tooltipGenerator} from "../../utils/graph";
-    import {onChartReady} from "../../utils/print";
+    import {onChartReady, print} from "../../utils/print";
 
     export default {
         // ================================================================================================== ==
