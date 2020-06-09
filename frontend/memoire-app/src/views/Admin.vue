@@ -33,7 +33,7 @@
                   <v-list-item-title> {{ exe.name }}</v-list-item-title>
                   <v-btn
                     :href="
-                      'https://memoire.jacquant.be/admin/exercises/exercise/' +
+                      'http://localhost:8080/admin/exercises/exercise/' +
                         exe.id +
                         '/change/'
                     "
@@ -61,7 +61,7 @@
             </v-list>
           </v-card>
         <v-divider />
-        <v-btn class="mt-6 red" href ="/admin/bot" target="_blank">
+        <v-btn class="mt-6 red" href ="http://localhost:8080/admin/bot" target="_blank">
             Paramétrer le ChatBot
         </v-btn>
         </v-col>
@@ -103,7 +103,6 @@
                   color="green"
                   class="white--text"
                   :href="'/administration/exercice?id=' + current_data.id"
-                  target="_blank"
                 >
                   Afficher l'exercice en détails
                 </v-btn>
