@@ -16,7 +16,7 @@
               <v-form>
                 <v-text-field
                   v-model="email"
-                  label="Email"
+                  label="Adresse e-mail"
                   name="email"
                   prepend-icon="mdi-account"
                   type="text"
@@ -133,7 +133,7 @@
               <v-spacer />
             </v-toolbar>
             <v-alert v-if="error" text prominent type="error" icon="mdi-alert">
-              L'adresse email n'existe pas.
+              L'adresse e-mail n'existe pas.
             </v-alert>
             <v-alert
               v-if="succeed"
@@ -142,7 +142,7 @@
               type="success"
               icon="mdi-email"
             >
-              Un email a été envoyé !
+              Un courriel (e-mail) a été envoyé !
             </v-alert>
 
             <v-card-text>
@@ -178,12 +178,13 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, email } from "vuelidate/lib/validators";
-import http from "../system/http";
-import store from "../store/store";
+    import {validationMixin} from "vuelidate";
+    import {email, maxLength, required} from "vuelidate/lib/validators";
+    import http from "../../system/http";
+    import store from "../../store/store";
 
-export default {
+
+    export default {
   mixins: [validationMixin],
 
   // ================================================================================================== ==
@@ -220,7 +221,7 @@ export default {
     /**
      * Indicates if the identifiers are not correct.
      * @private
-     * @returns {errors: tab}
+     * @returns {Array} errors
      */
     emailErrors() {
       const errors = [];
@@ -228,45 +229,45 @@ export default {
       !this.$v.email.email &&
         errors.push("Une adresse email valide est requise !");
       !this.$v.email.required &&
-        errors.push("Une adresse email doit être indiquée");
+        errors.push("Une adresse email doit être indiquée !");
       return errors;
     },
 
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns {Array} errors
      */
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("un mot de passe est requis");
+      !this.$v.password.required && errors.push("Un mot de passe est requis !");
       return errors;
     },
 
     /**
      * Indicates if the eid is not correct.
      * @private
-     * @returns {errors: tab}
+     * @returns {Array} errors
      */
     eidErrors() {
       const errors = [];
       if (!this.$v.eid_unamur.$dirty) return errors;
       !this.$v.eid_unamur.between &&
-        errors.push("L'eid fait maximum 10 caractères");
-      !this.$v.eid_unamur.required && errors.push("Un eid est requis");
+        errors.push("L'eid fait au maximum 10 caractères");
+      !this.$v.eid_unamur.required && errors.push("Un eid est requis !");
       return errors;
     },
     /**
      * Indicates if there is a password written.
      * @private
-     * @returns {errors: tab}
+     * @returns {Array} errors
      */
     passwordUnamurErrors() {
       const errors = [];
       if (!this.$v.password_unamur.$dirty) return errors;
       !this.$v.password_unamur.required &&
-        errors.push("un mot de passe est requis");
+        errors.push("Un mot de passe est requis !");
       return errors;
     },
 
@@ -308,20 +309,20 @@ export default {
     async reset() {
       let data = { email: this.email };
       await http.post("password_reset/", data);
-      //console.log(store.state.typeError);
+      console.log(store.state.typeError);
     }
   }
 };
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s;
-}
+/*.fade-enter-active,*/
+/*.fade-leave-active {*/
+/*  transition: opacity 0.4s;*/
+/*}*/
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
- {
-  opacity: 0;
-}
+/*.fade-enter, .fade-leave-to !* .fade-leave-active below version 2.1.8 *!*/
+/* {*/
+/*  opacity: 0;*/
+/*}*/
 </style>
