@@ -13,7 +13,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/backend" />
+    <content url="file://$MODULE_DIR$/frontend/memoire-app" />
     <orderEntry type="jdk" jdkName="Python 3.8 (backend-XvbqwqZz)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
