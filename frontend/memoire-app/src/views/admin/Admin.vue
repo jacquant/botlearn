@@ -103,7 +103,6 @@
                   color="green"
                   class="white--text"
                   :href="'/administration/exercice?id=' + current_data.id"
-                  target="_blank"
                 >
                   Afficher l'exercice en détails
                 </v-btn>
@@ -196,7 +195,7 @@
     import {GChart} from "vue-google-charts";
     import http from "../../system/http";
     import {tooltipGenerator} from "../../utils/graph";
-    import {onChartReady} from "../../utils/print";
+    import {onChartReady, print} from "../../utils/print";
 
     export default {
         // ================================================================================================== ==

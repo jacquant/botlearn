@@ -262,7 +262,6 @@ export default {
           else{
             this.anonym_value = true
           }
-          console.log(this.anonym_value);
           this.anonym_alert = true;
         }
     },

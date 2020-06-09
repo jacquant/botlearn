@@ -24,20 +24,13 @@
                   <v-list-item-content>
                     <v-list-item-title v-for="{error} in sourcecode.errors"
                                        :key="error.code">
-                      {{error.code + error.message}}
+                      {{error.code + ": " + error.message}}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-flex>
             </v-card-text>
             <v-divider />
-            <v-card-actions class="d-flex align-center justify-center">
-              <p class="ma-0">
-                <v-btn color="green" class="white--text">
-                  Modifier
-                </v-btn>
-              </p>
-            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>

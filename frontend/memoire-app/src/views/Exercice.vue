@@ -57,7 +57,7 @@
                   class="white--text"
                   :href="
                     'http://localhost:8080/admin/exercises/exercise/' +
-                      exercice.id +
+                      exercise.id +
                       '/change/'
                   "
                   target="_blank"
@@ -207,7 +207,7 @@
                           Afficher
                         </v-btn>
                         <v-btn color="#9c6013" class="white--text"
-                               :href='"/solution?id="+item.id'v-else>
+                               :href='"/solution?id="+item.id' v-else>
                           Afficher la suite
                         </v-btn>
                       </p>
@@ -443,12 +443,14 @@
                 id = this.$route.query.id;
             }
 
+
             //Get Details exercise
             this.exercise = (
                 await http.get("exercises/" + id, {
                     headers: {Authorization: "Bearer " + store.state.accessToken}
                 })
             ).data;
+
 
             //Get All final submissions from exercises
             this.submissions = (
