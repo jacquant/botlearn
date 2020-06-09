@@ -178,13 +178,13 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, email } from "vuelidate/lib/validators";
-import http from "../system/http";
-import store from "../store/store";
+    import {validationMixin} from "vuelidate";
+    import {email, maxLength, required} from "vuelidate/lib/validators";
+    import http from "../../system/http";
+    import store from "../../store/store";
 
 
-export default {
+    export default {
   mixins: [validationMixin],
 
   // ================================================================================================== ==

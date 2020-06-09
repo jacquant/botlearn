@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import {ChatBot} from "../static/js/chatbot";
+    import {ChatBot} from "../static/js/chatbot";
 
-export default {
+    export default {
   mounted() {
     const config = {
       // what inputs should the bot listen to? this selector should point to at least one input field

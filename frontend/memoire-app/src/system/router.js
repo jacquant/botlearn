@@ -1,21 +1,17 @@
 import Vue from "vue";
 import Router from "vue-router";
 import store from "../store/store";
-
 //Login Parts
-import Login from "../views/Login.vue";
-import Reset from "../views/Reset.vue";
-import Register from "../views/Register.vue";
-
+import Login from "../views/connection/Login.vue";
+import Reset from "../views/connection/Reset.vue";
+import Register from "../views/connection/Register.vue";
 //General Parts
 import Home from "../views/Home.vue";
-
 //Students parts
-import AllSolutions from "../views/AllSolutions.vue";
+import AllSolutions from "../views/students/AllSolutions.vue";
 import Solution from "../views/Solution.vue";
-
 //Admin Parts
-import Admin from "../views/Admin.vue";
+import Admin from "../views/admin/Admin.vue";
 import Exercice from "../views/Exercice.vue";
 
 Vue.use(Router);

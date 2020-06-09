@@ -63,11 +63,11 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, minLength } from "vuelidate/lib/validators";
-import http from "../system/http";
+    import {validationMixin} from "vuelidate";
+    import {minLength, required} from "vuelidate/lib/validators";
+    import http from "../../system/http";
 
-export default {
+    export default {
   mixins: [validationMixin],
 
   // ================================================================================================== ==

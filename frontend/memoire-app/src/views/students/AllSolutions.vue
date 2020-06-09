@@ -171,8 +171,9 @@
 </template>
 
 <script>
-    import http from "../system/http";
-    import store from "../store/store";
+    import http from "../../system/http";
+    import {printDate} from "../../utils/date";
+    import store from "../../store/store";
 
     export default {
         // ================================================================================================== ==
@@ -294,33 +295,7 @@
                     this.items = this.items.slice().sort((a, b) => a.date - b.date);
                 }
             },
-
-            /**
-             * Function to print the date correctly
-             * @param {Date} date
-             * @returns {String}
-             * */
-            printDate(date) {
-                const monthNames = [
-                    "janvier",
-                    "février",
-                    "mars",
-                    "avril",
-                    "mai",
-                    "juin",
-                    "juillet",
-                    "août",
-                    "septembre",
-                    "octobre",
-                    "novembre",
-                    "décembre"
-                ];
-
-                const day = date.getDate();
-                const monthIndex = date.getMonth();
-                const year = date.getFullYear();
-                return day + " " + monthNames[monthIndex] + " " + year;
-            }
+            printDate
         }
     };
 </script>

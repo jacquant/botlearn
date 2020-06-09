@@ -25,15 +25,18 @@
               </v-icon>
             </v-app-bar>
             <v-card-text>
-              <v-list-item :key="n" v-for="(info, n) in userInformation">
-                <v-icon size="15">
-                  mdi-checkbox-blank-circle
-                </v-icon>
-                <div v-if="n === 'mail'">Email: {{ info }}</div>
-                <div v-else-if="n === 'first_name'">Prénom: {{ info }}</div>
-                <div v-else-if="n === 'last_name'">Nom: {{ info }}</div>
-                <div v-else>Eid: {{ info }}</div>
-              </v-list-item>
+              <v-list disabled>
+                <v-list-item-group flat>
+                  <v-list-item :key="n" v-for="(info, n) in userInformation">
+                    <v-list-item-icon>
+                      <v-icon>mdi-checkbox-blank-circle</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ getInformation(n, info) }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
               <hr />
             </v-card-text>
           </v-card>
@@ -62,6 +65,12 @@
                 student_card: null,
                 eid: null,
                 is_staff: null
+            },
+            userMapping: {
+                last_name: "Nom: ",
+                first_name: "Prénom: ",
+                mail: "E-mail: ",
+                eid: "Eid: "
             }
         }),
 
@@ -74,6 +83,13 @@
             delete this.userInformation.is_staff;
             delete this.userInformation.student_card;
             delete this.userInformation.student;
+        },
+        methods: {
+
+            getInformation(mapper, info) {
+                return this.userMapping[mapper] + info;
+            }
+
         }
     };
 </script>

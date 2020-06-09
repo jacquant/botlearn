@@ -115,15 +115,10 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import {
-  required,
-  email,
-  minLength,
-  maxLength
-} from "vuelidate/lib/validators";
+    import {validationMixin} from "vuelidate";
+    import {email, maxLength, minLength, required} from "vuelidate/lib/validators";
 
-export default {
+    export default {
   mixins: [validationMixin],
 
   // ================================================================================================== ==
