@@ -211,10 +211,10 @@
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
-                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' target="_blank"  v-if="item.code.length < 70">
+                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' v-if="item.code.length < 70">
                           Afficher
                         </v-btn>
-                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' target="_blank"  v-else>
+                        <v-btn color="#9c6013" class="white--text" :href='"/solution?id="+item.id' v-else>
                           Afficher la suite
                         </v-btn>
                       </p>

@@ -1,6 +1,8 @@
 <template>
   <v-layout>
     <v-flex class="text-center" @click="onClickApp">
+
+      <!--Dialog when the student wants to submit his code-->
       <v-dialog v-model="dialog_soumettre" persistent max-width="490">
         <v-card>
           <v-card-title class="headline" style="text-align:center;">
@@ -18,6 +20,16 @@
         </v-card>
       </v-dialog>
 
+      <v-dialog v-model="anonym_alert" max-width="600">
+        <v-alert type="warning" v-if="anonym_value">
+          Tu es désormais <strong>anonyme</strong> ! Tous tes codes sont anonymes.
+        </v-alert>
+        <v-alert type="warning" v-else>
+          Tu n'es <strong>plus anonyme</strong> ! Tous tes codes ne sont plus anonymes.
+        </v-alert>
+      </v-dialog>
+
+      <!--Bot's interface-->
       <div id="bot">
         <v-btn color="#72c288" @click="interactIframe(false);" :disabled="disable_button">
           Exécuter <span v-if="countDown > 0 && disable_button"> ({{countDown}})</span>
@@ -25,6 +37,14 @@
         <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true" v-if="current_exercise != null">
           Soumettre
         </v-btn>
+        <v-layout column align-center>
+          <v-switch
+            v-model="anonym_value"
+            :label=" anonym_value ? 'Tu es anonyme' : 'Tu n\'es pas anonyme' "
+            color="#28703d"
+            @change="anonym_alert = true"
+          ></v-switch>
+        </v-layout>
         <v-alert class="mt-2" type="error" v-show="alert">
           Une erreur est survenue durant l'exécution (probablement aucun exercice lié à la soumission).
         </v-alert>
@@ -45,9 +65,10 @@
         <input id="humanInput" type="text" class="mt-5" />
         <div class="tooltip ml-10">
           <i class="fas fa-info" />
-          <span class="tooltiptext"
-            ><p>Pour ouvrir un lien sur Mac OS: cmd + click</p></span
-          >
+          <span class="tooltiptext">
+            <p>Pour ouvrir un lien sur Mac OS: cmd + click</p>
+            <p>Pour ouvrir un lien sur Windows: ctrl + click</p>
+          </span>
         </div>
         <div id="chatBot">
           <div id="chatBotThinkingIndicator" />
@@ -88,6 +109,10 @@ export default {
         //Countdown button
         countDown: 10,
         disable_button: false,
+
+        //Anonym value
+        anonym_value: true,
+        anonym_alert: false,
     }),
 
     // ================================================================================================== ==
@@ -227,7 +252,19 @@ export default {
                 this.disable_button = false;
                 this.countDown = 10;
               }
+          },
+
+        // Display message to be anonym
+        anonym(){
+          if(this.anonym_value){
+            this.anonym_value = false
           }
+          else{
+            this.anonym_value = true
+          }
+          console.log(this.anonym_value);
+          this.anonym_alert = true;
+        }
     },
 };
 </script>
