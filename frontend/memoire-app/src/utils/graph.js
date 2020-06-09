@@ -2,8 +2,8 @@ export function tooltipGenerator(errors){
     let chartData = []
     errors.forEach(error => {
         let text_tooltip = `<b> ${error.code} </b><br>Nombre d'erreurs: ${error.counter} <br>`;
-        if (error.counter > 2) {
-            text_tooltip += generate_tooltip_example([1, 2, 3], error.submissions_list);
+        if (error.counter > 4) {
+            text_tooltip += generate_tooltip_example([1, 2, 3, 4, 5], error.submissions_list);
         } else if (error.counter === 0) {
             text_tooltip += "Aucun exemple disponible";
         } else {
