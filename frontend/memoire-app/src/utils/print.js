@@ -6,19 +6,21 @@ export function onChartReady(chart, google) {
 }
 
 //Print the Graph
-export function print() {
+export function print(title_graph= "", tp_name = "") {
     let WinPrint = window.open(
         "",
         "",
         "left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0"
     );
-    WinPrint.document.write("<html lang='fr'><head><title>Impression</title></head>");
+    WinPrint.document.write("<html><head>");
     WinPrint.document.write(
-        "<link rel= \"stylesheet\" href= \"public/css/print.css\">"
+        "<link rel= \"stylesheet\" href= \"/css/print.css\">"
     );
     WinPrint.document.write("</head><body>");
-    WinPrint.document.write("<img src=\"" + this.png + "\" alt='Image text'>");
-    //WinPrint.document.write('<h1>'+this.title+'</h1>')
+    WinPrint.document.write("<img src=\"" + this.png + "\">");
+    if (tp_name !== "") {
+        WinPrint.document.write("<h1>" + title_graph + " - " + tp_name + "</h1>");
+    }
     WinPrint.document.write("</body></html>");
     WinPrint.document.close();
     WinPrint.focus();

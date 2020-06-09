@@ -178,7 +178,7 @@
             <v-divider />
 
             <v-card-actions class="justify-center">
-              <v-btn block text @click="print()">
+              <v-btn block text @click="print(title, current_tp[0].session.name)">
                 Imprimer graphe
               </v-btn>
             </v-card-actions>
