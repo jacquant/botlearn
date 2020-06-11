@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
 from rest_framework import (
     generics,
@@ -7,6 +9,8 @@ from rest_framework import (
 
 from exercises.models.submission import Submission
 from exercises.serializers.stats import StatSerializer
+
+CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 class BaseErrorBy(generics.RetrieveAPIView):
@@ -19,7 +23,10 @@ class BaseErrorBy(generics.RetrieveAPIView):
         key = "submissions_all"
         if key in cache:
             return cache.get(key)
-        return Submission.objects.all()
+        else:
+            submissions = Submission.objects.all()
+            cache.set(key, submissions, timeout=CACHE_TTL)
+            return submissions
 
     def get_object(self):
         filter_kwargs = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
@@ -31,17 +38,19 @@ class BaseErrorBy(generics.RetrieveAPIView):
         errors = [
             error_tuple
             for error_tuple in queryset.values_list(
-                "id", "errors__error__code", "errors__counter"
+                "id", "errors__error__code", "errors__error__message", "errors__error__type_error", "errors__counter"
             )
-            if error_tuple[1:] != (None, None)
+            if error_tuple[1:] != (None, None, None, None)
         ]
         count = {}
-        for id_submission, error_code, error_counter in errors:
+        for id_submission, error_code, error_message, error_type, error_counter in errors:
             if error_code in count:
                 count[error_code]["counter"] += error_counter
             else:
                 count[error_code] = {
                     "counter": error_counter,
+                    "message": error_message,
+                    "type": error_type,
                     "submissions_list": [],
                 }
             count[error_code]["submissions_list"].append(id_submission)
