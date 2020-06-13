@@ -1,6 +1,6 @@
-from django.contrib import admin
+# from django.contrib import admin
 
-from sandbox.models import SandboxProfile
+# from sandbox.models import SandboxProfile
 
 
-admin.site.register(SandboxProfile)
+# admin.site.register(SandboxProfile)

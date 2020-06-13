@@ -144,7 +144,7 @@ export default {
         ///////////////////////////////////////////////////////////////////////////
 
         //Partie Bot
-        var config = { 
+        let config = {
         // what inputs should the bot listen to? this selector should point to at least one input field
         inputs: '#humanInput',
         // if you want to show the capabilities of the bot under the search input
@@ -225,12 +225,12 @@ export default {
         
         //Listening what the iframe sent (code)
         listeningIframe (evt) {
-            let namefile = evt.data.filename.split("/")
+            let name_file = evt.data.filename.split("/")
 
             let data = {"code_input": evt.data.code,
                         "final": this.final,
                         "exercise_id": this.current_exercise,
-                        "filename": String(namefile[namefile.length - 1]),
+                        "filename": String(name_file[name_file.length - 1]),
                         }
             //modify url
             let url_execute = "execute/";
@@ -238,7 +238,7 @@ export default {
             if (this.current_exercise == null){
               url_execute = "lint/";
               data = {"code_input": evt.data.code,
-                      "filename": String(namefile[namefile.length - 1]),
+                      "filename": String(name_file[name_file.length - 1]),
                       "translate": false
                       }
             }
@@ -251,7 +251,7 @@ export default {
                     css_response += "<li>" + response.data.lint_results[key] + "</li>"
                 }
                 css_response += "</ul>"
-                var entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>'); //eslint-disable-line 
+                let entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>'); //eslint-disable-line
                 entryDiv.html('<span class="origin">' + 'Bot' + '</span>' + css_response);
 
                 $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 

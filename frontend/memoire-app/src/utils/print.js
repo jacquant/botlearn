@@ -25,4 +25,5 @@ export function print(title_graph= "", tp_name = "") {
     WinPrint.document.close();
     WinPrint.focus();
     WinPrint.print();
+
 }

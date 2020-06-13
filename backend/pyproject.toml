@@ -32,12 +32,14 @@ psycopg2-binary = "*"
 python-magic = "*"
 redis = "*"
 restrictedpython = "*"
-chatterbot = {git = "https://github.com/jacquant/ChatterBot.git"}
+chatterbot = { git = "https://github.com/gunthercox/chatterbot.git", rev= "updates"}
 django-import-export = "^2.0.2"
 django-json-widget = "^1.0.1"
 django-ace = "^1.0.7"
+uvicorn = "*"
 daphne = "^2.5.0"
 Twisted = {extras = ["tls", "http2"], version = "^20.3.0"}
+chatterbot-corpus = {git = "https://github.com/gunthercox/chatterbot-corpus.git", rev = "master"}
 
 [tool.poetry.dev-dependencies]
 add-trailing-comma = "*"

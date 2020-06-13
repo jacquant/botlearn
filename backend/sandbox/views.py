@@ -99,13 +99,11 @@ def docker_run(profile, command, files, limits):
     return run_result
 
 
-def render_main(code_input, filename):
-    """Render the template withe the code given.
+def render_main(code_input):
+    """Render the template with the code given.
 
     :param code_input: the field used to render the code
     :type code_input: str
-    :param filename: the name of the file that will be executed
-    :type filename: str
     :return: a string rendered with the field and with html balise removed
     :rtype: str
     """
@@ -124,7 +122,6 @@ class CodeExecute(APIView):
         if serializer.is_valid():
             main_code = render_main(
                 serializer.validated_data["code_input"],
-                serializer.validated_data["filename"],
             )
             exercise = get_object_or_404(
                 Exercise, id=serializer.validated_data["exercise_id"],
@@ -146,10 +143,14 @@ class CodeExecute(APIView):
                         "content": main_code.encode(),
                     },
                 ],
-                limits={"cputime": 25, "memory": 64},
+                limits={"cputime": 50, "memory": 128},
             )
-            result_run2 = lint(serializer)
-            print(result_run2)
+            errors_set = set()
+            for template in exercise.errors_template.all():
+                for error in template.errors.all().distinct().values_list("code", flat=True):
+                    errors_set.add(error)
+            errors_string = " ".join(errors_set)
+            result_run2 = lint(serializer, errors_string)
             result_run1["lint_results"] = result_run2["lint_results"]
             create_submission.delay(
                 self.request.user.mail,
@@ -175,7 +176,7 @@ class CodeLint(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def lint(serializer):
+def lint(serializer, errors_str=None):
     """Lint function."""
     files = [
         {
@@ -183,7 +184,7 @@ def lint(serializer):
             "content": serializer.validated_data["code_input"].encode(),
         },
     ]
-    limits = {"cputime": 5, "memory": 64}
+    limits = {"cputime": 50, "memory": 128}
     try:
         if serializer.validated_data["translate"]:
             args = "--translate "
@@ -191,11 +192,17 @@ def lint(serializer):
             args = ""
     except KeyError:
         args = ""
+    if errors_str is None:
+        command = "python linter.py {translate}{filename}".format(
+            translate=args, filename=serializer.validated_data["filename"],
+        )
+    else:
+        command = "python linter.py {translate}{filename} --errors {errors}".format(
+            translate=args, filename=serializer.validated_data["filename"],errors=errors_str,
+        )
     result_run = docker_run(
         "linter",
-        "python linter.py {translate}{filename}".format(
-            translate=args, filename=serializer.validated_data["filename"],
-        ),
+        command,
         files=files,
         limits=limits,
     )

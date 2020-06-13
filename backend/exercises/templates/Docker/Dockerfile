@@ -13,7 +13,8 @@ ADD {{ file_tar }} /sandbox/
 #  Install requirements.txt
 {% if requirements %}
 RUN pip install {{requirements_list}}
-{% elif requirements_file %}
+{% endif %}
+{% if requirements_file %}
 RUN pip install -r requirements.txt
 {% endif %}
 

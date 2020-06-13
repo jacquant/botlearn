@@ -60,10 +60,6 @@
               </v-list-group>
             </v-list>
           </v-card>
-          <v-divider />
-          <v-btn class="mt-6 red" href="/admin/bot" target="_blank">
-            Paramétrer le ChatBot
-          </v-btn>
         </v-col>
         <!--Details for one exercice choosen-->
         <v-col offset="1">

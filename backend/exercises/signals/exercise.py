@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 import docker
-
+import tarfile
 from exercises.models.exercise import Exercise
 from sandbox.models import SandboxProfile
 
@@ -23,19 +23,33 @@ def empty_cache():
     cache.delete("exercises_all")
 
 
+def check_requirements_file(name_uuid):
+    with tarfile.open("media/exercises/{0}/archive.tar.gz".format(name_uuid), "r:gz") as f:
+        if "requirements.txt" in f.getnames():
+            return True
+        else:
+            return False
+
+
 def create_dockerfile(instance, name_uuid):
-    """Create and render a Dockerfile with needed element grom the Exercise."""
+    """Create and render a Dockerfile with needed element from the Exercise."""
     requirements_list = " ".join(
         instance.requirements.all().distinct().values_list("name", flat=True),
     )
+    if len(requirements_list) == 0:
+        requirements = False
+    else:
+        requirements = True
+
+    requirement_files = check_requirements_file(name_uuid)
     dockerfile_string = render_to_string(
         "Docker/Dockerfile",
         {
             "tar": True,
             "file_tar": "*.tar.gz",
-            "requirements": True,
+            "requirements": requirements,
             "requirements_list": requirements_list,
-            "requirements_file": False,
+            "requirements_file": requirement_files,
         },
     )
     Path("media/exercises/{0}/".format(name_uuid)).mkdir(
@@ -44,7 +58,7 @@ def create_dockerfile(instance, name_uuid):
     path = "media/exercises/{0}/Dockerfile".format(name_uuid)
     with open(path, "w") as dockerfile:
         print(dockerfile_string, file=dockerfile)  # noqa: WPS421
-    return path[6:]
+    return path[6:]  # Removed media
 
 
 @shared_task

@@ -25,9 +25,9 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title style="font-weight: bold" v-if="exercise.tags.length > 1">Tags:
+                    <v-list-item-title style="font-weight:bold" v-if="exercise.tags.length > 1">Tags:
                     </v-list-item-title>
-                    <v-list-item-title style="font-weight: bold" v-else>Tag:</v-list-item-title>
+                    <v-list-item-title style="font-weight:bold" v-else>Tag:</v-list-item-title>
                     <v-list-item-group>
                       <v-list-item v-for="tag in exercise.tags" :key="tag.name" dense>
                         <v-list-item-content>
@@ -202,7 +202,7 @@
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
                         <v-btn color="#9c6013" class="white--text"
-                               :href='"/solution?id="+item.id'
+                               :href='"/solution?id="+item.id' target="_blank"
                                v-if="item.code.length < 70">
                           Afficher
                         </v-btn>
@@ -344,7 +344,11 @@
 
             //Stats de l'exercice
             chartData: [["Code de l'erreur",
-                "Nombre de fois rencontrée", {
+                "Nombre de fois rencontrée",
+                {
+                    role: "style"
+                },
+                {
                     type: "string",
                     role: "tooltip",
                     "p": {"html": true}
@@ -396,6 +400,8 @@
                 "errors": [
                     {
                         "counter": 0,
+                        "message": "",
+                        "type": "",
                         "submissions_list": [
                             0
                         ],

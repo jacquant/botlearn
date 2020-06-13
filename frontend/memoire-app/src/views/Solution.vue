@@ -24,7 +24,7 @@
                   <v-list-item-content>
                     <v-list-item-title v-for="{error} in sourcecode.errors"
                                        :key="error.code">
-                      {{error.code + ": " + error.message}}
+                      <b>{{error.code}}:</b> {{error.message}}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
