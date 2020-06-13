@@ -99,7 +99,6 @@
                   color="green"
                   class="white--text"
                   :href="'/administration/exercice?id=' + current_data.id"
-                  target="_blank"
                 >
                   Afficher l'exercice en détails
                 </v-btn>
