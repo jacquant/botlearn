@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
+
 from rest_framework import (
     generics,
     permissions,
@@ -27,6 +28,7 @@ class BaseErrorBy(generics.RetrieveAPIView):
             submissions = Submission.objects.all()
             cache.set(key, submissions, timeout=CACHE_TTL)
         return submissions
+
 
     def get_object(self):
         filter_kwargs = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
