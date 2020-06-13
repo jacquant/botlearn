@@ -344,7 +344,11 @@
 
             //Stats de l'exercice
             chartData: [["Code de l'erreur",
-                "Nombre de fois rencontrée", {
+                "Nombre de fois rencontrée",
+                {
+                    role: "style"
+                },
+                {
                     type: "string",
                     role: "tooltip",
                     "p": {"html": true}
@@ -396,6 +400,8 @@
                 "errors": [
                     {
                         "counter": 0,
+                        "message": "",
+                        "type": "",
                         "submissions_list": [
                             0
                         ],

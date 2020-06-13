@@ -1,11 +1,13 @@
 from django.contrib import admin
 
 from exercises.admin.error.interface import ErrorAdmin
+from exercises.admin.exercise.interface import ExerciseAdmin
 from exercises.admin.submission.interface import SubmissionAdmin
 from exercises.models.category import Category
 from exercises.models.difficulty import Difficulty
 from exercises.models.error import Error
 from exercises.models.error_count import ErrorCount
+from exercises.models.errors_template import ErrorsTemplate
 from exercises.models.exercise import Exercise
 from exercises.models.requirement import Requirement
 from exercises.models.section import Section
@@ -19,7 +21,8 @@ admin.site.register(Category)
 admin.site.register(Difficulty)
 admin.site.register(Error, ErrorAdmin)
 admin.site.register(ErrorCount)
-admin.site.register(Exercise)
+admin.site.register(ErrorsTemplate)
+admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Requirement)
 admin.site.register(Section)
 admin.site.register(Session)

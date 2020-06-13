@@ -44,12 +44,20 @@ class Exercise(models.Model):
         blank=True,
     )
 
+    errors_template = models.ManyToManyField(
+        to="exercises.ErrorsTemplate",
+        related_name="exercises_errorsTemplate",
+        verbose_name="Templates d'erreurs associés",
+        blank=True,
+    )
+
     project_files = ConstrainedFileField(
         upload_to=path_and_rename,
         validators=[validate_file_extensions],
         content_types=["application/gzip"],
         default="",
         storage=OverwriteStorage(),
+        blank=True,
     )
 
     requirements = models.ManyToManyField(

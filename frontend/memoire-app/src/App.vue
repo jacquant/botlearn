@@ -10,12 +10,20 @@
         <v-toolbar-title>Botlearn</v-toolbar-title>
 
         <v-spacer />
+        <v-btn
+          v-if="admin"
+          color="red accent-1"
+          class="ma-2"
+          href="/admin/bot" target="_blank"
+        >
+          Paramétrer le ChatBot
+        </v-btn>
 
         <v-btn
           v-if="admin"
           color="red"
           href="/administration"
-          class="d-none d-sm-flex"
+          class="ma-0 font-weight-bold"
         >
           Administrer
         </v-btn>
@@ -108,7 +116,7 @@
             //Check if a user is in the staff
             admin() {
                 return store.getters.isStaff;
-            }
+            },
         },
 
         // ================================================================================================== ==

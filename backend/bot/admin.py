@@ -1,13 +1,16 @@
+from chatterbot.ext.django_chatterbot.models import Statement, Tag
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
+from import_export.admin import ImportExportModelAdmin
 
 from bot.models import (
     Answer,
     Question,
 )
+from bot.models import Statement as MyStatement
 
 
-class AnswerAdmin(admin.ModelAdmin):
+class AnswerAdmin(ImportExportModelAdmin):
     """Custom answer admin interface class."""
 
     def save_model(self, request, response_obj, form, change):
@@ -16,7 +19,7 @@ class AnswerAdmin(admin.ModelAdmin):
             old_values = Answer.objects.get(id=response_obj.id).question.filter()
         except ObjectDoesNotExist:
             old_values = []
-            
+
         new_values = form.cleaned_data["question"].all()
         elements_removed = [
             old_value
@@ -41,7 +44,7 @@ class AnswerAdmin(admin.ModelAdmin):
     search_fields = ("response",)
 
 
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(ImportExportModelAdmin):
     """Custom question admin interface class."""
 
     exclude = ("matched",)
@@ -53,5 +56,16 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ("title",)
 
 
+class StatementAdmin(admin.ModelAdmin):
+    list_display = ('text', 'in_response_to', 'conversation', 'created_at',)
+    list_filter = ('text', 'created_at',)
+    search_fields = ('text',)
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Question, QuestionAdmin)
+
+admin.site.unregister(Statement)
+admin.site.unregister(Tag)
+
+admin.site.register(MyStatement, StatementAdmin)

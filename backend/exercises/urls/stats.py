@@ -3,10 +3,10 @@ from django.urls import path
 from exercises.views.stats import (
     ErrorsByAuthor,
     ErrorsByExercise,
+    ErrorsByExerciseFinal,
     ErrorsBySection,
     ErrorsBySession,
 )
-
 
 urlpatterns = [
     path(
@@ -23,6 +23,11 @@ urlpatterns = [
         "errors_by_exercise/<int:exercise_id>/",
         ErrorsByExercise.as_view(),
         name="errors_by_exercise",
+    ),
+    path(
+        "errors_by_exercise_final/<int:exercise_id>/",
+        ErrorsByExerciseFinal.as_view(),
+        name="errors_by_exercise_final",
     ),
     path(
         "errors_by_author/<str:author_mail>/",

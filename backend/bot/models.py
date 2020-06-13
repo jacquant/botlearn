@@ -1,6 +1,8 @@
+from chatterbot.ext.django_chatterbot.abstract_models import AbstractBaseTag, AbstractBaseStatement
 from django.db import models
-
 from ckeditor.fields import RichTextField
+
+STATEMENT_TEXT_MAX_LENGTH = 65535
 
 
 class Question(models.Model):
@@ -37,3 +39,33 @@ class Answer(models.Model):
     def __str__(self):
         """Return string representation of the object."""
         return self.answer
+
+
+class Tag(AbstractBaseTag):
+    pass
+
+
+class Statement(AbstractBaseStatement):
+    text = models.CharField(
+        max_length=STATEMENT_TEXT_MAX_LENGTH
+    )
+
+    search_text = models.CharField(
+        max_length=STATEMENT_TEXT_MAX_LENGTH,
+        blank=True
+    )
+
+    in_response_to = models.CharField(
+        max_length=STATEMENT_TEXT_MAX_LENGTH,
+        null=True
+    )
+
+    search_in_response_to = models.CharField(
+        max_length=STATEMENT_TEXT_MAX_LENGTH,
+        blank=True
+    )
+
+    tags = models.ManyToManyField(
+        "bot.Tag",
+        related_name='bot_statements'
+    )
