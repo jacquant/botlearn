@@ -17,4 +17,6 @@ WORKDIR /api
 COPY ./backend/poetry.lock ./backend/pyproject.toml /api/
 
 RUN poetry install --no-dev --no-interaction --no-ansi
+RUN python -m spacy download en
+RUN python -m spacy download fr
 COPY ./backend/ /api/

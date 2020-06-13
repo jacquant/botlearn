@@ -12,7 +12,7 @@ class SubmissionFilter(filters.FilterSet):
         field_name="submission_date",
     )
     author_mail = filters.CharFilter(
-        field_name="target__mail", label="Mail de l'auteur"
+        field_name="author__mail", label="Mail de l'auteur"
     )
     exercises = filters.ModelMultipleChoiceFilter(
         field_name="exercise__id",

@@ -17,6 +17,7 @@ class BaseErrorBy(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAdminUser,)
     lookup_url_kwarg = "field_id"
     lookup_field = "exercise__model__id"
+
     serializer_class = StatSerializer
 
     def get_queryset(self):
@@ -26,7 +27,8 @@ class BaseErrorBy(generics.RetrieveAPIView):
         else:
             submissions = Submission.objects.all()
             cache.set(key, submissions, timeout=CACHE_TTL)
-            return submissions
+        return submissions
+
 
     def get_object(self):
         filter_kwargs = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
@@ -78,3 +80,17 @@ class ErrorsByAuthor(BaseErrorBy):
 class ErrorsByExercise(BaseErrorBy):
     lookup_url_kwarg = "exercise_id"
     lookup_field = "exercise__id"
+
+
+class ErrorsByExerciseFinal(BaseErrorBy):
+    lookup_url_kwarg = "exercise_id"
+    lookup_field = "exercise__id"
+
+    def get_queryset(self):
+        key = "submissions_all"
+        if key in cache:
+            return cache.get(key).filter(final=True)
+        else:
+            submissions = Submission.objects.all()
+            cache.set(key, submissions, timeout=CACHE_TTL)
+            return submissions.filter(final=True)

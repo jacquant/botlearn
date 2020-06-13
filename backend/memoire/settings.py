@@ -10,10 +10,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import datetime
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,8 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["memoire.jacquant.be","memoire-bot.jacquant.be", "51.91.100.35"]
-
+ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35", "127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -75,9 +72,8 @@ MIDDLEWARE = [
 ]
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-
-#if DEBUG:
-CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
 
 ROOT_URLCONF = "memoire.urls"
 
@@ -130,7 +126,6 @@ CACHES = {
 }
 CACHE_TTL = 60 * 60  # 15 minutes of cache
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -166,7 +161,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -285,7 +279,7 @@ CKEDITOR_CONFIGS = {
             },
             {
                 "name": "basicstyles",
-                "items": ["Bold", "Italic", "Underline",],
+                "items": ["Bold", "Italic", "Underline", ],
             },
             {
                 "name": "paragraph",
@@ -301,11 +295,11 @@ CKEDITOR_CONFIGS = {
                 ],
             },
             {"name": "links", "items": ["Link", "Unlink"]},
-            {"name": "insert", "items": ["CodeSnippet", "SpecialChar"],},
+            {"name": "insert", "items": ["CodeSnippet", "SpecialChar"], },
             "/",
             {"name": "styles", "items": ["Styles", "Format"]},
             {"name": "colors", "items": ["TextColor", "BGColor"]},
-            {"name": "tools", "items": ["Maximize",]},  # "ShowBlocks"]},
+            {"name": "tools", "items": ["Maximize", ]},  # "ShowBlocks"]},
             ["Source"],
         ],
         "toolbar": "YourCustomToolbarConfig",
@@ -331,4 +325,10 @@ CKEDITOR_CONFIGS = {
             ]
         ),
     }
+}
+
+CHATTERBOT = {
+    'name': 'Botlearn',
+    'django_app_name': "bot",
+    "statement_model": "OurStatement"
 }
