@@ -18,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
             "student_card",
             "eid",
             "is_staff",
+            "anonymous"
         )
 
     def create(self, validated_data):
@@ -59,6 +60,9 @@ class PublicUserSerializer(serializers.ModelSerializer):
 
     ['mail', 'last_name', 'first_name']
     """
+    mail = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
+    first_name = serializers.SerializerMethodField()
 
     class Meta(object):
         """The Meta class of the PublicUserSerializer."""
@@ -68,4 +72,35 @@ class PublicUserSerializer(serializers.ModelSerializer):
             "mail",
             "last_name",
             "first_name",
+        )
+
+    @staticmethod
+    def get_mail(obj):
+        if obj.anonymous:
+            return "anonyme@student.unamur.be"
+        else:
+            return obj.mail
+
+    @staticmethod
+    def get_last_name(obj):
+        if obj.anonymous:
+            return "Personne"
+        else:
+            return obj.last_name
+
+    @staticmethod
+    def get_first_name(obj):
+        if obj.anonymous:
+            return "Anonyme"
+        else:
+            return obj.first_name
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        """Meta class of the UserSerializer."""
+
+        model = User
+        fields = (
+            "anonymous",
         )
