@@ -23,6 +23,7 @@ from bot.models import (
     Question,
 )
 from bot.serializers import QuestionSerializer
+from bot.trainer import train_bot
 from exercises.models.exercise import Exercise
 from memoire import settings as default_settings
 
@@ -145,7 +146,24 @@ class AnswerViewSet(APIView):
 class TrainingBot(APIView):
     """Api View to train the bot."""
 
-    chatterbot = AnswerViewSet.chatterbot
+    chatterbot = ChatBot(
+        **settings.CHATTERBOT,
+        read_only=True,
+        response_selection_method=get_first_response,
+        logic_adapters=[
+            {
+                "maximum_similarity_threshold": 0.75,
+                "import_path": "bot.chatterbot.OurBestMatch",
+                "default_response": (
+                    "<p>Désolé mais je n'ai pas compris la question "
+                    ":( Pourrais-tu la reformuler s'il te plait."
+                    "</p><p><div style='color:red;'>Attention !"
+                    "</div> Il faut savoir que je réponds aux questions liées"
+                    "à la programmation en générale, pas sur l'exercice.</p>",
+                ),
+            }
+        ],
+    )
 
     def get(self, request, *args, **kwargs):
         """An Api View which provides a method to train the chatbot.
@@ -166,14 +184,6 @@ class TrainingBot(APIView):
 
         # Training based on question written by the admin panel
         trainer_own = ListTrainer(self.chatterbot)
-        for answer in Answer.objects.all():
-            # Modify the code snippet to HMTL to diplay it correctly in the
-            # chatbot
-            modify_code = re.sub(
-                r" {4}", "&nbsp;&nbsp;&nbsp;&nbsp;", answer.answer
-            )
-            modify_code = re.sub(r"(\r\n){1}(?!\r\n)", "<br>", modify_code)
-            for question in answer.question.all():
-                trainer_own.train([question.title, modify_code])
+        train_bot(trainer_own)
 
         return Response({"text": "done"}, status=status.HTTP_200_OK)

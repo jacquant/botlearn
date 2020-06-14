@@ -22,6 +22,7 @@ class Question(models.Model):
         """The Meta class to define more fields."""
 
         ordering = ["title"]
+        verbose_name = "Question"
 
     def __str__(self):
         """Return string representation of the object."""
@@ -39,6 +40,9 @@ class Answer(models.Model):
     def __str__(self):
         """Return string representation of the object."""
         return self.answer
+
+    class Meta(object):
+        verbose_name = "Réponse"
 
 
 class Tag(AbstractBaseTag):
