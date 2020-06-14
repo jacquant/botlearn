@@ -56,7 +56,7 @@
                   color="green"
                   class="white--text"
                   :href="
-                    'https://memoire.jacquant.be/admin/exercises/exercise/' +
+                    'http://localhost:8080/admin/exercises/exercise/' +
                       exercise.id +
                       '/change/'
                   "
@@ -408,6 +408,18 @@
                         "code": ""
                     }
                 ]
+            },
+             get_stats_final: {
+                "number_submissions": 0,
+                "errors": [
+                    {
+                        "counter": 0,
+                        "submissions_list": [
+                            0
+                        ],
+                        "code": ""
+                    }
+                ]
             }
 
         }),
@@ -449,12 +461,14 @@
                 id = this.$route.query.id;
             }
 
+
             //Get Details exercise
             this.exercise = (
                 await http.get("exercises/" + id, {
                     headers: {Authorization: "Bearer " + store.state.accessToken}
                 })
             ).data;
+
 
             //Get All final submissions from exercises
             this.submissions = (
@@ -490,6 +504,15 @@
             tooltipGenerator(this.get_stats.errors).forEach(tooltip => {
                 this.chartData.push(tooltip);
             });
+
+            //Get Stats final
+
+            this.get_stats_final = (await http.get("stats/errors_by_exercise_final/" + id, {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
+            
+
             //Filtering Exercises:
             this.filtering();
 
@@ -528,12 +551,26 @@
              * Display all submissions
              */
             modify() {
+                //if final is activated
+                this.chartData = [["Code de l'erreur",
+                      "Nombre de fois rencontrée", {
+                          type: "string",
+                          role: "tooltip",
+                          "p": {"html": true}
+                      }]]
                 if (this.switch1) {
                     this.items = this.previous_items;
                     this.previous_items = this.items;
+                    tooltipGenerator(this.get_stats_final.errors).forEach(tooltip => {
+                        this.chartData.push(tooltip);
+                    });
+                //if final is not activated
                 } else {
                     this.previous_items = this.items;
                     this.items = this.all_items;
+                    tooltipGenerator(this.get_stats.errors).forEach(tooltip => {
+                        this.chartData.push(tooltip);
+                    });
                 }
 
             },

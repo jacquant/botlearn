@@ -13,7 +13,7 @@
               <v-icon left>mdi-pencil</v-icon> Modifier
             </v-btn>
             <v-spacer />
-              <v-btn color="#28703d" @click="interactIframe(true); dialog_soumettre = false">
+              <v-btn color="#28703d" @click="interactIframe(true); dialog_soumettre = false; disable_submit = true">
                 Soumettre
               </v-btn>
           </v-card-actions>
@@ -34,7 +34,7 @@
         <v-btn color="#72c288" @click="interactIframe(false);" :disabled="disable_button">
           Exécuter <span v-if="countDown > 0 && disable_button"> ({{countDown}})</span>
         </v-btn>
-        <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true" v-if="current_exercise != null">
+        <v-btn color="#28703d" class="ml-5" @click="dialog_soumettre = true" v-if="current_exercise != null" :disabled="disable_submit">
           Soumettre
         </v-btn>
         <v-layout column align-center>
@@ -91,6 +91,8 @@ export default {
 
         url: "http://localhost:8080/api/",
 
+        email: null,
+
         token: null,
 
         dialog_soumettre: false,
@@ -109,6 +111,7 @@ export default {
         //Countdown button
         countDown: 10,
         disable_button: false,
+        disable_submit: true,
 
         //Anonym value
         anonym_value: true,
@@ -130,6 +133,13 @@ export default {
         }else{
             this.token = this.$route.query.token;
         }
+
+        //Get email of a user when is connected
+         axios.get(this.url + 'user/get/', {headers: {"Authorization": "Bearer " + this.token}}
+            ).then( response => {
+              this.email = response.data.mail;
+            }).catch(() => { 
+            });
 
         ///////////////////////////////////////////////////////////////////////////
 
@@ -166,6 +176,7 @@ export default {
         //Catch when the user click on the exercice to get the id
         onClickApp(ev){
           if(!isNaN(parseInt(ev.target.id))){
+            this.disable_submit = true;
             this.current_exercise = ev.target.id;
 
             //Get details of exercice to show it
@@ -173,6 +184,18 @@ export default {
             
             ).then( response => {
               this.detail_exercise = response.data;
+            }).catch(() => { 
+              });
+
+            //Check if user has already submitted the code
+            axios.get(this.url + 'submissions/?author_mail=' + this.email + '&exercises=' + this.current_exercise + "&final=true",
+                      {headers: {"Authorization": "Bearer " + this.token}}
+            ).then(response => {
+              if(response.data.length > 0){
+                this.disable_submit = true;
+              }else{
+                this.disable_submit = false;
+              }
             }).catch(() => { 
               });
           }
@@ -262,7 +285,6 @@ export default {
           else{
             this.anonym_value = true
           }
-          console.log(this.anonym_value);
           this.anonym_alert = true;
         }
     },
