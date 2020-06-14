@@ -42,7 +42,7 @@
             v-model="anonym_value"
             :label=" anonym_value ? 'Tu es anonyme' : 'Tu n\'es pas anonyme' "
             color="#28703d"
-            @change="anonym_alert = true"
+            @change="anonym_alert = true; anonym()"
           ></v-switch>
         </v-layout>
         <v-alert class="mt-2" type="error" v-show="alert">
@@ -114,7 +114,7 @@ export default {
         disable_submit: true,
 
         //Anonym value
-        anonym_value: true,
+        anonym_value: null,
         anonym_alert: false,
     }),
 
@@ -134,10 +134,11 @@ export default {
             this.token = this.$route.query.token;
         }
 
-        //Get email of a user when is connected
+        //Get email of a user when is connected and check if the user is anonym or not
          axios.get(this.url + 'user/get/', {headers: {"Authorization": "Bearer " + this.token}}
             ).then( response => {
               this.email = response.data.mail;
+              this.anonym_value = response.data.anonymous;
             }).catch(() => { 
             });
 
@@ -277,15 +278,10 @@ export default {
               }
           },
 
-        // Display message to be anonym
+        // change value of being anonym or not
         anonym(){
-          if(this.anonym_value){
-            this.anonym_value = false
-          }
-          else{
-            this.anonym_value = true
-          }
-          this.anonym_alert = true;
+          axios.put(this.url + 'user/update', {anonymous:this.anonym_value} ,{headers: {"Authorization": "Bearer " + this.token}})
+          
         }
     },
 };
