@@ -7,7 +7,7 @@ import VueGoogleCharts from "vue-google-charts";
 import Vuelidate from "vuelidate/src";
 import VueHtmlToPaper from "vue-html-to-paper";
 import VuePrism from "vue-prism";
-import "vue-code-highlight/themes/prism-okaidia.css";
+import "vue-code-highlight/themes/prism.css";
 import "prism-es6/components/prism-python";
 
 Vue.use(Vuelidate);
