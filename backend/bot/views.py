@@ -24,7 +24,7 @@ from bot.models import (
 )
 from bot.serializers import QuestionSerializer
 from exercises.models.exercise import Exercise
-from memoire.settings import BACK_URL as default_settings
+from memoire import settings as default_settings
 
 CACHE_TTL = getattr(default_settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
@@ -96,16 +96,17 @@ class AnswerViewSet(APIView):
         serializer = QuestionSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        answer = self.chatterbot.get_response(serializer.validated_data)
-        response_data = answer.serialize()
-        # Save question if no answer => Better way to do it ?
-        self.update_question(answer.text, serializer.validated_data["text"])
-
-        # Modify data to add exercices if it's requested
         if "liste des exercices" in serializer.validated_data["text"]:
-            response_data["text"] += get_exercises()
-
-        return Response(response_data, status=status.HTTP_200_OK)
+            response_content = QuestionSerializer(data={"text": get_exercises()})
+        else:
+            answer = self.chatterbot.get_response(serializer.validated_data)
+            response_content = QuestionSerializer(data={"text": answer.text})
+            # Save question if no answer => Better way to do it ?
+            self.update_question(answer.text, serializer.validated_data["text"])
+        if response_content.is_valid():
+            return Response(response_content.validated_data, status=status.HTTP_200_OK)
+        else:
+            return Response(response_content.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def update_question(self, answer, question_text):
         """Update question database."""

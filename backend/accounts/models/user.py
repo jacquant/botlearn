@@ -30,6 +30,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=12, unique=True, verbose_name="Eid étudiant", blank=True
     )
 
+    anonymous = models.BooleanField(default=False)
+
     USERNAME_FIELD = "mail"
     EMAIL_FIELD = "mail"
 
