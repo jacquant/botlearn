@@ -501,17 +501,16 @@
                 })
             ).data;
 
-            tooltipGenerator(this.get_stats.errors).forEach(tooltip => {
-                this.chartData.push(tooltip);
-            });
-
             //Get Stats final
 
             this.get_stats_final = (await http.get("stats/errors_by_exercise_final/" + id, {
                     headers: {Authorization: "Bearer " + store.state.accessToken}
                 })
             ).data;
-            
+
+            tooltipGenerator(this.get_stats_final.errors).forEach(tooltip => {
+                this.chartData.push(tooltip);
+            });
 
             //Filtering Exercises:
             this.filtering();
@@ -553,7 +552,11 @@
             modify() {
                 //if final is activated
                 this.chartData = [["Code de l'erreur",
-                      "Nombre de fois rencontrée", {
+                      "Nombre de fois rencontrée", 
+                      {
+                        role: "style"
+                      },
+                      {
                           type: "string",
                           role: "tooltip",
                           "p": {"html": true}

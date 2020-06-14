@@ -346,7 +346,8 @@
                         this.title = "Nombre de soumissions finales par exercice par TP";
 
                         this.chartData = [["Exercice",
-                            "Nombre de soumissions finales", {
+                            "Nombre de soumissions finales", 
+                            {
                                 type: "string",
                                 role: "tooltip",
                                 "p": {"html": true}
@@ -364,10 +365,14 @@
                         this.title = "Nombre d'erreurs par type par TP";
 
                         this.chartData = [["Numéro de l'erreur",
-                            "Nombre de fois rencontrée", {
-                                type: "string",
-                                role: "tooltip",
-                                "p": {"html": true}
+                            "Nombre de fois rencontrée", 
+                            {
+                              role: "style"
+                            },
+                            {
+                              type: "string",
+                              role: "tooltip",
+                              "p": {"html": true}
                             }]];
 
                         this.get_stats = (await http.get("stats/errors_by_session/" + this.current_tp[0].session.id, {
