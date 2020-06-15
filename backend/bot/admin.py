@@ -96,7 +96,6 @@ class AnswerAdmin(ImportExportModelAdmin):
 class QuestionAdmin(ImportExportModelAdmin):
     """Custom question admin interface class."""
 
-    exclude = ("matched",)
     list_display = (
         "title",
         "matched",
