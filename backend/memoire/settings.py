@@ -25,7 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35"]
 
 # Application definition
 
@@ -72,8 +72,7 @@ MIDDLEWARE = [
 ]
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-if DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
+CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
 
 ROOT_URLCONF = "memoire.urls"
 
