@@ -25,7 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35"]
+ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35", "localhost"]
 
 # Application definition
 
@@ -216,14 +216,14 @@ AUTH_USER_MODEL = "accounts.User"
 
 # mail
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
-EMAIL_HOST = os.environ.get("CHU_EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.environ.get("CHU_EMAIL_PORT", 587))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "chu@cslabs.be")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 465))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "botlearn.unamur@gmail.com")
 EMAIL_HOST_PASSWORD = os.environ.get(
-    "EMAIL_HOST_PASSWORD", "Projet!CHUDeMerde"
+    "EMAIL_HOST_PASSWORD", "motdep@sse!botlearn"
 )
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "SITE AGE <ne-pas-repondre@age-namur.be>"
+DEFAULT_FROM_EMAIL = "Plateforme BOTLEARN <ne-pas-repondre@botlearn.unamur.be>"
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -237,7 +237,7 @@ SWAGGER_SETTINGS = {
         "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
 }
-FRONT_URL = os.environ.get("FRONT_URL", "0.0.0.0:8080")
+FRONT_URL = os.environ.get("FRONT_URL", "memoire.jacquant.be")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
@@ -245,13 +245,6 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-
-# Dialogflow settings
-DIALOGFLOW = {
-    "client_access_token": os.environ.get(
-        "DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"
-    ),
-}
 
 # CKEDITOR
 CKEDITOR_CONFIGS = {
