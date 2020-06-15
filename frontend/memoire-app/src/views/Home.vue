@@ -62,6 +62,7 @@
                 last_name: null,
                 first_name: null,
                 student: null,
+                anonymous: null,
                 student_card: null,
                 eid: null,
                 is_staff: null
@@ -70,7 +71,8 @@
                 last_name: "Nom: ",
                 first_name: "Prénom: ",
                 mail: "E-mail: ",
-                eid: "Eid: "
+                eid: "Eid: ",
+                anonymous: "Anonyme: "
             }
         }),
 
@@ -87,6 +89,7 @@
         methods: {
 
             getInformation(mapper, info) {
+                if (mapper === "anonymous") info = info ? "Vrai" : "Faux";
                 return this.userMapping[mapper] + info;
             }
 
