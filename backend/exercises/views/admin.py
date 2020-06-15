@@ -22,6 +22,5 @@ class AdminView(ListAPIView):
         if key in cache:
             return cache.get(key)
         sessions = Session.objects.all()
-        print(sessions)
         cache.set(key, sessions, timeout=CACHE_TTL)
         return sessions
