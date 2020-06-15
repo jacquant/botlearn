@@ -11,5 +11,5 @@ def train_bot(trainer):
             r" {4}", "&nbsp;&nbsp;&nbsp;&nbsp;", answer.answer
         )
         modify_code = re.sub(r"(\r\n){1}(?!\r\n)", "<br>", modify_code)
-        for question in answer.question.all():
+        for question in answer.question_set.all():
             trainer.train([question.title, modify_code])

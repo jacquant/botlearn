@@ -279,18 +279,6 @@ type = "git"
 url = "https://github.com/gunthercox/chatterbot.git"
 [[package]]
 category = "main"
-description = ""
-name = "chatterbot-corpus"
-optional = false
-python-versions = "*"
-version = "1.2.0"
-
-[package.source]
-reference = "e0dbbcee94dbdc3a67e1e96a397035baee5f089a"
-type = "git"
-url = "https://github.com/gunthercox/chatterbot-corpus.git"
-[[package]]
-category = "main"
 description = "Composable command line interface toolkit"
 name = "click"
 optional = false
@@ -537,7 +525,7 @@ Django = ">=2.0"
 diff-match-patch = "*"
 
 [package.dependencies.tablib]
-extras = ["xlsx", "html", "xls", "yaml", "ods"]
+extras = ["html", "yaml", "ods", "xlsx", "xls"]
 version = ">=0.14.0"
 
 [[package]]
@@ -2015,7 +2003,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "bb18f6451746b60d2220f81d82a2859e4b8c168dd151155877fe5b93746961f0"
+content-hash = "a2985d4be0b66738e5819e90068d65544cb0fc6009b5097de54a9cf7b5e23350"
 python-versions = ">=3.8,<4"
 
 [metadata.files]
@@ -2146,7 +2134,6 @@ chardet = [
     {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
 ]
 ChatterBot = []
-chatterbot-corpus = []
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
     {file = "click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"},

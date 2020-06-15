@@ -2,7 +2,6 @@ from chatterbot.logic import BestMatch
 from chatterbot import filters
 
 
-
 class OurBestMatch(BestMatch):
 
     def process(self, input_statement, additional_response_selection_parameters=None):

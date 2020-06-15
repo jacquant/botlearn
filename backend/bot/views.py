@@ -146,6 +146,8 @@ class AnswerViewSet(APIView):
 class TrainingBot(APIView):
     """Api View to train the bot."""
 
+    permission_classes = [permissions.IsAdminUser]
+
     chatterbot = ChatBot(
         **settings.CHATTERBOT,
         read_only=True,

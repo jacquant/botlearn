@@ -1,20 +1,42 @@
+from celery import shared_task
 from chatterbot import ChatBot
 from chatterbot.ext.django_chatterbot import settings
 from chatterbot.ext.django_chatterbot.models import Statement, Tag
 from chatterbot.response_selection import get_first_response
 from chatterbot.trainers import ListTrainer
+from django import forms
 from django.contrib import admin
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import path
 from import_export.admin import ImportExportModelAdmin
-from celery import shared_task
+
 from bot.models import (
     Answer,
     Question,
 )
 from bot.models import Statement as MyStatement
 from bot.trainer import train_bot
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+
+    questions = forms.ModelMultipleChoiceField(
+        queryset=Question.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(AnswerForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            self.fields["questions"].initial = self.instance.question_set.all()
+            self.fields["questions"].widget.attrs['readonly'] = True
+
+    def save(self, *args, **kwargs):
+        instance = super(AnswerForm, self).save(commit=False)
+        self.fields["questions"].initial.update(answer=None)
+        self.cleaned_data["questions"].update(answer=instance)
+        return instance
 
 
 @shared_task
@@ -40,47 +62,23 @@ def async_train_bot():
     chatterbot.storage.drop()
 
     # Training based on corpus (YML)
-    # trainer_corpus = ChatterBotCorpusTrainer(self.chatterbot)
-    # trainer_corpus.train("chatterbot.corpus.french")
 
     # Training based on question written by the admin panel
     trainer_own = ListTrainer(chatterbot)
     train_bot(trainer_own)
 
 
+class QuestionInline(admin.StackedInline):
+    model = Question
+
+
 class AnswerAdmin(ImportExportModelAdmin):
     """Custom answer admin interface class."""
 
-    def save_model(self, request, response_obj, form, change):
-        """Override save model to manage the update of questions."""
-        try:
-            old_values = Answer.objects.get(id=response_obj.id).question.filter()
-        except ObjectDoesNotExist:
-            old_values = []
-
-        new_values = form.cleaned_data["question"].all()
-        elements_removed = [
-            old_value
-            for old_value in old_values
-            if old_value not in new_values
-        ]
-
-        # Update questions removed  to False
-        for element_removed in elements_removed:
-            if len(Answer.objects.filter(question=element_removed)) == 1:
-                element_removed.matched = False
-                element_removed.save()
-
-        # Update new questions to True
-        response_obj.user = request.user
-        for que in form.cleaned_data["question"].all():
-            que.matched = True
-            que.save()
-
-        super().save_model(request, response_obj, form, change)
-
-    search_fields = ("response",)
+    search_fields = ("answer",)
     change_list_template = "admin/changelist.html"
+    form = AnswerForm
+    inlines = [QuestionInline]
 
     def get_urls(self):
         urls = super().get_urls()
@@ -95,10 +93,6 @@ class AnswerAdmin(ImportExportModelAdmin):
         return HttpResponseRedirect("../")
 
 
-class AnswerInline(admin.StackedInline):
-    model = Answer.question.through
-
-
 class QuestionAdmin(ImportExportModelAdmin):
     """Custom question admin interface class."""
 
@@ -110,7 +104,6 @@ class QuestionAdmin(ImportExportModelAdmin):
     )
     search_fields = ("title",)
     change_list_template = "admin/changelist.html"
-    inlines = [AnswerInline]
 
     def get_urls(self):
         urls = super().get_urls()
