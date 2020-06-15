@@ -22,7 +22,7 @@ from bot.models import (
 from bot.serializers import QuestionSerializer
 from bot.trainer import train_bot
 from exercises.models.exercise import Exercise
-from memoire import settings as default_settings
+from django.conf import settings as default_settings
 
 CACHE_TTL = getattr(default_settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 

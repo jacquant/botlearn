@@ -30,6 +30,7 @@ class Exercise(models.Model):
     session = models.ForeignKey(
         to="exercises.Session",
         on_delete=models.CASCADE,
+        related_name="exercises",
         verbose_name="Session de l'exercice",
     )
     section = models.ForeignKey(

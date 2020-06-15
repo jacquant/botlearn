@@ -2,7 +2,7 @@ from django.urls import (
     include,
     path,
 )
-
+from exercises.views.admin import AdminView
 
 urlpatterns = [
     # /api/exercises/*
@@ -27,4 +27,6 @@ urlpatterns = [
     path("errors_count/", include("exercises.urls.error_count")),
     # /api/stats/*
     path("stats/", include("exercises.urls.stats")),
+    # /api/admin/
+    path("admin/", AdminView.as_view())
 ]
