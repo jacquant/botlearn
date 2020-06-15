@@ -11,7 +11,7 @@ class Question(models.Model):
     title = models.TextField(
         verbose_name="question type (pas de ponctuation,majuscule)"
     )
-    asked = models.IntegerField(
+    asked = models.BigIntegerField(
         verbose_name="nombre de fois que la question a été posée", default=1
     )
     answer = models.ForeignKey("bot.Answer", on_delete=models.SET_NULL, null=True, blank=True)
