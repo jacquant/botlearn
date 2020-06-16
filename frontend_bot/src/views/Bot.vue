@@ -248,44 +248,37 @@ export default {
             
             ).then(function (response) {
                 //display code
-                
+                  let css_response = ""
+                  let color= ""
                 //If execution is correct
                   if(response.data.stderr == ""){
-                    let css_response = "<h2 style='font-weight: bold; text-align: left;'> Résultat:</h2>" 
+                    css_response = "<h2 style='font-weight: bold; text-align: left;'> Résultat:</h2>" 
                     if(response.data.stdout !=""){
                       css_response += "<p style='text-align: left;'>" +  response.data.stdout.replace(/\n/g,"<br>") + "</p>";
                     }else{
                       css_response += "<p style='text-align: left;'>Aucun résultat à montrer</p>"
                     }
-                    css_response += "<p style='text-align: left;'>------------------ </p>"
-                    css_response += "<h2 style='font-weight: bold; text-align: left;'> Amélioration du code ! </h2>" 
-                    css_response += "<ul style='text-align: left;'>"
-                    for (const key in response.data.lint_results) {
-                        css_response += "<li> Ligne: " + response.data.lint_results[key].substring(response.data.lint_results[key].indexOf(":") + 1); + "</li>"
-                    }
-                    css_response += "</ul>"
-                    let entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#419eba"></div>'); //eslint-disable-line
-                    entryDiv.html('<span class="origin">' + 'Botlearn' + '</span>' + css_response);
-
-                    $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 
+                    color = '#419eba';
 
                 //If execution is NOT correct
                 }else{
-                   let css_response = "<h2 style='font-weight: bold; text-align: left;'>Oups ! L'exécution de ton code a eu un problème !</h2>"
-                    css_response += "<p style='text-align: left;'>" +  response.data.stderr + "</p>";
-                    css_response += "<p style='text-align: left;'>------------------ </p>"
-                    css_response += "<h2 style='font-weight: bold; text-align: left;'> Amélioration du code:</h2>" 
-                    css_response += "<ul style='text-align: left;'>"
-                    for (const key in response.data.lint_results) {
-                        css_response += "<li> Ligne: " + response.data.lint_results[key].substring(response.data.lint_results[key].indexOf(":") + 1); + "</li>"
-                    }
-                    css_response += "</ul>"
-                    let entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:#e88f5f"></div>'); //eslint-disable-line
-                    entryDiv.html('<span class="origin">' + 'Bot' + '</span>' + css_response);
-
-                    $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 
+                  css_response = "<h2 style='font-weight: bold; text-align: left;'>Oups ! L'exécution de ton code a eu un problème !</h2>"
+                  css_response += "<p style='text-align: left;'>" +  response.data.stderr + "</p>";
+                  color = "#e88f5f";
 
                 }
+                
+                css_response += "<p style='text-align: left;'>------------------ </p>"
+                css_response += "<h2 style='font-weight: bold; text-align: left;'> Amélioration du code ! </h2>" 
+                css_response += "<ul style='text-align: left;'>"
+                for (const key in response.data.lint_results) {
+                    css_response += "<li> Ligne: " + response.data.lint_results[key].substring(response.data.lint_results[key].indexOf(":") + 1); + "</li>"
+                }
+                css_response += "</ul>"
+                let entryDiv = $('<div class="chatBotChatEntry Bot" style="background-color:' + color + '"></div>'); //eslint-disable-line
+                entryDiv.html('<span class="origin">' + 'Botlearn' + '</span>' + css_response);
+
+                $('#chatBotHistory').prepend(entryDiv);//eslint-disable-line 
                 
             }).catch(() => {
               this.alert = true;
