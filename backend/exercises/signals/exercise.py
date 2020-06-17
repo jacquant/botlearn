@@ -24,11 +24,14 @@ def empty_cache():
 
 
 def check_requirements_file(name_uuid):
-    with tarfile.open("media/exercises/{0}/archive.tar.gz".format(name_uuid), "r:gz") as f:
-        if "requirements.txt" in f.getnames():
-            return True
-        else:
-            return False
+    try:
+        with tarfile.open("media/exercises/{0}/archive.tar.gz".format(name_uuid), "r:gz") as f:
+            if "requirements.txt" in f.getnames():
+                return True
+            else:
+                return False
+    except FileNotFoundError:
+        return False
 
 
 def create_dockerfile(instance, name_uuid):
