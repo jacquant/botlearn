@@ -129,4 +129,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.unregister(Statement)
 admin.site.unregister(Tag)
 
-admin.site.register(MyStatement, StatementAdmin)
+# admin.site.register(MyStatement, StatementAdmin)

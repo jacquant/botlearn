@@ -17,8 +17,10 @@ def lint(filename_to_lint, translate_to_french, errors):
     :param translate_to_french: boolean value to translate output in french
     :type translate_to_french: bool
     """
-
-    style_guide = flake8.get_style_guide(max_line_length=120, select=errors)
+    if errors:
+        style_guide = flake8.get_style_guide(max_line_length=120, select=errors)
+    else:
+        style_guide = flake8.get_style_guide(max_line_length=120)
     output_redirection = io.StringIO()
     with redirect_stdout(output_redirection):
         style_guide.input_file(filename_to_lint)
@@ -53,6 +55,6 @@ if __name__ == "__main__":
         help="translate the ouput in french",
         action="store_true",
     )
-    parser.add_argument("-e", "--errors", nargs="+", help="<Required> List of code erreurs", required=True)
+    parser.add_argument("-e", "--errors", nargs="+", help="<Required> List of code erreurs")
     args = parser.parse_args()
     lint(args.filename, args.translate, args.errors)

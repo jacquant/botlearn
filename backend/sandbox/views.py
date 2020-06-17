@@ -149,7 +149,10 @@ class CodeExecute(APIView):
             for template in exercise.errors_template.all():
                 for error in template.errors.all().distinct().values_list("code", flat=True):
                     errors_set.add(error)
-            errors_string = " ".join(errors_set)
+            if len(errors_set) > 0:
+                errors_string = " ".join(errors_set)
+            else:
+                errors_string = None
             result_run2 = lint(serializer, errors_string)
             result_run1["lint_results"] = result_run2["lint_results"]
             create_submission.delay(
@@ -198,7 +201,7 @@ def lint(serializer, errors_str=None):
         )
     else:
         command = "python linter.py {translate}{filename} --errors {errors}".format(
-            translate=args, filename=serializer.validated_data["filename"],errors=errors_str,
+            translate=args, filename=serializer.validated_data["filename"], errors=errors_str,
         )
     result_run = docker_run(
         "linter",

@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from exercises.admin.error.interface import ErrorAdmin
+from exercises.admin.errors_template.interface import ErrorsTemplateAdmin
 from exercises.admin.exercise.interface import ExerciseAdmin
 from exercises.admin.submission.interface import SubmissionAdmin
 from exercises.models.category import Category
@@ -16,12 +17,11 @@ from exercises.models.submission import Submission
 from exercises.models.tag import Tag
 from exercises.models.target_students import TargetStudents
 
-
 admin.site.register(Category)
 admin.site.register(Difficulty)
 admin.site.register(Error, ErrorAdmin)
 admin.site.register(ErrorCount)
-admin.site.register(ErrorsTemplate)
+admin.site.register(ErrorsTemplate, ErrorsTemplateAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Requirement)
 admin.site.register(Section)
