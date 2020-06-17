@@ -56,7 +56,7 @@
                   color="green"
                   class="white--text"
                   :href="
-                    'http://localhost:8080/admin/exercises/exercise/' +
+                    'https://memoire.jacquant.be/admin/exercises/exercise/' +
                       exercise.id +
                       '/change/'
                   "
