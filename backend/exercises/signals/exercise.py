@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.db import transaction
 from django.db.models.signals import (
     post_delete,
-    post_save,
+    post_save, pre_save,
 )
 from django.dispatch import receiver
 from django.template.loader import render_to_string
@@ -45,10 +45,14 @@ def create_dockerfile(instance, name_uuid):
         requirements = True
 
     requirement_files = check_requirements_file(name_uuid)
+    if instance.project_files.name == "":
+        tar = False
+    else:
+        tar = True
     dockerfile_string = render_to_string(
         "Docker/Dockerfile",
         {
-            "tar": True,
+            "tar": tar,
             "file_tar": "*.tar.gz",
             "requirements": requirements,
             "requirements_list": requirements_list,
@@ -97,6 +101,14 @@ def build_docker(instance):
     create_docker_image.delay(
         id_uuid, "media/exercises/{0}/".format(name_uuid), docker_image.id
     )
+
+
+@receiver(pre_save, sender=Exercise)
+def exercise_will_be_saved(sender, instance, *args, **kwargs):
+    exercise = Exercise.objects.get(id=instance.id)
+    if exercise.project_files != "":
+        if instance.project_files == "":
+            exercise.project_files.delete(False)
 
 
 @receiver(post_save, sender=Exercise)
