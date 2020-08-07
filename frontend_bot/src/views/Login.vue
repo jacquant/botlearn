@@ -46,7 +46,7 @@
                   </v-icon>
                 </template>
                 <span
-                  >Si tu as oublié ton mot de passe, tu prux aller le modifier
+                >Si tu as oublié ton mot de passe, tu prux aller le modifier
                   sur le <b>site</b>.</span
                 >
               </v-tooltip>
@@ -64,7 +64,7 @@
             <v-card-actions class="d-flex align-center justify-center">
               <p class="ma-0">
                 <a @click="unamur = !unamur"
-                  >Se connecter avec ses identifiants UNamur</a
+                >Se connecter avec ses identifiants UNamur</a
                 >
               </p>
             </v-card-actions>
@@ -124,7 +124,7 @@
             <v-card-actions class="d-flex align-center justify-center">
               <p class="ma-0">
                 <a @click="unamur = !unamur"
-                  >Se connecter avec son propre compte.</a
+                >Se connecter avec son propre compte.</a
                 >
               </p>
             </v-card-actions>
@@ -140,154 +140,156 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, email } from "vuelidate/lib/validators";
-import axios from "axios";
+    import {validationMixin} from "vuelidate";
+    import {required, maxLength, email} from "vuelidate/lib/validators";
+    import axios from "axios";
 
-export default {
-  mixins: [validationMixin],
+    export default {
+        mixins: [validationMixin],
 
-  // ================================================================================================== ==
-  // Validations
-  // Rules for each input
-  // ================================================================================================== ==
-  validations: {
-    email: { required, email },
-    eid_unamur: { required, between: maxLength(10) },
-    password: { required },
-    password_unamur: { required }
-  },
+        // ================================================================================================== ==
+        // Validations
+        // Rules for each input
+        // ================================================================================================== ==
+        validations: {
+            email: {required, email},
+            eid_unamur: {required, between: maxLength(10)},
+            password: {required},
+            password_unamur: {required}
+        },
 
-  // ================================================================================================== ==
-  // Data
-  // ================================================================================================== ==
-  data: () => ({
-    //url
-    url: "http://localhost:8080/api/",
+        // ================================================================================================== ==
+        // Data
+        // ================================================================================================== ==
+        data: () => ({
+            //url
+            url: "https://memoire.jacquant.be/api/",
 
-    //User's data
-    email: "",
-    password: "",
+            //User's data
+            email: "",
+            password: "",
 
-    eid_unamur: "",
-    password_unamur: "",
+            eid_unamur: "",
+            password_unamur: "",
 
-    //Boolean
-    forget_pwd: false,
-    unamur: false,
+            //Boolean
+            forget_pwd: false,
+            unamur: false,
 
-    error: false,
+            error: false,
 
-    overlay: false
-  }),
+            overlay: false
+        }),
 
-  // ================================================================================================== ==
-  // Computed
-  // ================================================================================================== ==
-  computed: {
-    /**
-     * Indicates if the identifiers are not correct.
-     * @private
-     * @returns {errors: tab}
-     */
-    emailErrors() {
-      const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email &&
-        errors.push("Une adresse email valide est requise !");
-      !this.$v.email.required &&
-        errors.push("Une adresse email doit être indiquée");
-      return errors;
-    },
+        // ================================================================================================== ==
+        // Computed
+        // ================================================================================================== ==
+        computed: {
+            /**
+             * Indicates if the identifiers are not correct.
+             * @private
+             * @returns {errors: tab}
+             */
+            emailErrors() {
+                const errors = [];
+                if (!this.$v.email.$dirty) return errors;
+                !this.$v.email.email &&
+                errors.push("Une adresse email valide est requise !");
+                !this.$v.email.required &&
+                errors.push("Une adresse email doit être indiquée");
+                return errors;
+            },
 
-    /**
-     * Indicates if there is a password written.
-     * @private
-     * @returns {errors: tab}
-     */
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("un mot de passe est requis");
-      return errors;
-    },
+            /**
+             * Indicates if there is a password written.
+             * @private
+             * @returns {errors: tab}
+             */
+            passwordErrors() {
+                const errors = [];
+                if (!this.$v.password.$dirty) return errors;
+                !this.$v.password.required && errors.push("un mot de passe est requis");
+                return errors;
+            },
 
-    /**
-     * Indicates if the eid is not correct.
-     * @private
-     * @returns {errors: tab}
-     */
-    eidErrors() {
-      const errors = [];
-      if (!this.$v.eid_unamur.$dirty) return errors;
-      !this.$v.eid_unamur.between &&
-        errors.push("L'eid fait maximum 10 caractères");
-      !this.$v.eid_unamur.required && errors.push("Un eid est requis");
-      return errors;
-    },
-    /**
-     * Indicates if there is a password written.
-     * @private
-     * @returns {errors: tab}
-     */
-    passwordUnamurErrors() {
-      const errors = [];
-      if (!this.$v.password_unamur.$dirty) return errors;
-      !this.$v.password_unamur.required &&
-        errors.push("un mot de passe est requis");
-      return errors;
-    }
-  },
+            /**
+             * Indicates if the eid is not correct.
+             * @private
+             * @returns {errors: tab}
+             */
+            eidErrors() {
+                const errors = [];
+                if (!this.$v.eid_unamur.$dirty) return errors;
+                !this.$v.eid_unamur.between &&
+                errors.push("L'eid fait maximum 10 caractères");
+                !this.$v.eid_unamur.required && errors.push("Un eid est requis");
+                return errors;
+            },
+            /**
+             * Indicates if there is a password written.
+             * @private
+             * @returns {errors: tab}
+             */
+            passwordUnamurErrors() {
+                const errors = [];
+                if (!this.$v.password_unamur.$dirty) return errors;
+                !this.$v.password_unamur.required &&
+                errors.push("un mot de passe est requis");
+                return errors;
+            }
+        },
 
-  // ================================================================================================== ==
-  // Methods
-  // ================================================================================================== ==
-  methods: {
-    async submit() {
-      this.overlay = !this.overlay;
-      let self = this;
-      if (!this.unamur) {
-        await axios
-          .post(this.url + "token/login/", {
-            mail: this.email,
-            password: this.password
-          })
-          .then(function(response) {
-            self.error = false;
-            self.$router.push("/bot?token=" + response.data.access);
-          })
-          .catch(function(error) {
-            self.overlay = !self.overlay;
-            self.error = true;
-            console.log(error);
-          });
-      } else {
-        await axios
-          .post(this.url + "token/login_by_unamur/", {
-            eid: this.eid_unamur,
-            password: this.password_unamur
-          })
-          .then(function(response) {
-            (self.error = false),
-              self.$router.push("/bot?token=" + response.data.access);
-          })
-          .catch(function(error) {
-            self.overlay = !self.overlay;
-            self.error = true;
-            console.log(error);
-          });
-      }
-    }
-  }
-};
+        // ================================================================================================== ==
+        // Methods
+        // ================================================================================================== ==
+        methods: {
+            async submit() {
+                this.overlay = !this.overlay;
+                let self = this;
+                if (!this.unamur) {
+                    await axios
+                        .post(this.url + "token/login/", {
+                            mail: this.email,
+                            password: this.password
+                        })
+                        .then(function (response) {
+                            self.error = false;
+                            self.$router.push("/bot?token=" + response.data.access);
+                        })
+                        .catch(function (error) {
+                            self.overlay = !self.overlay;
+                            self.error = true;
+                            console.log(error);
+                        });
+                } else {
+                    await axios
+                        .post(this.url + "token/login_by_unamur/", {
+                            eid: this.eid_unamur,
+                            password: this.password_unamur
+                        })
+                        .then(function (response) {
+                            (self.error = false),
+                                self.$router.push("/bot?token=" + response.data.access);
+                        })
+                        .catch(function (error) {
+                            self.overlay = !self.overlay;
+                            self.error = true;
+                            console.log(error);
+                        });
+                }
+            }
+        }
+    };
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.4s;
+  }
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+  {
+    opacity: 0;
+  }
 </style>

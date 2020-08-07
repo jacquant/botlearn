@@ -4,43 +4,48 @@
       <v-row>
         <!--Détails des exerices-->
         <v-col class="ml-10 mr-10">
-          <h1>Détails de l'exerice</h1>
+          <h1>Détails de l'exercice</h1>
           <v-card class="mx-auto">
             <v-toolbar color="green" dark flat>
-              <v-toolbar-title>{{ exercice.name }}</v-toolbar-title>
+              <v-toolbar-title>{{ exercise.name }}</v-toolbar-title>
               <v-spacer />
             </v-toolbar>
             <v-card-text>
-              <v-list>
+              <v-list dense>
                 <v-list-item>
-                  <div style="font-weight:bold">
-                    Consigne
-                  </div>
-                  : {{ exercice.instruction }}
-                </v-list-item>
-                <v-list-item>
-                  <div style="font-weight:bold">
-                    Difficulté (1 à 4)
-                  </div>
-                  : {{ exercice.difficulty.name }}
-                </v-list-item>
-                <v-list-item v-for="tag in exercice.tags" :key="tag.name">
-                  <div style="font-weight:bold">
-                    Tag: 
-                  </div>
-                   {{ tag.name }}
+                  <v-list-item-content>
+                    <v-list-item-title style="font-weight:bold">Consignes:</v-list-item-title>
+                    {{ exercise.instruction }}
+                  </v-list-item-content>
                 </v-list-item>
                 <v-list-item>
-                  <div style="font-weight:bold">
-                    Nombre de soumissions
-                  </div>
-                  : {{all_items.length}}
+                  <v-list-item-title style="font-weight:bold">
+                    Difficulté (1 à 4): {{ exercise.difficulty.name + " ("+exercise.difficulty.number+")" }}
+                  </v-list-item-title>
                 </v-list-item>
-                 <v-list-item>
-                  <div style="font-weight:bold">
-                    Nombre de soumissions finales
-                  </div>
-                  : {{items.length}}
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title style="font-weight:bold" v-if="exercise.tags.length > 1">Tags:
+                    </v-list-item-title>
+                    <v-list-item-title style="font-weight:bold" v-else>Tag:</v-list-item-title>
+                    <v-list-item-group>
+                      <v-list-item v-for="tag in exercise.tags" :key="tag.name" dense>
+                        <v-list-item-content>
+                          {{ tag.name }}
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-title style="font-weight:bold">
+                    Nombre de soumissions: {{ all_items.length }}
+                  </v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-title style="font-weight:bold">
+                    Nombre de soumissions finales: {{ items.length }}
+                  </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -51,8 +56,8 @@
                   color="green"
                   class="white--text"
                   :href="
-                    'http://localhost:8080/admin/exercises/exercise/' +
-                      exercice.id +
+                    'https://memoire.jacquant.be/admin/exercises/exercise/' +
+                      exercise.id +
                       '/change/'
                   "
                   target="_blank"
@@ -69,8 +74,9 @@
       <!--Partie statistique des solutions des étudiants-->
       <v-row class="mr-10 ml-10">
         <v-container fluid>
-          <h1>Statistique de l'exercice
-            <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes" target="_blank">
+          <h1>Statistiques de l'exercice
+            <v-btn icon href="https://pycodestyle.readthedocs.io/en/latest/intro.html#error-codes"
+                   target="_blank">
               <v-icon>
                 mdi-information-outline
               </v-icon>
@@ -133,7 +139,8 @@
                   />
                 </template>
                 <v-spacer />
-                <v-switch class="d-none d-sm-flex mt-5" label="Finale" v-model="switch1" @change="modify()"></v-switch>
+                <v-switch class="d-none d-sm-flex mt-5" label="Finale" v-model="switch1"
+                          @change="modify()"></v-switch>
                 <v-spacer />
                 <v-btn
                   class="d-none d-sm-flex"
@@ -174,35 +181,34 @@
                   md="4"
                   lg="3"
                 >
-                  <v-card>
-                    <v-toolbar color="green" dark flat>
-                      <v-card-title class="subheading">
-                        {{ item.name }}
-                      </v-card-title>
-                    </v-toolbar>
+                  <v-card color="green">
+                    <v-card-title color="green" class="subheading">
+                      {{ item.name }}
+                    </v-card-title>
+                    <v-card-subtitle>
+                      {{item.date[1]}}
+                    </v-card-subtitle>
 
                     <v-divider />
                     <v-list dense>
                       <v-list-item>
-                        <v-list-item-content>Date:</v-list-item-content>
-                        <v-list-item-content>{{
-                          printDate(item.date)
-                        }}</v-list-item-content>
-                      </v-list-item>
-                      <v-list-item>
-                        <v-list-item-content
-                          >Nombre d'erreurs:</v-list-item-content
-                        >
-                        <v-list-item-content>{{
-                          item.erreurs
-                        }}</v-list-item-content>
+                        <v-list-item-content>Nombre d'erreurs:
+                        </v-list-item-content>
+                        <v-list-item-content>{{ item.errors }}
+                        </v-list-item-content>
                       </v-list-item>
                     </v-list>
                     <v-divider />
                     <v-card-actions class="d-flex align-center justify-center">
                       <p class="ma-0">
-                        <v-btn color="green" class="white--text" :href='"/solution?id="+item.id' target="_blank">
+                        <v-btn color="#9c6013" class="white--text"
+                               :href='"/solution?id="+item.id' target="_blank"
+                               v-if="item.code.length < 70">
                           Afficher
+                        </v-btn>
+                        <v-btn color="#9c6013" class="white--text"
+                               :href='"/solution?id="+item.id' v-else>
+                          Afficher la suite
                         </v-btn>
                       </p>
                     </v-card-actions>
@@ -268,295 +274,316 @@
 </template>
 
 <script>
-import http from "../system/http";
-import store from "../store/store";
-import { GChart } from "vue-google-charts";
+    import http from "../system/http";
+    import store from "../store/store";
+    import {printDate} from "../utils/date";
+    import {onChartReady, print} from "../utils/print";
+    import {tooltipGenerator} from "../utils/graph";
+    //import { component as VueCodeHighlight } from 'vue-code-highlight';
 
-export default {
-  // ================================================================================================== ==
-  // Components
-  // ================================================================================================== ==
-  components: {
-    GChart
-  },
-  // ================================================================================================== ==
-  // Data
-  // ================================================================================================== ==
-  data: () => ({
-    //Detail exercice
-    exercice: {"difficulty": {}},
+    export default {
+        // ================================================================================================== ==
+        // Components
+        // ================================================================================================== ==
+        components: {},
+        // ================================================================================================== ==
+        // Data
+        // ================================================================================================== ==
+        data: () => ({
+            //Detail exercise
+            exercise: {
+                "id": 0,
+                "difficulty": {
+                    "id": 0,
+                    "number": 0,
+                    "name": ""
+                },
+                "tags": [
+                    {
+                        "id": 0,
+                        "name": ""
+                    },
+                ],
+                "session": {
+                    "id": 0,
+                    "in_charge_persons": [
+                        {
+                            "mail": "",
+                            "last_name": "",
+                            "first_name": ""
+                        }
+                    ],
+                    "target": {
+                        "id": 0,
+                        "name": ""
+                    },
+                    "name": "",
+                    "date": "",
+                    "visibility": true,
+                    "activated": true
+                },
+                "section": {
+                    "id": 0,
+                    "academic_year": "",
+                    "name": "",
+                    "number": 0,
+                    "parent": 0
+                },
+                "author": {
+                    "mail": "",
+                    "last_name": "",
+                    "first_name": ""
+                },
+                "name": "",
+                "due_date": "",
+                "instruction": "",
+                "project_files": "",
+                "docker_image": 0,
+                "requirements": []
+            },
 
-    //Stats de l'exercice
-    chartData: [
-    ],
-    chartOptions: {
-      colors: ["green"],
-      legend: { position: "none" },
-      tooltip: {isHtml: true,
-                trigger: 'selection' },
-    },
+            //Stats de l'exercice
+            chartData: [["Code de l'erreur",
+                "Nombre de fois rencontrée",
+                {
+                    role: "style"
+                },
+                {
+                    type: "string",
+                    role: "tooltip",
+                    "p": {"html": true}
+                }]],
+            chartOptions: {
+                colors: ["green"],
+                legend: {position: "none"},
+                tooltip: {
+                    isHtml: true,
+                    trigger: "selection"
+                },
+            },
 
-    //chart in PNG
-    png: "",
+            //chart in PNG
+            png: "",
 
-    //Solutions des étudiants _ Data
-    itemsPerPageArray: [20, 40, 60],
-    search: "",
-    filter: {},
-    switch1: true,
-    sortDesc: false,
-    page: 1,
-    itemsPerPage: 20,
-    sortBy: "Le plus récent",
-    keys: [
-      "Le plus ancien",
-      "Le plus récent",
-      "Le plus d'erreurs",
-      "Le moins d'erreurs"
-    ],
-    items: [ { id: 0,
-                name: "Exemple structuture",
-                date: new Date("9999-99-99"),
-                erreurs: 0,
-                }],
-    all_items: [],
-    previous_items: [],
+            //Solutions des étudiants _ Data
+            itemsPerPageArray: [20, 40, 60],
+            search: "",
+            filter: {},
+            switch1: true,
+            sortDesc: false,
+            page: 1,
+            itemsPerPage: 20,
+            sortBy: "Le plus récent",
+            keys: [
+                "Le plus ancien",
+                "Le plus récent",
+                "Le plus d'erreurs",
+                "Le moins d'erreurs"
+            ],
+            items: [{
+                id: 0,
+                name: "Exemple structure",
+                date: [Date(), ""],
+                errors: 0,
+                code: ""
+            }],
+            all_items: [{
+                id: 0,
+                name: "Exemple structure",
+                date: [new Date("0-0-0"), ""],
+                errors: 0,
+                code: ""
+            }],
+            current_items: [],
+            get_stats: {
+                "number_submissions": 0,
+                "errors": [
+                    {
+                        "counter": 0,
+                        "message": "",
+                        "type": "",
+                        "submissions_list": [
+                            0
+                        ],
+                        "code": ""
+                    }
+                ]
+            },
+             get_stats_final: {
+                "number_submissions": 0,
+                "errors": [
+                    {
+                        "counter": 0,
+                        "submissions_list": [
+                            0
+                        ],
+                        "code": ""
+                    }
+                ]
+            }
 
-  }),
+        }),
 
-  // ================================================================================================== ==
-  // Computed
-  // ================================================================================================== ==
-  computed: {
-    //Manage the pagination
-    numberOfPages() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    filteredKeys() {
-      return this.keys.filter(key => key !== `Name`);
-    }
-  },
+        // ================================================================================================== ==
+        // Computed
+        // ================================================================================================== ==
+        computed: {
+            //Manage the pagination
+            numberOfPages() {
+                return Math.ceil(this.items.length / this.itemsPerPage);
+            },
+            filteredKeys() {
+                return this.keys.filter(key => key !== `Name`);
+            }
+        },
 
-  // ================================================================================================== ==
-  // Created
-  // ================================================================================================== ==
-  async created() {
-    //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
-    const is_staff = await http.get("user/get/", {
-      headers: { Authorization: "Bearer " + store.state.accessToken }
-    });
+        // ================================================================================================== ==
+        // Created
+        // ================================================================================================== ==
+        created: async function () {
+            //Redirect if user is not staff -> Call API to get information to be sure that localstorage wasn't change manually
+            const is_staff = await http.get("user/get/", {
+                headers: {Authorization: "Bearer " + store.state.accessToken}
+            });
 
-    if (!is_staff) {
-      let new_json = store.state.userInformation;
-      new_json["is_staff"] = false;
-      localStorage.setItem("infoUser", JSON.stringify(new_json));
-      await this.$router.push("/");
-    }
+            if (!is_staff) {
+                let new_json = store.state.userInformation;
+                new_json["is_staff"] = false;
+                localStorage.setItem("infoUser", JSON.stringify(new_json));
+                await this.$router.push("/");
+            }
 
-    //Redirect if there is no id for an exercice
-    let id = null;
-    if (this.$route.query.id === undefined || this.$route.query.id === "") {
-      await this.$router.push("/administration");
-    } else {
-      id = this.$route.query.id;
-    }
+            //Redirect if there is no id for an exercise
+            let id = null;
+            if (this.$route.query.id === undefined || this.$route.query.id === "") {
+                await this.$router.push("/administration");
+            } else {
+                id = this.$route.query.id;
+            }
 
-    //Get Details exercice
-    this.exercice = (
-      await http.get("exercises/" + id, {
-        headers: { Authorization: "Bearer " + store.state.accessToken }
-      })
-    ).data;
 
-    //Get All final submissions from exercices
-    let submissions = (
-       await http.get("submissions/?&final=true&exercises=" + this.exercice.id, {
-        headers: { Authorization: "Bearer " + store.state.accessToken }
-      })
-    ).data
-    //Format display
-    this.items=[]
-    for (const submission in submissions) {
-      let total_errors = 0;
-      for (const nb in submissions[submission].errors){
-        total_errors += submissions[submission].errors[nb].counter
-      }
+            //Get Details exercise
+            this.exercise = (
+                await http.get("exercises/" + id, {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
 
-      this.items.push({
-        id: submissions[submission].id,
-        name: submissions[submission].author.last_name + " " + submissions[submission].author.first_name ,
-        date: new Date(submissions[submission].submission_date.substring(0,10)),
-        erreurs: total_errors
 
-      })
-    }
+            //Get All final submissions from exercises
+            this.submissions = (
+                await http.get("submissions/?&exercises=" + this.exercise.id, {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
+            //Format display
+            this.items = [];
+            this.all_items = [];
+            this.submissions.forEach(submission => {
+                const date = new Date(submission.submission_date.substring(0, 19));
+                const item = {
+                    id: submission.id,
+                    name: submission.author.last_name + " " + submission.author.first_name,
+                    date: [date, printDate(date)],
+                    errors: submission.errors.reduce((a, b) => a + b.counter, 0),
+                    code: submission.code_input
+                };
+                if (submission.final) {
+                    this.items.push(item);
+                }
+                this.all_items.push(item);
+            });
 
-    //Get Stats
-    //this.title = "Nombre de soumissions finales par exercice par TP";
+            //Get Stats
 
-    this.chartData = [["Numéro de l'erreur",
-                        "Nombre de fois rencontrée",{
-                        type: 'string',
-                        role: 'tooltip',
-                        'p': {'html': true}
-                        }]]
+            this.get_stats = (await http.get("stats/errors_by_exercise/" + id, {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
 
-    let get_stats = (await http.get("stats/errors_by_exercise/" + id, {
-          headers: { Authorization: "Bearer " + store.state.accessToken }
-        })
-        ).data
+            //Get Stats final
 
-    for (const nb in get_stats.errors) { 
-    let tooltip_examples = "";
-      if(get_stats.errors[nb].submissions_list.length > 2){
-        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
-        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>" +
-        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[2] + "' target='_blank'>3°Voir exemple</a>"
+            this.get_stats_final = (await http.get("stats/errors_by_exercise_final/" + id, {
+                    headers: {Authorization: "Bearer " + store.state.accessToken}
+                })
+            ).data;
 
-      }else if (get_stats.errors[nb].submissions_list.length > 1){
-        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>" +
-        "<br><a href='/solution?id=" + get_stats.errors[nb].submissions_list[1] + "' target='_blank'>2°Voir exemple</a>"
-        
-      }else if (get_stats.errors[nb].submissions_list.length > 0){
-        tooltip_examples = "<a href='/solution?id=" + get_stats.errors[nb].submissions_list[0] + "' target='_blank'>1°Voir exemple</a>"
-        
-      }else{
-        tooltip_examples = "Aucun exemple disponible"
-      }
+            tooltipGenerator(this.get_stats_final.errors).forEach(tooltip => {
+                this.chartData.push(tooltip);
+            });
 
-      this.chartData.push([get_stats.errors[nb].code, get_stats.errors[nb].counter,"<b>"+ get_stats.errors[nb].code +
-                          "</b><br>Nombre d'erreurs': " 
-                          + get_stats.errors[nb].counter + "<br>" + tooltip_examples
-                          ])
+            //Filtering Exercises:
+            this.filtering();
 
-    }
+        },
 
-    //Get All subsmissions from exercices
-    this.all_items = (
-      await http.get("submissions/?&exercises=" + this.exercice.id, {
-        headers: { Authorization: "Bearer " + store.state.accessToken }
-      })
-    ).data;
-    //Format display
-    let format_all_items = []
-    for (const submission in this.all_items) {
-      let total_errors = 0;
-      for (const nb in this.all_items[submission].errors){
-        total_errors += this.all_items[submission].errors[nb].counter
-      }
+        // ================================================================================================== ==
+        // Methods
+        // ================================================================================================== ==
+        methods: {
+            //Methods to manage the pagination
+            nextPage() {
+                if (this.page + 1 <= this.numberOfPages) this.page += 1;
+            },
+            formerPage() {
+                if (this.page - 1 >= 1) this.page -= 1;
+            },
+            updateItemsPerPage(number) {
+                this.itemsPerPage = number;
+            },
+            //Filtering by date or by errors
+            filtering() {
+                if (this.sortBy === "Le plus récent") {
+                    this.items = this.items.slice().sort((a, b) => b.date[0] - a.date[0]);
+                } else if (this.sortBy === "Le plus ancien") {
+                    this.items = this.items.slice().sort((a, b) => a.date[0] - b.date[0]);
+                } else if (this.sortBy === "Le plus d'erreurs") {
+                    this.items = this.items.slice().sort((a, b) => b.errors - a.errors);
+                } else {
+                    this.items = this.items.slice().sort((a, b) => a.errors - b.errors);
+                }
+            },
 
-      format_all_items.push({
-        id: this.all_items[submission].id,
-        name: this.all_items[submission].author.last_name + " " + this.all_items[submission].author.first_name ,
-        date: new Date(this.all_items[submission].submission_date.substring(0,10)),
-        erreurs: total_errors
+            printDate,
 
-      })
-    }
-    this.all_items = format_all_items;
-   
-    //Filtering Exerice:
-    this.filtering();
+            /**
+             * Display all submissions
+             */
+            modify() {
+                //if final is activated
+                this.chartData = [["Code de l'erreur",
+                      "Nombre de fois rencontrée", 
+                      {
+                        role: "style"
+                      },
+                      {
+                          type: "string",
+                          role: "tooltip",
+                          "p": {"html": true}
+                      }]]
+                if (this.switch1) {
+                    this.items = this.previous_items;
+                    this.previous_items = this.items;
+                    tooltipGenerator(this.get_stats_final.errors).forEach(tooltip => {
+                        this.chartData.push(tooltip);
+                    });
+                //if final is not activated
+                } else {
+                    this.previous_items = this.items;
+                    this.items = this.all_items;
+                    tooltipGenerator(this.get_stats.errors).forEach(tooltip => {
+                        this.chartData.push(tooltip);
+                    });
+                }
 
-  },
+            },
 
-  // ================================================================================================== ==
-  // Methods
-  // ================================================================================================== ==
-  methods: {
-    //Methods to manage the pagination
-    nextPage() {
-      if (this.page + 1 <= this.numberOfPages) this.page += 1;
-    },
-    formerPage() {
-      if (this.page - 1 >= 1) this.page -= 1;
-    },
-    updateItemsPerPage(number) {
-      this.itemsPerPage = number;
-    },
 
-    //Filtering by date or by errors
-    filtering() {
-      if (this.sortBy.includes("récent")) {
-        this.items = this.items.slice().sort((a, b) => b.date - a.date);
-      } else if (this.sortBy.includes("ancien")) {
-        this.items = this.items.slice().sort((a, b) => a.date - b.date);
-      } else if (this.sortBy.includes("plus d'erreurs")) {
-        this.items = this.items.slice().sort((a, b) => b.erreurs - a.erreurs);
-      } else {
-        this.items = this.items.slice().sort((a, b) => a.erreurs - b.erreurs);
-      }
-    },
+            //Transform Chart to PNG
+            onChartReady,
 
-    /**
-     * Display all submissions
-     */
-    modify(){
-      if(this.switch1){
-        this.items = this.previous_items
-        this.previous_items = this.items
-      }else{
-        this.previous_items = this.items
-        this.items = this.all_items;
-      }
-
-    },
-    
-    /**
-     * Function to print the date correctly
-     * @param {Date} date
-     * @returns {String}
-     * */
-    printDate(date) {
-      var monthNames = [
-        "janvier",
-        "février",
-        "mars",
-        "avril",
-        "mai",
-        "juin",
-        "juillet",
-        "août",
-        "septembre",
-        "octobre",
-        "novembre",
-        "décembre"
-      ];
-
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
-
-      return day + " " + monthNames[monthIndex] + " " + year;
-    },
-
-    //Transform Chart to PNG
-    onChartReady(chart, google) {
-      var self = this;
-      google.visualization.events.addListener(chart, "ready", function() {
-        self.png = chart.getImageURI();
-      });
-    },
-
-    //Print the Graph
-    print() {
-      var WinPrint = window.open(
-        "",
-        "",
-        "left=0,top=0,width=1000,height=900,toolbar=0,scrollbars=0,status=0"
-      );
-      WinPrint.document.write("<html><head>");
-      WinPrint.document.write(
-        '<link rel= "stylesheet", href= "../css/print.css">'
-      );
-      WinPrint.document.write("</head><body>");
-      WinPrint.document.write('<img src="' + this.png + '">');
-      //WinPrint.document.write('<h1>'+this.title+'</h1>')
-      WinPrint.document.write("</body></html>");
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-    }
-  }
-};
+            //Print the Graph
+            print
+        }
+    };
 </script>

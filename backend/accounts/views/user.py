@@ -5,6 +5,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
+    UpdateAPIView,
     get_object_or_404,
 )
 from rest_framework.permissions import (
@@ -13,10 +14,48 @@ from rest_framework.permissions import (
 )
 
 from accounts.models.user import User
-from accounts.serializers.user import UserSerializer
-
+from accounts.serializers.user import UserSerializer, UpdateUserSerializer
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
+
+
+def get_custom_queryset(this):
+    """Override method to have cache management.
+
+    :return: the requested user(mail filter)
+    :rtype: User
+    """
+    key = "users_id_{id}".format(id=this.request.user.mail)
+    key_all = "users_all"
+    if key in cache:
+        return cache.get(key)
+    elif key_all in cache:
+        users = cache.get(key_all)
+        user = users.filter(mail=this.request.user.mail)
+        cache.set(key, user, timeout=CACHE_TTL)
+        return user
+    users = User.objects.all()
+    cache.set(key_all, users, timeout=CACHE_TTL)
+    user = users.filter(mail=this.request.user.mail)
+    cache.set(key, user, timeout=CACHE_TTL)
+    return user
+
+
+def get_custom_object(this):
+    """Override method to be able to filter with mail.
+
+    :raises a: if the user has not the permission for the object
+    :return: the requested user
+    :rtype: User
+    """
+    queryset = this.filter_queryset(this.get_queryset())
+    filter_kwargs = {"mail": this.request.user.mail}
+    requested_obj = get_object_or_404(queryset, **filter_kwargs)
+
+    # May raise a permission denied
+    this.check_object_permissions(this.request, requested_obj)
+
+    return requested_obj
 
 
 class CreateUser(CreateAPIView):
@@ -88,38 +127,18 @@ class GetUserInfo(RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        """Override method to have cache management.
-
-        :return: the requested user(mail filter)
-        :rtype: User
-        """
-        key = "users_id_{id}".format(id=self.request.user.mail)
-        key_all = "users_all"
-        if key in cache:
-            return cache.get(key)
-        elif key_all in cache:
-            users = cache.get(key_all)
-            user = users.filter(mail=self.request.user.mail)
-            cache.set(key, user, timeout=CACHE_TTL)
-            return user
-        users = User.objects.all()
-        cache.set(key_all, users, timeout=CACHE_TTL)
-        user = users.filter(mail=self.request.user.mail)
-        cache.set(key, user, timeout=CACHE_TTL)
-        return user
+        return get_custom_queryset(self)
 
     def get_object(self):
-        """Override method to be able to filter with mail.
+        return get_custom_object(self)
 
-        :raises a: if the user has not the permission for the object
-        :return: the requested user
-        :rtype: User
-        """
-        queryset = self.filter_queryset(self.get_queryset())
-        filter_kwargs = {"mail": self.request.user.mail}
-        requested_obj = get_object_or_404(queryset, **filter_kwargs)
 
-        # May raise a permission denied
-        self.check_object_permissions(self.request, requested_obj)
+class UpdateUser(UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer
 
-        return requested_obj
+    def get_queryset(self):
+        return get_custom_queryset(self)
+
+    def get_object(self):
+        return get_custom_object(self)

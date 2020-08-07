@@ -8,7 +8,7 @@ import router from "./router";
  * @private
  * @constant {string} Http#baseUrl
  */
-const baseUrl = "http://localhost:8080/api/";
+const baseUrl = "https://memoire.jacquant.be/api/";
 
 /**
  * Public instance of axios to manage request send in the application.
@@ -24,25 +24,25 @@ const publicInstance = Axios.create();
  * @returns {Promise}
  */
 function renewAccessToken() {
-  const access = Store.state.accessToken;
-  if (access != null && JwtDecode(access).exp * 1000 - Date.now() <= 0) {
-    const refresh = Store.state.refreshToken;
+    const access = Store.state.accessToken;
+    if (access != null && JwtDecode(access).exp * 1000 - Date.now() <= 0) {
+        const refresh = Store.state.refreshToken;
 
-    if (refresh === null || JwtDecode(refresh).exp * 1000 - Date.now() <= 0) {
-      Store.commit("logout");
-      return Promise.reject();
-    } else {
-      return Axios.post(baseUrl + "token/refresh/", { refresh: refresh })
-        .then(response => {
-          Store.commit("accessToken", response.data.access);
-          return Promise.resolve();
-        })
-        .catch(() => {
-          Store.commit("logout");
-          return Promise.reject();
-        });
-    }
-  } else return Promise.resolve();
+        if (refresh == null || JwtDecode(refresh).exp * 1000 - Date.now() <= 0) {
+            Store.commit("logout");
+            return Promise.reject();
+        } else {
+            return Axios.post(baseUrl + "token/refresh/", {refresh: refresh})
+                .then(response => {
+                    Store.commit("accessToken", response.data.access);
+                    return Promise.resolve();
+                })
+                .catch(() => {
+                    Store.commit("logout");
+                    return Promise.reject();
+                });
+        }
+    } else return Promise.resolve();
 }
 
 //After each load of a page, try to reload the token
@@ -53,91 +53,91 @@ renewAccessToken();
 // ================================================================================================================== ==
 
 export default {
-  //HttpResponseManager,
-  //renewAccessToken,
+    //HttpResponseManager,
+    //renewAccessToken,
 
-  /**
-   * Executes a delete request on the server.
-   * @function Http#delete
-   * @param {string} route - The relative route for the request.
-   * @param {Http.HttpResponseManager} manager - Manager of request response.
-   * @param {object} [config] - Additional configuration for the request.
-   * @returns {Promise<void>}
-   */
-  delete(route, manager, config = {}) {
-    publicInstance
-      .delete(baseUrl + route, config)
-      .then(response => manager.execute(response.status, response.data))
-      .catch(error => {
-        if (Axios.isCancel(error)) return;
-        manager.execute(error.response.status, error.response.data);
-      });
-  },
+    /**
+     * Executes a delete request on the server.
+     * @function Http#delete
+     * @param {string} route - The relative route for the request.
+     * @param {Http.HttpResponseManager} manager - Manager of request response.
+     * @param {object} [config] - Additional configuration for the request.
+     * @returns {Promise<void>}
+     */
+    delete(route, manager, config = {}) {
+        publicInstance
+            .delete(baseUrl + route, config)
+            .then(response => manager.execute(response.status, response.data))
+            .catch(error => {
+                if (Axios.isCancel(error)) return;
+                manager.execute(error.response.status, error.response.data);
+            });
+    },
 
-  /**
-   * Executes a get request on the server.
-   * @function Http#get
-   * @param {string} route - The relative route for the request.
-   * @param {Http.HttpResponseManager} manager - Manager of request response.
-   * @param {object} [config] - Additional configuration for the request.
-   * @returns {Promise<void>}
-   */
-  get(route, config = {}) {
-    let data = null;
-    //Get info User - Using to check permission
-    if (route.includes("user/get/")) {
-      data = publicInstance
-        .get(baseUrl + route, config)
-        .then(response => {
-          return response.data.is_staff;
-        })
-        .catch(() => {
-          Store.commit("internalError", true);
-        });
-      //Get All Tps
-    } else if (route.includes("sessions/all/")) {
-      data = publicInstance
-        .get(baseUrl + route, config)
-        .then(response => {
-          return response;
-        })
-        .catch(() => {
-          Store.commit("internalError", true);
-        });
-      //Get Exercices by TP
-    } else if (route.includes("exercises/by_session/")) {
-      data = publicInstance
-        .get(baseUrl + route, config)
-        .then(response => {
-          return response;
-        })
-        .catch(() => {
-          Store.commit("internalError", true);
-        });
-      //Get details for an exercice
-    } else if (route.includes("exercises/get/")) {
-      data = publicInstance
-        .get(baseUrl + route, config)
-        .then(response => {
-          return response;
-        })
-        .catch(() => {
-          Store.commit("internalError", true);
-        });
-      //Get All data
-    } else if (route.includes("/")) {
-      data = publicInstance
-        .get(baseUrl + route, config)
-        .then(response => {
-          return response;
-        })
-        .catch(() => {
-          Store.commit("internalError", true);
-        });
-      //Get Exercices by TP
-    }
-    return data;
-  },
+    /**
+     * Executes a get request on the server.
+     * @function Http#get
+     * @param {string} route - The relative route for the request.
+     * @param {Http.HttpResponseManager} manager - Manager of request response.
+     * @param {object} [config] - Additional configuration for the request.
+     * @returns {Promise<void>}
+     */
+    get(route, config = {}) {
+        let data = null;
+        //Get info User - Using to check permission
+        if (route.includes("user/get/")) {
+            data = publicInstance
+                .get(baseUrl + route, config)
+                .then(response => {
+                    return response.data.is_staff;
+                })
+                .catch(() => {
+                    Store.commit("internalError", true);
+                });
+            //Get All Tps
+        } else if (route.includes("sessions/all/")) {
+            data = publicInstance
+                .get(baseUrl + route, config)
+                .then(response => {
+                    return response;
+                })
+                .catch(() => {
+                    Store.commit("internalError", true);
+                });
+            //Get Exercices by TP
+        } else if (route.includes("exercises/by_session/")) {
+            data = publicInstance
+                .get(baseUrl + route, config)
+                .then(response => {
+                    return response;
+                })
+                .catch(() => {
+                    Store.commit("internalError", true);
+                });
+            //Get details for an exercice
+        } else if (route.includes("exercises/get/")) {
+            data = publicInstance
+                .get(baseUrl + route, config)
+                .then(response => {
+                    return response;
+                })
+                .catch(() => {
+                    Store.commit("internalError", true);
+                });
+            //Get All data
+        } else if (route.includes("/")) {
+            data = publicInstance
+                .get(baseUrl + route, config)
+                .then(response => {
+                    return response;
+                })
+                .catch(() => {
+                    Store.commit("internalError", true);
+                });
+            //Get Exercices by TP
+        }
+        return data;
+    },
 
   /**
    * Executes a post request on the server.
@@ -202,22 +202,22 @@ export default {
     }
   },
 
-  /**
-   * Executes a put request on the server.
-   * @function Http#put
-   * @param {string} route - The relative route for the request.
-   * @param {object} data - The data to send in the request.
-   * @param {Http.HttpResponseManager} manager - Manager of request response.
-   * @param {object} [config] - Additional configuration for the request.
-   * @returns {Promise<void>}
-   */
-  put(route, data, manager, config = {}) {
-    publicInstance
-      .put(baseUrl + route, data, config)
-      .then(response => manager.execute(response.status, response.data))
-      .catch(error => {
-        if (Axios.isCancel(error)) return;
-        manager.execute(error.response.status, error.response.data);
-      });
-  }
+    /**
+     * Executes a put request on the server.
+     * @function Http#put
+     * @param {string} route - The relative route for the request.
+     * @param {object} data - The data to send in the request.
+     * @param {Http.HttpResponseManager} manager - Manager of request response.
+     * @param {object} [config] - Additional configuration for the request.
+     * @returns {Promise<void>}
+     */
+    put(route, data, manager, config = {}) {
+        publicInstance
+            .put(baseUrl + route, data, config)
+            .then(response => manager.execute(response.status, response.data))
+            .catch(error => {
+                if (Axios.isCancel(error)) return;
+                manager.execute(error.response.status, error.response.data);
+            });
+    }
 };

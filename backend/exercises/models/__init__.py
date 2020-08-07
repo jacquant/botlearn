@@ -2,6 +2,7 @@ from exercises.models.category import Category
 from exercises.models.difficulty import Difficulty
 from exercises.models.error import Error
 from exercises.models.error_count import ErrorCount
+from exercises.models.errors_template import ErrorsTemplate
 from exercises.models.exercise import Exercise
 from exercises.models.requirement import Requirement
 from exercises.models.section import Section

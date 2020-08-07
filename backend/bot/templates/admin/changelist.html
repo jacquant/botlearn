@@ -1,0 +1,12 @@
+{% extends 'admin/import_export/change_list_import_export.html' %}
+
+{% block object-tools %}
+    <div>
+        <form id= "change" action="train/" method="POST" >
+            {% csrf_token %}
+            <input type="submit" class="initialized" value="Entraîner le bot">
+        </form>
+    </div>
+    <br />
+    {{ block.super }}
+{% endblock %}

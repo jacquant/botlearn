@@ -6,13 +6,13 @@ from django.core.cache import cache
 from django.db import transaction
 from django.db.models.signals import (
     post_delete,
-    post_save,
+    post_save, pre_save,
 )
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 import docker
-
+import tarfile
 from exercises.models.exercise import Exercise
 from sandbox.models import SandboxProfile
 
@@ -23,19 +23,40 @@ def empty_cache():
     cache.delete("exercises_all")
 
 
+def check_requirements_file(name_uuid):
+    try:
+        with tarfile.open("media/exercises/{0}/archive.tar.gz".format(name_uuid), "r:gz") as f:
+            if "requirements.txt" in f.getnames():
+                return True
+            else:
+                return False
+    except FileNotFoundError:
+        return False
+
+
 def create_dockerfile(instance, name_uuid):
-    """Create and render a Dockerfile with needed element grom the Exercise."""
+    """Create and render a Dockerfile with needed element from the Exercise."""
     requirements_list = " ".join(
         instance.requirements.all().distinct().values_list("name", flat=True),
     )
+    if len(requirements_list) == 0:
+        requirements = False
+    else:
+        requirements = True
+
+    requirement_files = check_requirements_file(name_uuid)
+    if instance.project_files.name == "":
+        tar = False
+    else:
+        tar = True
     dockerfile_string = render_to_string(
         "Docker/Dockerfile",
         {
-            "tar": True,
+            "tar": tar,
             "file_tar": "*.tar.gz",
-            "requirements": True,
+            "requirements": requirements,
             "requirements_list": requirements_list,
-            "requirements_file": False,
+            "requirements_file": requirement_files,
         },
     )
     Path("media/exercises/{0}/".format(name_uuid)).mkdir(
@@ -44,7 +65,7 @@ def create_dockerfile(instance, name_uuid):
     path = "media/exercises/{0}/Dockerfile".format(name_uuid)
     with open(path, "w") as dockerfile:
         print(dockerfile_string, file=dockerfile)  # noqa: WPS421
-    return path[6:]
+    return path[6:]  # Removed media
 
 
 @shared_task
@@ -80,6 +101,14 @@ def build_docker(instance):
     create_docker_image.delay(
         id_uuid, "media/exercises/{0}/".format(name_uuid), docker_image.id
     )
+
+
+@receiver(pre_save, sender=Exercise)
+def exercise_will_be_saved(sender, instance, *args, **kwargs):
+    exercise = Exercise.objects.get(id=instance.id)
+    if exercise.project_files != "":
+        if instance.project_files == "":
+            exercise.project_files.delete(False)
 
 
 @receiver(post_save, sender=Exercise)

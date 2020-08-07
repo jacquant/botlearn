@@ -7,18 +7,25 @@
       <v-app-bar :clipped-left="clipped" fixed app>
         <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-        <v-toolbar-title>My learning</v-toolbar-title>
+        <v-toolbar-title>Botlearn</v-toolbar-title>
 
         <v-spacer />
+        <v-btn
+          v-if="admin"
+          color="red accent-1"
+          class="ma-2"
+          href="/admin/bot" target="_blank"
+        >
+          Paramétrer le ChatBot
+        </v-btn>
 
         <v-btn
           v-if="admin"
           color="red"
           href="/administration"
-          class="d-none d-sm-flex"
+          class="ma-0 font-weight-bold"
         >
           Administrer
-          <!--<v-icon>mdi-border-color</v-icon>-->
         </v-btn>
         <v-btn icon href="/administration" class="d-flex d-sm-none">
           <v-icon color="red">
@@ -60,70 +67,65 @@
 </template>
 
 <script>
-import store from "./store/store";
+    import store from "./store/store";
 
-export default {
+    export default {
         name: "App",
         components: {},
         // ================================================================================================== ==
         // Data
         // ================================================================================================== ==
         data: () => ({
-              clipped: false,
-              drawer: false,
-              fixed: false,
-              items: [
-            {
-                icon: 'mdi-apps',
-                title: 'Acceuil',
-                to: '/'
-            },
-            {
-                icon: 'mdi-chart-bubble',
-                title: 'Inspire',
-                to: '/mysolutions'
-            },
-            {
-                icon: 'mdi-login-variant',
-                title: 'Se connecter',
-                to: '/login'
-            },
-            {
-                icon: 'mdi-account-edit',
-                title: 'S\'inscrire',
-                to: '/register'
-            },
-            {
-                icon: 'mdi-logout-variant',
-                title: 'Se déconnecter',
-                to: null,
-            },
-        ]
-    }),
+            clipped: false,
+            drawer: false,
+            fixed: false,
+            items: [
+                {
+                    icon: "mdi-apps",
+                    title: "Accueil",
+                    to: "/"
+                },
+                {
+                    icon: "mdi-login-variant",
+                    title: "Se connecter",
+                    to: "/login"
+                },
+                {
+                    icon: "mdi-account-edit",
+                    title: "S'inscrire",
+                    to: "/register"
+                },
+                {
+                    icon: "mdi-logout-variant",
+                    title: "Se déconnecter",
+                    to: null,
+                },
+            ]
+        }),
 
 
-  // ================================================================================================== ==
-  // Computed
-  // ================================================================================================== =
+        // ================================================================================================== ==
+        // Computed
+        // ================================================================================================== =
 
-  computed: {
-    //Check if user is logged to display information differently
-    loggedIn() {
-      return store.getters.isConnected;
-    },
-    //Check if a user is in the staff
-    admin() {
-      return store.getters.isStaff;
-    }
-  },
+        computed: {
+            //Check if user is logged to display information differently
+            loggedIn() {
+                return store.getters.isConnected;
+            },
+            //Check if a user is in the staff
+            admin() {
+                return store.getters.isStaff;
+            },
+        },
 
-  // ================================================================================================== ==
-  // Methods
-  // ================================================================================================== ==
-  methods: {
-    logout() {
-      store.commit("logout");
-    }
-  }
-};
+        // ================================================================================================== ==
+        // Methods
+        // ================================================================================================== ==
+        methods: {
+            logout() {
+                store.commit("logout");
+            }
+        }
+    };
 </script>

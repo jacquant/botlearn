@@ -12,7 +12,7 @@ class ExercisesConfig(AppConfig):
         Launch the signals handlers.
         """
         # Import signals pre_save
-
+        from exercises.signals.exercise import exercise_will_be_saved
         # Import signals post_save
         from exercises.signals.category import category_saved
         from exercises.signals.difficulty import difficulty_saved

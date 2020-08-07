@@ -10,10 +10,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import datetime
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,8 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]
-
+ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35", "localhost"]
 
 # Application definition
 
@@ -75,9 +72,7 @@ MIDDLEWARE = [
 ]
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-
-if DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
+CORS_ORIGIN_ALLOW_ALL = True  # Must be remove in production
 
 ROOT_URLCONF = "memoire.urls"
 
@@ -103,8 +98,8 @@ ASGI_APPLICATION = "memoire.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB_NAME = os.environ.get("POSTGRES_DB", "memoire-v1-dev")
-DB_USER = os.environ.get("POSTGRES_USER", "memoire-dev")
+DB_NAME = os.environ.get("POSTGRES_DB", "memoire-v1-prod")
+DB_USER = os.environ.get("POSTGRES_USER", "memoire-prod")
 DB_PWD = os.environ.get("POSTGRES_PASSWORD", "memoire!pwd")
 DB_IP = os.environ.get("DB_IP", "127.0.0.1")
 DB_PORT = os.environ.get("DB_PORT", "5433")
@@ -129,7 +124,6 @@ CACHES = {
     },
 }
 CACHE_TTL = 60 * 60  # 15 minutes of cache
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -166,7 +160,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -223,14 +216,14 @@ AUTH_USER_MODEL = "accounts.User"
 
 # mail
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
-EMAIL_HOST = os.environ.get("CHU_EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.environ.get("CHU_EMAIL_PORT", 587))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "chu@cslabs.be")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 465))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "botlearn.unamur@gmail.com")
 EMAIL_HOST_PASSWORD = os.environ.get(
-    "EMAIL_HOST_PASSWORD", "Projet!CHUDeMerde"
+    "EMAIL_HOST_PASSWORD", "motdep@sse!botlearn"
 )
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "SITE AGE <ne-pas-repondre@age-namur.be>"
+DEFAULT_FROM_EMAIL = "Plateforme BOTLEARN <ne-pas-repondre@botlearn.unamur.be>"
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -244,7 +237,7 @@ SWAGGER_SETTINGS = {
         "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
 }
-FRONT_URL = os.environ.get("FRONT_URL", "0.0.0.0:8080")
+FRONT_URL = os.environ.get("FRONT_URL", "memoire.jacquant.be")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
@@ -252,13 +245,6 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-
-# Dialogflow settings
-DIALOGFLOW = {
-    "client_access_token": os.environ.get(
-        "DIALOGFLOW_TOKEN", "e5dc21cab6df451c866bf5efacb40178"
-    ),
-}
 
 # CKEDITOR
 CKEDITOR_CONFIGS = {
@@ -285,7 +271,7 @@ CKEDITOR_CONFIGS = {
             },
             {
                 "name": "basicstyles",
-                "items": ["Bold", "Italic", "Underline",],
+                "items": ["Bold", "Italic", "Underline", ],
             },
             {
                 "name": "paragraph",
@@ -301,11 +287,11 @@ CKEDITOR_CONFIGS = {
                 ],
             },
             {"name": "links", "items": ["Link", "Unlink"]},
-            {"name": "insert", "items": ["CodeSnippet", "SpecialChar"],},
+            {"name": "insert", "items": ["CodeSnippet", "SpecialChar"], },
             "/",
             {"name": "styles", "items": ["Styles", "Format"]},
             {"name": "colors", "items": ["TextColor", "BGColor"]},
-            {"name": "tools", "items": ["Maximize",]},  # "ShowBlocks"]},
+            {"name": "tools", "items": ["Maximize", ]},  # "ShowBlocks"]},
             ["Source"],
         ],
         "toolbar": "YourCustomToolbarConfig",
@@ -331,4 +317,10 @@ CKEDITOR_CONFIGS = {
             ]
         ),
     }
+}
+
+CHATTERBOT = {
+    'name': 'Botlearn',
+    'django_app_name': "bot",
+    "statement_model": "OurStatement"
 }

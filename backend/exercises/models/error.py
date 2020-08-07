@@ -32,7 +32,7 @@ class Error(models.Model):
         :return: String formattage of the object
         :rtype: str
         """
-        return "Code - {0}".format(self.code)
+        return "Code - {0} - ".format(self.code, self.message)
 
     class Meta(object):
         """The Meta class that defines some fields."""

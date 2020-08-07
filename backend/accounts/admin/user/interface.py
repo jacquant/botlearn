@@ -19,6 +19,7 @@ class UserAdmin(BaseAdmin):
                     "mail",
                     "last_name",
                     "first_name",
+                    "anonymous",
                     "password",
                     "last_login",
                     "student",
