@@ -38,7 +38,11 @@ services:
       - env/prod/api.env
       - env/prod/db.env
   db:
-    image: postgres:alpine
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Postgres
+      args:
+        - DB_HOST=/tmp/docker
     container_name: postgres-memoire
     restart: unless-stopped
     command: postgres -c config_file=/etc/postgresql.conf
@@ -62,8 +66,7 @@ services:
       - db
       - cache
     command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate &&
+      sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
              daphne -u /tmp/docker/daphne.sock memoire.asgi:application"
     volumes:

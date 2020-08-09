@@ -1,0 +1,5 @@
+FROM postgres:alpine
+
+ARG DB_HOST
+ENV DB_HOST $DB_HOST
+COPY ./Docker/config/postgresql/docker-entrypoint.sh /usr/local/bin/

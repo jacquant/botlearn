@@ -1,0 +1,60 @@
+{
+    "name": "chat-room",
+    "displayName": "ChatBot - INFOB131",
+    "description": "ChatBot pour le cours INFOB131 à l'UNamur pour apprendre la programmation",
+    "version": "0.0.1",
+    "publisher": "maxdal",
+    "icon": "logo.png",
+    "engines": {
+        "vscode": "^1.27.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "Bot",
+        "Chat",
+        "AI",
+        "SignalR",
+        "Azure"
+    ],
+    "bugs": {
+        "url": "https://github.com/mdallava/good_bot/issues",
+        "email": "maxime.dallavalle@student.unamur.be"
+    },
+    "homepage": "https://github.com/mdallava/good_bot",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mdallava/good_bot.git"
+    },
+    "activationEvents": [
+        "onCommand:extension.openChatRoom",
+        "*"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.openChatRoom",
+                "title": "Open Chat Room"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p good_bot-master",
+        "watch": "tsc -watch -p good_bot-master",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.25",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.36"
+    },
+    "dependencies": {
+        "applicationinsights": "^1.0.2"
+    }
+}
