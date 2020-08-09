@@ -118,7 +118,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
+        "LOCATION": "unix:///tmp/docker/redis.sock?db=0",
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
         "KEY_PREFIX": "MEMOIRE",
     },
@@ -240,8 +240,8 @@ SWAGGER_SETTINGS = {
 FRONT_URL = os.environ.get("FRONT_URL", "memoire.jacquant.be")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
 
-CELERY_BROKER_URL = "redis://redis:6379/0"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = "redis+socket:///tmp/docker/redis.sock?virtual_host=0"
+CELERY_RESULT_BACKEND = "redis+socket:///tmp/docker/redis.sock"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

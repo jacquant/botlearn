@@ -1,5 +1,5 @@
 # Pull base image
-FROM python:latest
+FROM python
 
 # Install libmagic
 RUN apt update && apt upgrade -y && apt install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*

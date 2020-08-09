@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils import timezone
 
@@ -21,7 +20,7 @@ class Submission(models.Model):
     )
     code_input = models.TextField()
     not_executed = models.BooleanField(default=False)
-    code_output = JSONField()
+    code_output = models.JSONField()
     final = models.BooleanField(
         default=False, verbose_name="Type de la soumission est finale"
     )

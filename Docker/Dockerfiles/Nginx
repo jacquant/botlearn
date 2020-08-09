@@ -1,0 +1,33 @@
+FROM node:alpine as vue-app-build
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY ./frontend/package.json ./frontend/yarn.lock ./
+RUN yarn
+COPY ./frontend/ ./
+ARG FRONT_HOST
+ENV FRONT_HOST $FRONT_HOST
+RUN yarn build
+
+FROM node:alpine as vue-bot-build
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY ./frontend_bot/package.json ./frontend_bot/yarn.lock ./
+RUN yarn
+COPY ./frontend_bot/ ./
+ARG FRONT_HOST
+ENV VUE_APP_FRONT_HOST $FRONT_HOST
+ARG FRONT_BOT_HOST
+ENV FRONT_BOT_HOST $FRONT_BOT_HOST
+RUN yarn build
+
+FROM fholzer/nginx-brotli:latest
+COPY --from=vue-app-build /usr/src/app/dist/ /usr/share/nginx/frontend
+COPY --from=vue-bot-build /usr/src/app/dist/ /usr/share/nginx/frontend-bot
+COPY ./Docker/config/nginx/ /etc/nginx
+ARG FRONT_HOST
+ENV FRONT_HOST $FRONT_HOST
+ARG FRONT_BOT_HOST
+ENV FRONT_BOT_HOST $FRONT_BOT_HOST
+RUN export DOLLAR='$'
+RUN envsubst < /etc/nginx/conf.d/template/memoire.conf.template > /etc/nginx/conf.d/memoire.conf && envsubst < /etc/nginx/conf.d/template/memoire-bot.conf.template > /etc/nginx/conf.d/memoire-bot.conf
+RUN envsubst < /etc/nginx/config/ssl/certificate-templates/certificate_files-frontend.conf.template >/etc/nginx/config/ssl/certificate_files-frontend.conf && envsubst < /etc/nginx/config/ssl/certificate-templates/certificate_files-frontend_bot.conf.template >/etc/nginx/config/ssl/certificate_files-frontend_bot.conf

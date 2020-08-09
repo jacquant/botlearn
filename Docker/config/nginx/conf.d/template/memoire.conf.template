@@ -1,0 +1,84 @@
+upstream api{
+	server unix:/tmp/docker/daphne.sock;
+}
+server {
+  listen [::]:443 ssl http2;
+  listen 443 ssl http2;
+
+	server_name ${FRONT_HOST};
+	root /usr/share/nginx/frontend;
+
+    # CORS
+    add_header Access-Control-Allow-Origin "${FRONT_BOT_HOST}";
+
+    # SECURITY
+    include config/security/x-frame-options.conf;
+
+    # SSL
+	include config/ssl/ssl_engine.conf;
+	include config/ssl/certificate_files-frontend.conf;
+	include config/ssl/policy_modern.conf;
+
+	# Custom error pages
+	include config/errors/custom_errors.conf;
+
+	# Include the basic config config set
+	include config/basic.conf;
+	include config/web_performance/pre-compressed_content_brotli.conf;
+	include config/web_performance/pre-compressed_content_gzip.conf;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /static/ {
+		autoindex on;
+        alias /django/static/;
+	}
+
+	location /media/ {
+		autoindex on;
+		alias /django/media/;
+	}
+	# reverse proxy
+	location /api/ {
+		try_files ${DOLLAR}uri @proxy_to_app;
+	}
+	location /admin/ {
+		try_files ${DOLLAR}uri @proxy_to_app;
+	}
+	location @proxy_to_app {
+        include config/proxy.conf;
+        proxy_pass http://api;
+	}
+}
+
+# subdomains redirect
+server {
+	listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+
+	server_name *.${FRONT_HOST};
+
+	# SSL
+	include config/ssl/ssl_engine.conf;
+	include config/ssl/certificate_files-frontend.conf;
+	include config/ssl/policy_modern.conf;
+
+	return 301 https://${FRONT_HOST}${DOLLAR}request_uri;
+}
+
+# HTTP redirect
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name ${FRONT_HOST};
+
+	location /.well-known/acme-challenge/ {
+		root /var/www/certbot;
+	}
+	location / {
+		return 301 https://${FRONT_HOST}${DOLLAR}request_uri;
+	}
+}

@@ -22,8 +22,8 @@
 #     https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_client_certificate
 
 # (1)
-ssl_certificate /etc/nginx/certs/default.crt;
-ssl_certificate_key /etc/nginx/certs/default.key;
+ssl_certificate /etc/letsencrypt/live/${FRONT_HOST}/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/${FRONT_HOST}/privkey.pem;
 
 # (2)
 # ssl_trusted_certificate /path/to/ca.crt;

@@ -8,7 +8,7 @@ RUN apk update && apk upgrade && apk add python make g++
 
 RUN yarn global add @vue/cli
 
-COPY ./frontend/memoire-app/ ./
+COPY ./frontend/ ./
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

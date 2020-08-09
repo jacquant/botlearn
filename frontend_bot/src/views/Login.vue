@@ -163,7 +163,7 @@
         // ================================================================================================== ==
         data: () => ({
             //url
-            url: "https://memoire.jacquant.be/api/",
+            url: process.env.VUE_APP_FRONT_HOST + "/api/",
 
             //User's data
             email: "",

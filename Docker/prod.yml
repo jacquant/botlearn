@@ -1,85 +1,113 @@
 version: "3"
 services:
+  tmp:
+    image: busybox
+    container_name: botlearn-tmp
+    command: chmod -R 777 /tmp/docker
+    restart: unless-stopped
+    volumes:
+      - tmp-docker:/tmp/docker
   cache:
     image: redis:alpine
     container_name: redis-memoire
-    expose:
-      - "6379"
-    entrypoint: redis-server
-    networks:
-      memoire-prod:
-        aliases:
-          - redis
+    command: redis-server /etc/redis.conf
+    restart: unless-stopped
+    depends_on:
+      - tmp
+    volumes:
+    - ./config/redis/redis.conf:/etc/redis.conf
+    - tmp-docker:/tmp/docker
   celery:
     build:
       context: ..
       dockerfile: Docker/Dockerfiles/Django
     command: celery -A memoire worker -l info
+    restart: unless-stopped
     volumes:
       - ../backend/:/api
       - /var/run/docker.sock:/var/run/docker.sock
+      - django-media-data:/api/media
+      - tmp-docker:/tmp/docker
     depends_on:
+      - tmp
       - db
       - cache
-    links:
-      - db:database
-      - cache:redis
     env_file:
       - env/base/api.env
       - env/base/db.env
       - env/prod/api.env
       - env/prod/db.env
-    networks:
-      memoire-prod:
-        aliases:
-          - celery
   db:
     image: postgres:alpine
     container_name: postgres-memoire
-    ports:
-      - "5433:5432"
+    restart: unless-stopped
+    command: postgres -c config_file=/etc/postgresql.conf
+    depends_on:
+      - tmp
     env_file:
       - env/base/db.env
       - env/prod/db.env
     volumes:
-      - ./postgres-data-memoire-prod:/var/lib/postgresql/data
-    networks:
-      memoire-prod:
-        aliases:
-          - database
+      - postgres-data-memoire-prod:/var/lib/postgresql/data
+      - ./config/postgresql/postgresql.conf:/etc/postgresql.conf
+      - tmp-docker:/tmp/docker
   api:
     container_name: api-memoire
     build:
       context: ..
       dockerfile: Docker/Dockerfiles/Django
-    ports:
-      - "127.0.0.1:8001:8001"
-      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
     depends_on:
+      - tmp
       - db
       - cache
-    links:
-      - db:database
-      - cache:redis
     command: >
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             daphne -e ssl:8001:privateKey=./ssl/privkey.pem:certKey=./ssl/cert.pem -b 0.0.0.0 -p 8000 memoire.asgi:application"
+             daphne -u /tmp/docker/daphne.sock memoire.asgi:application"
     volumes:
       - ../backend/:/api
       - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../web/ssl:/api/ssl
+      - django-media-data:/api/media
+      - django-static-data:/api/static
+      - tmp-docker:/tmp/docker
     env_file:
       - env/base/api.env
       - env/base/db.env
       - env/prod/api.env
       - env/prod/db.env
-    networks:
-      memoire-prod:
-        aliases:
-          - api
-networks:
-  memoire-prod:
-    driver: bridge
+  nginx:
+    container_name: nginx
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfiles/Nginx
+      args:
+        - FRONT_HOST=botlearn.unamur.be
+        - FRONT_BOT_HOST=botlearn-bot.unamur.be
+    restart: unless-stopped
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    volumes:
+      - django-media-data:/django/media
+      - django-static-data:/django/static
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+      - tmp-docker:/tmp/docker
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: unless-stopped
+    depends_on:
+      - nginx
+    env_file:
+      - env/prod/certbot.env
+    volumes:
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+volumes:
+  tmp-docker:
+  postgres-data-memoire-prod:
+  django-media-data:
+  django-static-data:

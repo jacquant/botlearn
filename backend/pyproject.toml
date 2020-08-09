@@ -1,8 +1,8 @@
 [tool]
 [tool.poetry]
 name = "backend"
-version = "0.0.0"
-authors = ["jacquant","mdallava"]
+version = "2020.08.09"
+authors = ["jacquant <antoine.jacques@outlook.be>","mdallava"]
 description = "Memoire backend"
 
 [build-system]
@@ -32,11 +32,10 @@ psycopg2-binary = "*"
 python-magic = "*"
 redis = "*"
 restrictedpython = "*"
-chatterbot = { git = "https://github.com/gunthercox/chatterbot.git", rev= "updates"}
+chatterbot = "=1.1.0a7"
 django-import-export = "^2.0.2"
 django-json-widget = "^1.0.1"
 django-ace = "^1.0.7"
-uvicorn = "*"
 daphne = "^2.5.0"
 Twisted = {extras = ["tls", "http2"], version = "^20.3.0"}
 

@@ -1,6 +1,7 @@
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
+    publicPath: process.env.FRONT_HOST,
     transpileDependencies: ["vuetify"],
     configureWebpack: {
         plugins: [
