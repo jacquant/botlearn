@@ -25,7 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be", "51.91.100.35", "localhost"]
+ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be"]
 
 # Application definition
 
@@ -118,7 +118,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "unix:///tmp/docker/redis.sock?db=0",
+        "LOCATION": os.environ.get("REDIS", "redis://redis:6379/0"),
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
         "KEY_PREFIX": "MEMOIRE",
     },
@@ -239,9 +239,15 @@ SWAGGER_SETTINGS = {
 }
 FRONT_URL = os.environ.get("FRONT_URL", "memoire.jacquant.be")
 BACK_URL = os.environ.get("BACK_URL", "0.0.0.0:8080")
-
-CELERY_BROKER_URL = "redis+socket:///tmp/docker/redis.sock?virtual_host=0"
-CELERY_RESULT_BACKEND = "redis+socket:///tmp/docker/redis.sock"
+redis = os.environ.get("REDIS", "redis://redis:6379/0")
+if "unix" in redis:
+    broker = redis.split("//")[1].replace("db", "virtual_host")
+    CELERY_BROKER_URL = "redis+socket://" + broker
+    result = redis.split("//")[1].split("?")[0]
+    CELERY_RESULT_BACKEND = "redis+socket://" + result
+else:
+    CELERY_BROKER_URL = redis
+    CELERY_RESULT_BACKEND = redis[:-2]
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

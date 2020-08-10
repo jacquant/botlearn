@@ -1,5 +1,5 @@
 upstream api{
-	server unix:/tmp/docker/daphne.sock;
+	server unix:/tmp/docker/django.sock;
 }
 server {
   listen [::]:443 ssl http2;

@@ -3,8 +3,8 @@ services:
   tmp:
     image: busybox
     container_name: botlearn-tmp
-    command: chmod -R 777 /tmp/docker
-    restart: unless-stopped
+    command: >
+      sh -c "chmod -R 777 /tmp/docker"
     volumes:
       - tmp-docker:/tmp/docker
   cache:
@@ -68,7 +68,7 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             daphne -u /tmp/docker/daphne.sock memoire.asgi:application"
+             gunicorn -k uvicorn.workers.UvicornWorker -c gunicorn-conf.py memoire.asgi:application"
     volumes:
       - ../backend/:/api
       - ../backend/bot/files/:/usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/french/
