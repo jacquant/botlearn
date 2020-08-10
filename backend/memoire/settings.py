@@ -25,7 +25,7 @@ if os.environ.get("DEBUG", True) in ["True", True, "true", "y", "yes"]:
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["memoire.jacquant.be", "memoire-bot.jacquant.be"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 # Application definition
 
